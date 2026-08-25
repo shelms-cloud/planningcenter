@@ -1,0 +1,20 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html",    "x": 0,    "y": 0,    "w": 1080, "h": 1080, "title": "01 — Cover" },
+    { "file": "Slide02.dc.html", "x": 1200, "y": 0,    "w": 1080, "h": 1080, "title": "02 — The third summer" },
+    { "file": "Slide03.dc.html", "x": 2400, "y": 0,    "w": 1080, "h": 1080, "title": "03 — What you can see" },
+    { "file": "Slide04.dc.html", "x": 3600, "y": 0,    "w": 1080, "h": 1080, "title": "04 — The systems" },
+    { "file": "Slide05.dc.html", "x": 0,    "y": 1240, "w": 1080, "h": 1080, "title": "05 — Somewhere you can't see" },
+    { "file": "Slide06.dc.html", "x": 1200, "y": 1240, "w": 1080, "h": 1080, "title": "06 — James 5:16" },
+    { "file": "Slide07.dc.html", "x": 2400, "y": 1240, "w": 1080, "h": 1080, "title": "07 — Shame and isolation" },
+    { "file": "Slide08.dc.html", "x": 3600, "y": 1240, "w": 1080, "h": 1080, "title": "08 — Maybe" },
+    { "file": "Slide09.dc.html", "x": 0,    "y": 2480, "w": 1080, "h": 1080, "title": "09 — Be the church" },
+    { "file": "Slide10.dc.html", "x": 1200, "y": 2480, "w": 1080, "h": 1080, "title": "10 — Never alone" },
+    { "file": "Story.dc.html",   "x": 2400, "y": 2480, "w": 1080, "h": 1920, "title": "Story — 9:16" }
+  ],
+  "annotations": [
+    { "id": "carousel-note", "x": 0, "y": -260, "w": 760, "text": "Instagram carousel — 10 squares at 1080×1080, read left to right, top row first.\nEvery line is verbatim from the original post; only the line breaks and grouping are design decisions." },
+    { "id": "story-note", "x": 2400, "y": 4480, "w": 560, "text": "Story card at 1080×1920.\n[Tap for the full post] is a placeholder — swap it for your real link sticker or wording." }
+  ],
+  "launch": { "view": "canvas" }
+}
