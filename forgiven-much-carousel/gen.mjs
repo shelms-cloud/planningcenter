@@ -25,21 +25,21 @@ function scene({ skyTop, skyBot, ridges, sun, waterY, waterColor }) {
   s += `<defs>`;
   s += `<linearGradient id="sky${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${skyTop}"></stop><stop offset="1" stop-color="${skyBot}"></stop></linearGradient>`;
   s += `<filter id="soft${uid}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18"></feGaussianBlur></filter>`;
-  s += `<filter id="haze${uid}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="46"></feGaussianBlur></filter>`;
+  s += `<filter id="haze${uid}" x="-120%" y="-120%" width="340%" height="340%"><feGaussianBlur stdDeviation="46"></feGaussianBlur></filter>`;
   s += `<filter id="grain${uid}"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix><feComponentTransfer><feFuncA type="linear" slope="0.055"></feFuncA></feComponentTransfer><feComposite operator="in" in2="SourceGraphic"></feComposite></filter>`;
   s += `</defs>`;
   s += `<rect width="${W}" height="${H}" fill="url(#sky${uid})"></rect>`;
   if (sun) {
     s += `<circle cx="${sun.x}" cy="${sun.y}" r="${sun.r * 2.2}" fill="${sun.color}" opacity="0.18" filter="url(#haze${uid})"></circle>`;
-    s += `<circle cx="${sun.x}" cy="${sun.y}" r="${sun.r}" fill="${sun.color}" opacity="0.5" filter="url(#soft${uid})"></circle>`;
+    s += `<circle cx="${sun.x}" cy="${sun.y}" r="${sun.r}" fill="${sun.color}" opacity="0.5" filter="url(#haze${uid})"></circle>`;
   }
   ridges.forEach((r, i) => {
     const blur = i < ridges.length - 1 ? ` filter="url(#soft${uid})"` : '';
     s += `<path d="${ridge(r.y, r.amp, r.pts)}" fill="${r.color}" opacity="${r.op}"${blur}></path>`;
   });
   if (waterY) {
-    s += `<rect x="0" y="${waterY}" width="${W}" height="${H - waterY}" fill="${waterColor}" opacity="0.9"></rect>`;
-    s += `<rect x="0" y="${waterY}" width="${W}" height="60" fill="#ffffff" opacity="0.07" filter="url(#soft${uid})"></rect>`;
+    s += `<rect x="-80" y="${waterY}" width="${W + 160}" height="${H - waterY + 160}" fill="${waterColor}" opacity="0.9" filter="url(#soft${uid})"></rect>`;
+    s += `<rect x="-80" y="${waterY}" width="${W + 160}" height="60" fill="#ffffff" opacity="0.07" filter="url(#soft${uid})"></rect>`;
   }
   s += `<rect width="${W}" height="${H}" fill="#ffffff" filter="url(#grain${uid})" opacity="0.5"></rect>`;
   s += `</svg>`;
