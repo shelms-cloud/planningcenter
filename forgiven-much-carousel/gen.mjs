@@ -71,7 +71,7 @@ const slides = [
     </div>`,
   },
   {
-    file: 'Slide02.dc.html', index: 2, photo: 'road.jpg', scrim: DARK,
+    file: 'Slide02.dc.html', index: 2, photo: 'doorway.jpg', scrim: [0.5, 0.34, 0.46],
     inner: `
     <div style="display: flex; flex-direction: column; align-items: center; gap: 38px; max-width: 700px;">
       ${para('The woman walks into the room completely aware of her need for Jesus.')}
@@ -89,7 +89,7 @@ const slides = [
     </div>`,
   },
   {
-    file: 'Slide04.dc.html', index: 4, photo: 'daisies.jpg', scrim: LIGHT,
+    file: 'Slide04.dc.html', index: 4, photo: 'horses.jpg', scrim: [0.5, 0.44, 0.5],
     inner: `
     <div style="display: flex; flex-direction: column; align-items: center; gap: 38px; max-width: 700px;">
       ${para('Neither could pay.', 'font-size: 38px; font-weight: 300;')}
@@ -98,7 +98,7 @@ const slides = [
     </div>`,
   },
   {
-    file: 'Slide05.dc.html', index: 5, photo: 'blooms.jpg', scrim: LIGHT,
+    file: 'Slide05.dc.html', index: 5, photo: 'daisies.jpg', scrim: LIGHT,
     inner: `
     <div style="display: flex; flex-direction: column; align-items: center; gap: 38px; max-width: 700px;">
       ${para('The invitation of this passage isn&rsquo;t to wish we had sinned more so we could be forgiven more.')}
@@ -106,7 +106,7 @@ const slides = [
     </div>`,
   },
   {
-    file: 'Slide06.dc.html', index: 6, photo: 'glass.jpg', scrim: MID,
+    file: 'Slide06.dc.html', index: 6, photo: 'moss.jpg', scrim: [0.24, 0.32, 0.44],
     inner: `
     <div style="display: flex; flex-direction: column; align-items: center; gap: 40px; max-width: 700px;">
       ${para('Do I love Jesus like someone who has been forgiven much?')}
@@ -117,7 +117,7 @@ const slides = [
     </div>`,
   },
   {
-    file: 'Slide07.dc.html', index: 7, photo: 'daisies.jpg', scrim: LIGHT,
+    file: 'Slide07.dc.html', index: 7, photo: 'glass.jpg', scrim: MID,
     inner: `
     <div style="display: flex; flex-direction: column; align-items: center; gap: 38px; max-width: 680px;">
       ${para('Pride tells us, <em>I&rsquo;m doing pretty well.</em>')}
@@ -127,7 +127,7 @@ const slides = [
     </div>`,
   },
   {
-    file: 'Slide08.dc.html', index: 8, photo: 'pines.jpg', scrim: [0.24, 0.34, 0.46],
+    file: 'Slide08.dc.html', index: 8, photo: 'arch.jpg', scrim: [0.58, 0.5, 0.3],
     inner: `
     <div style="display: flex; flex-direction: column; align-items: center; gap: 38px; max-width: 700px;">
       ${para('The gospel tells us the truth about both:')}
