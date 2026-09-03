@@ -52,10 +52,12 @@ const baseCss = `
 `;
 
 function para(t, extra = '') {
-  return `<p style="margin: 0; font-size: 31px; line-height: 1.7; letter-spacing: 0.012em; font-weight: 400; color: rgba(255,255,255,0.96); ${extra}">${t}</p>`;
+  return `<p style="margin: 0; font-size: 31px; line-height: 1.7; letter-spacing: -0.008em; font-weight: 400; color: rgba(255,255,255,0.96); ${extra}">${t}</p>`;
 }
 
-function artboard({ index, sceneHtml, inner }) {
+const caps = (t, extra = '') => `<span style="font-size: 19px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.6); font-weight: 500; padding-left: 0.2em; ${extra}">${t}</span>`;
+
+function artboard({ index, sceneHtml, inner, header, footerTop }) {
   const num = String(index).padStart(2, '0');
   return `<!doctype html>
 <html>
@@ -71,11 +73,16 @@ function artboard({ index, sceneHtml, inner }) {
 <div style="position: relative; width: 1080px; height: 1350px; overflow: hidden; background-color: #2e3335; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
   ${sceneHtml}
   <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,14,15,0.18) 0%, rgba(10,14,15,0.30) 62%, rgba(10,14,15,0.42) 100%);"></div>
-  <div style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 130px; box-sizing: border-box;">
+  <div style="position: absolute; inset: 36px; border: 1px solid rgba(255,255,255,0.16);"></div>
+  <div style="position: absolute; inset: 36px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; padding: 58px 94px; box-sizing: border-box;">
+    ${header ? caps(header) : '<span></span>'}
+    <div style="display: flex; flex-direction: column; align-items: center;">
     ${inner}
-  </div>
-  <div style="position: absolute; left: 0; right: 0; bottom: 54px; display: flex; justify-content: center;">
-    <span style="font-size: 19px; letter-spacing: 0.30em; color: rgba(255,255,255,0.45); font-weight: 400;">${num}&#8202;/&#8202;10</span>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 18px;">
+      ${footerTop ? caps(footerTop) : ''}
+      <span style="font-size: 18px; letter-spacing: 0.16em; color: rgba(255,255,255,0.42); font-weight: 400; padding-left: 0.16em;">${num}&#8202;/&#8202;10</span>
+    </div>
   </div>
 </div>
 </x-dc>
@@ -171,18 +178,18 @@ const scenes = {
   }),
 };
 
-const eyebrow = (t) => `<span style="font-size: 21px; letter-spacing: 0.38em; text-transform: uppercase; color: rgba(255,255,255,0.68); font-weight: 500; padding-left: 0.38em;">${t}</span>`;
-const rule = `<div style="width: 56px; height: 1px; background-color: rgba(255,255,255,0.5);"></div>`;
+const eyebrow = (t) => `<span style="font-size: 20px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.66); font-weight: 500; padding-left: 0.2em;">${t}</span>`;
+const rule = `<div style="width: 40px; height: 1px; background-color: rgba(255,255,255,0.42);"></div>`;
 
 const slides = [
   {
     file: 'Main.dc.html', index: 1, scene: scenes.cover,
+    header: 'A devotional', footerTop: 'Luke 7:36&ndash;50',
     inner: `
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 44px;">
-      ${eyebrow('A devotional &middot; Luke 7:36&ndash;50')}
-      <h1 style="margin: 0; font-size: 64px; font-weight: 300; letter-spacing: 0.03em; color: #ffffff;">Forgiven Much?</h1>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 42px;">
+      <h1 style="margin: 0; font-size: 72px; font-weight: 300; letter-spacing: -0.012em; color: #ffffff;">Forgiven Much?</h1>
       ${rule}
-      ${para('The woman, Simon, and the debt neither of them could pay.', 'font-size: 27px; color: rgba(255,255,255,0.85); max-width: 560px;')}
+      ${para('The woman, Simon, and the debt neither of them could pay.', 'font-size: 27px; color: rgba(255,255,255,0.85); max-width: 540px;')}
     </div>`,
   },
   {
@@ -226,7 +233,7 @@ const slides = [
     <div style="display: flex; flex-direction: column; align-items: center; gap: 40px; max-width: 700px;">
       ${para('Do I love Jesus like someone who has been forgiven much?')}
       <div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
-        ${['Pride.', 'Self-righteousness.', 'Idolatry.', 'Ego.', 'Unbelief.'].map((w) => `<span style="font-size: 29px; letter-spacing: 0.14em; color: rgba(255,255,255,0.92); font-weight: 300;">${w}</span>`).join('\n        ')}
+        ${['Pride.', 'Self-righteousness.', 'Idolatry.', 'Ego.', 'Unbelief.'].map((w) => `<span style="font-size: 29px; letter-spacing: 0.05em; color: rgba(255,255,255,0.92); font-weight: 300;">${w}</span>`).join('\n        ')}
       </div>
       ${para('The things no one else sees.', 'color: rgba(255,255,255,0.8); font-size: 27px;')}
     </div>`,
@@ -271,7 +278,13 @@ const slides = [
 ];
 
 for (const s of slides) {
-  writeFileSync(s.file, artboard({ index: s.index, sceneHtml: s.scene, inner: s.inner }));
+  writeFileSync(s.file, artboard({
+    index: s.index,
+    sceneHtml: s.scene,
+    inner: s.inner,
+    header: s.header ?? (s.index > 1 ? 'Forgiven much' : undefined),
+    footerTop: s.footerTop,
+  }));
   console.log('wrote', s.file);
 }
 
