@@ -1,0 +1,87 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "title": "Cover",
+      "x": 0,
+      "y": 0,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Slide02.dc.html",
+      "title": "Slide 02",
+      "x": 1300,
+      "y": 0,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Slide03.dc.html",
+      "title": "Slide 03",
+      "x": 2600,
+      "y": 0,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Slide04.dc.html",
+      "title": "Slide 04",
+      "x": 3900,
+      "y": 0,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Slide05.dc.html",
+      "title": "Slide 05",
+      "x": 5200,
+      "y": 0,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Slide06.dc.html",
+      "title": "Slide 06",
+      "x": 0,
+      "y": 1550,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Slide07.dc.html",
+      "title": "Slide 07",
+      "x": 1300,
+      "y": 1550,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Slide08.dc.html",
+      "title": "Slide 08",
+      "x": 2600,
+      "y": 1550,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Slide09.dc.html",
+      "title": "Slide 09",
+      "x": 3900,
+      "y": 1550,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Slide10.dc.html",
+      "title": "Slide 10",
+      "x": 5200,
+      "y": 1550,
+      "w": 1080,
+      "h": 1350
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
