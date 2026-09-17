@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Celebration Church programming calendar for 2026, with every rhythm projected onto its 2027 date.">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Celebration Year Map">
+<meta property="og:description" content="The 2026 programming calendar, and what 2027 looks like.">
+<meta property="og:type" content="website">
+<style>
+:root{color-scheme:light dark}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>Celebration Year Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap">
+<style>
+:root{
+  --ink:#262524;
+  --ink-2:#4c4a47;
+  --ink-3:#7b7671;
+  --ground:#eae8e4;
+  --panel:#f8f7f2;
+  --panel-2:#e1ded8;
+  --rule:#c9c4bd;
+  --rule-soft:#d9d5cf;
+  --brass:#5b77ba;
+  --brass-ink:#3f5893;
+  --brass-soft:#dde4f2;
+  --slate:#4f6c53;
+  --slate-ink:#3f5a44;
+  --slate-soft:#dee6de;
+  --flag:#acb77a;
+  --flag-ink:#4a5220;
+  --flag-soft:#e8f985;
+  --hero-bg:#283b2e;
+  --hero-fg:#eae8e4;
+  --hero-lbl:#acb77a;
+  --shadow:0 1px 2px rgba(38,37,36,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#eae8e4;
+    --ink-2:#b5b1ab;
+    --ink-3:#88837d;
+    --ground:#1b1a19;
+    --panel:#232221;
+    --panel-2:#2c2a28;
+    --rule:#3a3835;
+    --rule-soft:#2f2d2b;
+    --brass:#8aa3d8;
+    --brass-ink:#a0b6e2;
+    --brass-soft:#26314a;
+    --slate:#93b398;
+    --slate-ink:#a3c2a8;
+    --slate-soft:#232f26;
+    --flag:#acb77a;
+    --flag-ink:#d8e86f;
+    --flag-soft:#363a1a;
+    --hero-bg:#1f2b21;
+    --hero-fg:#d1e2be;
+    --hero-lbl:#acb77a;
+    --shadow:0 1px 2px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#eae8e4;
+  --ink-2:#b5b1ab;
+  --ink-3:#88837d;
+  --ground:#1b1a19;
+  --panel:#232221;
+  --panel-2:#2c2a28;
+  --rule:#3a3835;
+  --rule-soft:#2f2d2b;
+  --brass:#8aa3d8;
+  --brass-ink:#a0b6e2;
+  --brass-soft:#26314a;
+  --slate:#93b398;
+  --slate-ink:#a3c2a8;
+  --slate-soft:#232f26;
+  --flag:#acb77a;
+  --flag-ink:#d8e86f;
+  --flag-soft:#363a1a;
+  --hero-bg:#1f2b21;
+  --hero-fg:#d1e2be;
+  --hero-lbl:#acb77a;
+  --shadow:0 1px 2px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"Hanken Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:48px 28px 96px}
+
+/* ---------- masthead ---------- */
+.mast{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:32px;
+  align-items:end;
+  padding-bottom:22px;
+  border-bottom:2px solid var(--hero-bg);
+}
+.eyebrow{
+  font-family:"Hanken Grotesk",sans-serif;
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  margin:0 0 10px;
+}
+h1{
+  font-family:"Hanken Grotesk",sans-serif;
+  font-weight:800;
+  font-size:clamp(32px,4.6vw,48px);
+  line-height:1.04;
+  letter-spacing:-.035em;
+  margin:0;
+  text-wrap:balance;
+}
+h1 em{font-style:normal;color:var(--slate-ink)}
+.mast p{margin:12px 0 0;max-width:56ch;color:var(--ink-2)}
+.stamp{
+  font-family:"Hanken Grotesk",sans-serif;
+  font-size:11px;
+  line-height:1.7;
+  color:var(--ink-3);
+  text-align:right;
+  white-space:nowrap;
+}
+.stamp b{color:var(--ink);font-weight:600}
+
+/* ---------- shift banner ---------- */
+.shift{
+  margin-top:28px;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:0;
+  border:1px solid var(--rule);
+  border-left:4px solid var(--hero-lbl);
+  background:var(--panel);
+  box-shadow:var(--shadow);
+}
+.shift-key{
+  padding:22px 26px;
+  border-right:1px solid var(--rule-soft);
+  background:var(--hero-bg);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:2px;
+  min-width:190px;
+}
+.shift-key .lbl{
+  font-family:"Hanken Grotesk",sans-serif;
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--hero-lbl);font-weight:600;
+}
+.shift-key .big{
+  font-family:"Hanken Grotesk",sans-serif;font-weight:800;font-size:29px;line-height:1.08;
+  color:var(--hero-fg);letter-spacing:-.025em;
+}
+.shift-key .sub{font-size:13px;color:var(--hero-lbl)}
+.shift-body{padding:20px 26px}
+.shift-body h2{
+  font-family:"Hanken Grotesk",sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;margin:0 0 8px;color:var(--ink-3);
+}
+.shift-body p{margin:0 0 8px;max-width:70ch}
+.shift-body p:last-child{margin-bottom:0}
+
+/* ---------- rhythm strip ---------- */
+.section-head{
+  display:flex;align-items:baseline;gap:14px;
+  margin:52px 0 18px;padding-bottom:8px;border-bottom:2px solid var(--slate);
+}
+.section-head h2{
+  font-family:"Hanken Grotesk",sans-serif;font-weight:800;font-size:23px;
+  margin:0;letter-spacing:-.025em;
+}
+.section-head span{
+  font-family:"Hanken Grotesk",sans-serif;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-ink);font-weight:600;
+}
+.rhythm{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:1px;
+  background:var(--rule-soft);border:1px solid var(--rule);
+}
+.rhythm div{background:var(--panel);padding:16px 18px}
+.rhythm dt{
+  font-family:"Hanken Grotesk",sans-serif;font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--slate-ink);margin-bottom:5px;
+}
+.rhythm dd{margin:0;font-weight:600;font-size:15px;line-height:1.35}
+.rhythm .note{font-weight:400;font-size:13px;color:var(--ink-3);margin-top:3px;display:block}
+
+/* ---------- filters ---------- */
+.filters{
+  display:flex;flex-wrap:wrap;gap:7px;align-items:center;
+  margin:20px 0 4px;
+}
+.filters .flabel{
+  font-family:"Hanken Grotesk",sans-serif;
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+  margin-right:5px;
+}
+.chip{
+  font:inherit;font-size:13px;font-weight:500;
+  padding:5px 13px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);
+  transition:background .12s,color .12s,border-color .12s;
+}
+.chip:hover{border-color:var(--ink-3)}
+.chip[aria-pressed="true"]{background:var(--hero-bg);color:var(--hero-fg);border-color:var(--hero-bg)}
+.chip:focus-visible{outline:2px solid var(--slate);outline-offset:2px}
+
+/* ---------- month ---------- */
+.month{margin-top:34px;border-top:1px solid var(--rule);padding-top:0}
+.month.empty{display:none}
+.month-head{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--rule-soft);
+}
+
+/* single-year views collapse to one column */
+#months[data-years="2026"] .month-head,
+#months[data-years="2026"] .row,
+#months[data-years="2027"] .month-head,
+#months[data-years="2027"] .row{grid-template-columns:1fr}
+#months[data-years="2026"] .cell.b,
+#months[data-years="2026"] .head-b{display:none}
+#months[data-years="2027"] .cell.a,
+#months[data-years="2027"] .head-a{display:none}
+/* the event name and colour tag live in the 2026 cell; surface them on the 2027 side when it stands alone */
+.cell.b .t,.cell.b .tag{display:none}
+#months[data-years="2027"] .cell.b .t{display:block;color:var(--ink)}
+#months[data-years="2027"] .cell.b .tag{display:block}
+#months[data-years="2027"] .cell.b .why{margin-top:2px}
+.month-head > div{
+  background:var(--panel-2);padding:11px 16px;
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+}
+.month-name{
+  font-family:"Hanken Grotesk",sans-serif;font-weight:700;font-size:18px;letter-spacing:-.02em;
+}
+.yr{
+  font-family:"Hanken Grotesk",sans-serif;font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;
+}
+.yr.a{color:var(--slate-ink)}
+.yr.b{color:var(--brass-ink)}
+
+.rows{border:1px solid var(--rule);border-top:none;background:var(--panel)}
+.row{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--rule-soft);
+}
+.row:not(:last-child){border-bottom:1px solid var(--rule-soft)}
+.cell{background:var(--panel);padding:9px 16px;display:flex;gap:13px;align-items:baseline;min-width:0}
+.cell.b{background:var(--panel)}
+.row:hover .cell{background:var(--panel-2)}
+.row.flag .cell,.row.flag:hover .cell{background:var(--flag-soft)}
+.row.flag .d{color:var(--flag-ink);font-weight:600}
+.row.flag .n .t{font-weight:600}
+.row.flag .why{color:var(--flag-ink)}
+.d{
+  font-family:"Hanken Grotesk",sans-serif;
+  font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;
+  white-space:nowrap;flex:0 0 auto;min-width:90px;color:var(--ink-3);padding-top:1px;
+}
+.cell.b .d{color:var(--brass-ink)}
+.n{min-width:0;flex:1}
+.n .t{display:block;line-height:1.4}
+.why{
+  display:block;font-family:"Hanken Grotesk",sans-serif;
+  font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-top:2px;
+}
+.cell.b .n .t{color:var(--ink-2)}
+.row.flag mark.watch{background:var(--panel);border:1px solid var(--flag)}
+mark.watch{
+  background:var(--flag-soft);color:var(--flag-ink);
+  padding:1px 6px;border-radius:3px;font-size:12px;font-weight:600;
+  display:inline-block;margin-top:4px;line-height:1.4;
+}
+.tag{
+  flex:0 0 auto;align-self:center;width:3px;height:15px;border-radius:2px;background:var(--rule);
+}
+.tag[data-c="service"]{background:#5b77ba}
+.tag[data-c="groups"]{background:#3857a8}
+.tag[data-c="conf"]{background:#283b2e}
+.tag[data-c="missions"]{background:#4f6c53}
+.tag[data-c="prayer"]{background:#8d995e}
+
+
+/* ---------- gaps ---------- */
+.gaps{
+  border:1px solid var(--rule);border-left:4px solid var(--slate);
+  background:var(--panel);box-shadow:var(--shadow);padding:24px 28px;
+}
+.gaps ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:11px}
+.gaps li{max-width:78ch}
+.gaps li b{font-weight:600}
+.gaps li span{
+  font-family:"Hanken Grotesk",sans-serif;font-size:11.5px;
+  color:var(--ink-3);display:block;margin-top:2px;
+}
+
+footer{
+  margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);
+  font-family:"Hanken Grotesk",sans-serif;font-size:11px;
+  color:var(--ink-3);line-height:1.8;
+}
+
+@media (max-width:760px){
+  .wrap{padding:32px 18px 72px}
+  .mast{grid-template-columns:1fr;gap:16px;align-items:start}
+  .stamp{text-align:left}
+  .shift{grid-template-columns:1fr}
+  .shift-key{border-right:none;border-bottom:1px solid var(--rule-soft)}
+  .month-head,.row{grid-template-columns:1fr}
+  .row .cell.b{border-top:1px dashed var(--rule-soft)}
+  .month-head > div{padding:9px 14px}
+  .d{min-width:82px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div>
+      <p class="eyebrow">Celebration Church · Shreveport</p>
+      <h1>The 2026 year, and <em>what 2027 looks like</em></h1>
+      <p>The ministry calendar for Jan–Dec 2026 — conferences, One Nights, Sunday series, baptisms and the full Small Groups cycle — with each rhythm projected onto its 2027 date. Left column is 2026. Right column is the projection, with the rule it was mapped by.</p>
+    </div>
+    <div class="stamp">
+      <b>Source</b><br>cc@celebrationpeople.org<br>
+      <b>Pulled</b><br>Sep 8, 2026<br>
+      <b>Events</b><br>258 pulled · 121 events
+    </div>
+  </header>
+
+  <div class="shift">
+    <div class="shift-key">
+      <span class="lbl">The one thing to know</span>
+      <span class="big">Easter moves<br>8 days earlier</span>
+      <span class="sub">Apr 5, 2026 → Mar 28, 2027</span>
+    </div>
+    <div class="shift-body">
+      <h2>What that cascades into</h2>
+      <p><b>Holy Week is Mar 21–28, 2027.</b> The whole Easter push moves up a week — promo that went out in mid-March this year needs to start in early March.</p>
+      <p><b>The Easter-focused First Wednesday moves from April into March</b> — Mar 3, 2027 is the last First Wednesday before Easter. Easter planning that started mid-January this year should start in early January instead.</p>
+      <p><b>Two rhythms collide with Holy Week.</b> Discover Celebration Pt. 2 would fall on Palm Sunday and Baptisms on Easter Sunday. Both are flagged in March below.</p>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>The constants</h2>
+    <span>Unchanged 2026 → 2027</span>
+  </div>
+  <dl class="rhythm">
+    <div><dt>1st Wednesday</dt><dd>First Wednesday<span class="note">All-staff + congregation, at the church</span></dd></div>
+    <div><dt>1st Sunday</dt><dd>Discover Celebration Pt. 1<span class="note">12:30–2:00p</span></dd></div>
+    <div><dt>3rd Sunday</dt><dd>Discover Celebration Pt. 2<span class="note">12:30–2:00p</span></dd></div>
+    <div><dt>Last Sunday</dt><dd>Baptisms<span class="note">12:30p, after second service</span></dd></div>
+    <div><dt>3rd Saturday</dt><dd>Saturday Prayer<span class="note">9:00–10:00a</span></dd></div>
+  </dl>
+
+  <div class="section-head">
+    <h2>Month by month</h2>
+    <span>2026 actual · 2027 projected</span>
+  </div>
+
+  <div class="filters" id="years">
+    <span class="flabel">Years</span>
+    <button class="chip" data-y="both" aria-pressed="true">Both, side by side</button>
+    <button class="chip" data-y="2026" aria-pressed="false">2026 only</button>
+    <button class="chip" data-y="2027" aria-pressed="false">2027 only</button>
+  </div>
+
+  <div class="filters" id="filters">
+    <span class="flabel">Show</span>
+    <button class="chip" data-f="all" aria-pressed="true">Everything</button>
+    <button class="chip" data-f="service" aria-pressed="false">Weekend &amp; Wednesday</button>
+    <button class="chip" data-f="groups" aria-pressed="false">Small Groups</button>
+    <button class="chip" data-f="conf" aria-pressed="false">Conferences &amp; events</button>
+    <button class="chip" data-f="missions" aria-pressed="false">Missions &amp; camps</button>
+    <button class="chip" data-f="prayer" aria-pressed="false">Prayer</button>
+  </div>
+
+  <div id="months"></div>
+
+  <div class="section-head">
+    <h2>Gaps worth closing</h2>
+    <span>Found while mapping</span>
+  </div>
+  <div class="gaps">
+    <ol>
+      <li><b>Easter Sunday itself isn't an event on the calendar.</b> Neither year. Everything around it is scheduled, but the service dates aren't blocked.
+        <span>Add: Apr 5, 2026 (past) · Palm Sun Mar 21, Good Fri Mar 26, Easter Mar 28, 2027</span></li>
+      <li><b>No Christmas Eve or Christmas services on the calendar.</b> Christmas Day 2027 is a Saturday, so Christmas Eve is a Friday — a clean evening-service slot.
+        <span>Add: Dec 24, 2027 (Friday) · Dec 26, 2027 falls the Sunday after</span></li>
+      <li><b>Mother's Day and Father's Day are never blocked as service dates.</b> Radiant's early-bird launch is pinned to Mother's Day, so the date matters operationally even beyond the service.
+        <span>2027: Mother's Day May 9 · Father's Day Jun 20</span></li>
+      <li><b>July 4, 2027 falls on a Sunday</b> — and it's the 1st Sunday, so Discover Celebration Pt. 1 lands on it. Worth moving to Jul 11.
+        <span>2026 had no equivalent conflict; Jul 4 was a Saturday</span></li>
+      <li><b>Radiant is the only women's event on the calendar</b> — early-bird launch on Mother's Day, conference in late September. There's planning time booked in February under a different name, which suggests a second women's moment that never got a date.
+        <span>2027: early bird May 9 · conference Sep 24–25</span></li>
+    </ol>
+  </div>
+
+  <footer>
+    Projection rules — fixed-weekday events keep their ordinal (1st Sunday stays 1st Sunday). Seasonal blocks keep their week-of-month.
+    Easter-anchored items recomputed from Easter Mar 28, 2027. Mardi Gras recomputed from Fat Tuesday Feb 9, 2027.
+    Rows tinted cobalt need a decision. Guest weekends carry no 2027 date — those get booked, not projected. Internal items on the shared calendar — staff meetings, planning and ideation sessions, blockouts, PTO, birthdays and facilities tickets — are excluded; this is the programming calendar only.
+  </footer>
+
+</div>
+
+<script>
+/* c: service | groups | conf | missions | prayer
+   a: 2026 date label, b: 2027 date label, r: projection rule, w: watch-out */
+const DATA = [
+["January",[
+ ["Jan 1–3","—","CYA Passion Trip","missions","Not carried into 2027",""],
+ ["Jan 4","Jan 3","Discover Celebration Pt. 1","service","1st Sunday",""],
+ ["Jan 4, 11, 18","Jan 3, 10, 17","Small Group Leader Training","groups","First three Sundays",""],
+ ["—","Jan 6","First Wednesday","service","1st Wednesday","Jan 2026 had no First Wednesday on the calendar"],
+ ["Jan 10–30","Jan 9–29","21 Days of Prayer","prayer","Starts 2nd Saturday",""],
+ ["Jan 18","Jan 17","Discover Celebration Pt. 2","service","3rd Sunday",""],
+ ["Jan 23","Jan 22","Care Pregnancy: Comedy Night","conf","4th Friday",""],
+ ["Jan 25","Jan 24","Small Group XPO","groups","Sunday before launch",""],
+ ["Jan 25","Jan 31","Baptisms","service","Last Sunday",""]
+]],
+["February",[
+ ["Feb 1","Feb 7","Spring Small Groups Launch","groups","1st Sunday","Six days later than 2026 — pushes the whole spring semester"],
+ ["Feb 1","Feb 7","Discover Celebration Pt. 1","service","1st Sunday",""],
+ ["Feb 4","Feb 3","First Wednesday","service","1st Wednesday",""],
+ ["Feb 7, 14","Jan 30, Feb 6","Mardi Gras weekends","conf","Two weekends before Fat Tuesday","Fat Tuesday is Feb 9, 2027 — parades shift into January"],
+ ["Feb 13","Feb 12","Marriage One Night","conf","2nd Friday",""],
+ ["Feb 13–15","—","Guest: Mark Jobe","service","Not booked for 2027",""],
+ ["Feb 15–21","Feb 14–20","Ecuador Missions Trip","missions","3rd full week",""],
+ ["Feb 15","Feb 21","Discover Celebration Pt. 2","service","3rd Sunday",""],
+ ["Feb 21","Feb 20","Saturday Prayer","prayer","3rd Saturday",""],
+ ["Feb 22","—","Guest: Andre Van Zyl","service","Not booked for 2027",""],
+ ["Feb 22","Feb 28","Baptisms","service","Last Sunday",""],
+ ["Feb 28","Feb 27","Family Dedication","service","Last Saturday",""]
+]],
+["March",[
+ ["Mar 1","Mar 7","Discover Celebration Pt. 1","service","1st Sunday",""],
+ ["Mar 4","Mar 3","First Wednesday","service","1st Wednesday","In 2027 this is the Easter-focused one — last First Wed before Mar 28"],
+ ["Mar 8–15","Mar 7–14","England Freedom Mission","missions","2nd week",""],
+ ["Mar 8–12","Mar 7–11","CY Texas Missions Trip","missions","Spring break week","Confirm Caddo/Bossier spring break dates for 2027"],
+ ["Mar 15","Mar 21","Discover Celebration Pt. 2","service","3rd Sunday","2027: lands on Palm Sunday — move to Mar 14"],
+ ["Mar 21","Mar 20","Saturday Prayer","prayer","3rd Saturday",""],
+ ["Mar 22","Mar 28","Baptisms","service","Last Sunday","2027: lands on Easter Sunday — move to Mar 21, or make it an Easter baptism moment"],
+ ["Mar 29","Mar 21","Palm Sunday","service","Easter minus 7","Not on the calendar either year"]
+]],
+["April",[
+ ["Apr 1","Mar 3","First Wednesday — Easter focused","service","Last First Wed before Easter","Moves out of April entirely"],
+ ["Apr 3","Mar 26","Good Friday","service","Easter minus 2","Not on the calendar either year"],
+ ["Apr 5","Mar 28","Easter Sunday","service","Computed","Not on the calendar either year — and it moves into March for 2027","flag"],
+ ["—","Apr 7","First Wednesday","service","1st Wednesday","2027 gets a normal, non-Easter First Wednesday in April"],
+ ["Apr 12","Apr 4","Discover Celebration Pt. 1","service","1st Sunday after Easter break",""],
+ ["Apr 18–25","Apr 17–24","Belize Construction / Prayer Trip","missions","3rd–4th week",""],
+ ["Apr 18","Apr 17","Saturday Prayer","prayer","3rd Saturday",""],
+ ["Apr 19","Apr 18","Discover Celebration Pt. 2","service","3rd Sunday",""],
+ ["Apr 24","Apr 23","Dream Team Night","conf","4th Friday",""],
+ ["Apr 26","Apr 25","Baptisms","service","Last Sunday",""]
+]],
+["May",[
+ ["May 1–2","Apr 30–May 1","Freedom Conference (spring)","conf","First weekend of May",""],
+ ["May 2","May 1","Spring Small Group Semester Ends","groups","First Saturday",""],
+ ["May 3","May 2","Discover Celebration Pt. 1","service","1st Sunday",""],
+ ["May 6","May 5","First Wednesday","service","1st Wednesday",""],
+ ["May 10, 17","May 9, 16","Small Group Leader Training","groups","2nd &amp; 3rd Sundays",""],
+ ["May 10","May 9","Mother's Day","service","2nd Sunday of May","Not on the calendar either year"],
+ ["May 10","May 9","Radiant Early Bird Launch","conf","Launches on Mother's Day",""],
+ ["May 16","May 15","Saturday Prayer","prayer","3rd Saturday",""],
+ ["May 17","May 16","Discover Celebration Pt. 2","service","3rd Sunday",""],
+ ["May 24","May 23","Small Group XPO","groups","Sunday before launch",""],
+ ["May 24","May 30","Baptisms","service","Last Sunday",""],
+ ["May 31","May 30","Summer Small Groups Launch","groups","Last Sunday of May",""]
+]],
+["June",[
+ ["Jun 3","Jun 2","First Wednesday — Summer Social","service","1st Wednesday",""],
+ ["Jun 7","Jun 6","Discover Celebration Pt. 1","service","1st Sunday",""],
+ ["Jun 15–17","Jun 14–16","Summer Blast","conf","3rd week, Mon–Wed",""],
+ ["Jun 19–23","Jun 18–22","CY Summer Camp","missions","Week after Summer Blast",""],
+ ["Jun 20","Jun 19","Saturday Prayer","prayer","3rd Saturday",""],
+ ["Jun 21","Jun 20","Discover Celebration Pt. 2","service","3rd Sunday",""],
+ ["Jun 21","Jun 20","Father's Day","service","3rd Sunday of June","Not on the calendar either year"],
+ ["Jun 28","Jun 27","Parenting One Night","conf","Last Sunday",""],
+ ["Jun 28","Jun 27","Baptisms","service","Last Sunday",""]
+]],
+["July",[
+ ["Jul 1","Jul 7","First Wednesday — Summer Social","service","1st Wednesday",""],
+ ["Jul 4","Jul 4","Independence Day","service","Fixed date","Saturday in 2026 — but a SUNDAY in 2027. Plan the weekend around it.","flag"],
+ ["Jul 11","Jul 10","Serve Day","conf","2nd Saturday",""],
+ ["Jul 11","Jul 10","Summer Small Groups End","groups","2nd Saturday",""],
+ ["Jul 12","Jul 4","Discover Celebration Pt. 1","service","1st Sunday","2027: falls on July 4th — move to Jul 11","flag"],
+ ["Jul 13–17","Jul 12–16","CK Summer Camp","missions","Week after Serve Day",""],
+ ["Jul 18–25","Jul 17–24","Honduras Medical Mission","missions","3rd–4th week",""],
+ ["Jul 18","Jul 17","Saturday Prayer","prayer","3rd Saturday",""],
+ ["Jul 19–25","Jul 18–24","CY Boston Trip","missions","Overlaps Honduras","Two trips out simultaneously — same in 2027"],
+ ["Jul 19","Jul 18","Discover Celebration Pt. 2","service","3rd Sunday",""],
+ ["Jul 26","Jul 25","Baptisms","service","Last Sunday",""]
+]],
+["August",[
+ ["Aug 2","Aug 1","Discover Celebration Pt. 1","service","1st Sunday",""],
+ ["Aug 2, 9, 16, 23","Aug 1, 8, 15, 22","Small Group Leader Training","groups","Four consecutive Sundays",""],
+ ["Aug 5","Aug 4","First Wednesday","service","1st Wednesday",""],
+ ["Aug 8–14","Aug 7–13","7 Days of Prayer","prayer","2nd full week",""],
+ ["Aug 16","Aug 15","Discover Celebration Pt. 2","service","3rd Sunday",""],
+ ["Aug 21","Aug 21","Saturday Prayer","prayer","3rd Saturday",""],
+ ["Aug 23","Aug 22","Small Group Expo","groups","Sunday before launch",""],
+ ["Aug 23","Aug 29","Baptisms","service","Last Sunday",""],
+ ["Aug 26","Aug 25","CY Fall Launch","groups","Wednesday before launch",""],
+ ["Aug 29","Aug 28","Men's Conference","conf","Last Saturday",""],
+ ["Aug 30","Aug 29","Back to Church Sunday","service","Last Sunday of August",""],
+ ["Aug 30","Aug 29","Fall Small Groups Launch","groups","Back to Church Sunday",""],
+ ["Aug 31–Sep 9","Aug 30–Sep 8","Indonesia Mission Trip","missions","Straddles the month",""]
+]],
+["September",[
+ ["Sep 2","Sep 1","First Wednesday","service","1st Wednesday",""],
+ ["Sep 13","Sep 5","Discover Celebration Pt. 1","service","1st Sunday","2026 ran a week late (Labor Day); 2027 returns to the 1st Sunday"],
+ ["Sep 19","Sep 18","Saturday Prayer","prayer","3rd Saturday",""],
+ ["Sep 20","Sep 19","Discover Celebration Pt. 2","service","3rd Sunday",""],
+ ["Sep 25–26","Sep 24–25","Radiant Conference","conf","4th weekend",""],
+ ["Sep 27","Sep 26","Baptisms","service","Last Sunday",""]
+]],
+["October",[
+ ["Oct 4","Oct 3","Discover Celebration Pt. 1","service","1st Sunday",""],
+ ["Oct 7","Oct 6","First Wednesday","service","1st Wednesday",""],
+ ["Oct 17","Oct 16","Saturday Prayer","prayer","3rd Saturday",""],
+ ["Oct 18","Oct 17","Discover Celebration Pt. 2","service","3rd Sunday",""],
+ ["Oct 21–31","Oct 20–30","CYA Italy Mission Trip","missions","Last ten days",""],
+ ["Oct 24","Oct 23","Family Dedication","service","4th Saturday",""],
+ ["Oct 25","Oct 24","Legacy Sunday 1 of 4","service","Starts 4th Sunday",""],
+ ["Oct 25","Oct 31","Baptisms","service","Last Sunday",""],
+ ["Oct 26","Oct 25","Legacy Dinner #2","conf","Monday of Legacy week",""],
+ ["Oct 30","Oct 29","Legacy Dinner #1","conf","Friday of Legacy week",""]
+]],
+["November",[
+ ["Nov 1","Oct 31","Legacy Sunday 2 of 4","service","Rolls with Legacy 1",""],
+ ["Nov 1","Nov 7","Discover Celebration Pt. 1","service","1st Sunday",""],
+ ["Nov 4","Nov 3","First Wednesday","service","1st Wednesday",""],
+ ["Nov 8","Nov 7","Legacy Sunday 3 of 4","service","Rolls with Legacy 1",""],
+ ["Nov 15","Nov 14","Legacy Sunday 4 of 4","service","Rolls with Legacy 1",""],
+ ["Nov 15","Nov 21","Discover Celebration Pt. 2","service","3rd Sunday",""],
+ ["Nov 21","Nov 20","Saturday Prayer","prayer","3rd Saturday",""],
+ ["Nov 22","—","Guest: John Easter","service","Not booked for 2027",""],
+ ["Nov 22","Nov 21","CK Teamsgiving","conf","Sunday before Thanksgiving",""],
+ ["Nov 22","Nov 28","Baptisms","service","Last Sunday",""],
+ ["Nov 26","Nov 25","Thanksgiving","service","4th Thursday",""],
+ ["Nov 29","Nov 28","At the Movies — week 1","service","Sunday after Thanksgiving",""],
+ ["Nov 30–Dec 7","Nov 29–Dec 6","Japan Mission Trip","missions","Straddles the month",""]
+]],
+["December",[
+ ["Dec 2","Dec 1","First Wednesday","service","1st Wednesday",""],
+ ["Dec 4–5","Dec 3–4","Freedom Conference (winter)","conf","1st weekend",""],
+ ["Dec 6","Dec 5","At the Movies — week 2","service","1st Sunday",""],
+ ["Dec 6","Dec 5","Discover Celebration Pt. 1","service","1st Sunday",""],
+ ["Dec 19","Dec 18","Saturday Prayer","prayer","3rd Saturday",""],
+ ["Dec 20","Dec 19","Discover Celebration Pt. 2","service","3rd Sunday",""],
+ ["—","Dec 24","Christmas Eve service","service","Friday in 2027","Not on the calendar — worth blocking now"],
+ ["Dec 27","Dec 26","Baptisms","service","Last Sunday","2027: the Sunday right after Christmas"]
+]]
+];
+
+const months = document.getElementById("months");
+
+const ABBR = n => n.slice(0,3);
+
+months.innerHTML = DATA.map(([name, rows]) => `
+  <section class="month" data-month="${name}">
+    <div class="month-head">
+      <div class="head-a"><span class="month-name">${name}</span><span class="yr a">2026 &middot; actual</span></div>
+      <div class="head-b"><span class="month-name">${name}</span><span class="yr b">2027 &middot; projected</span></div>
+    </div>
+    <div class="rows">
+      ${rows.map(([a,b,n,c,r,w,f]) => `
+        <div class="row${f ? " flag" : ""}" data-c="${c}" data-a="${a === "\u2014" ? "none" : "yes"}" data-b="${b === "\u2014" ? "none" : "yes"}" data-bmo="${b.startsWith(ABBR(name)) || b === "\u2014" ? "same" : "other"}">
+          <div class="cell a">
+            <span class="tag" data-c="${c}"></span>
+            <span class="d">${a}</span>
+            <span class="n"><span class="t">${n}</span></span>
+          </div>
+          <div class="cell b">
+            <span class="tag" data-c="${c}"></span>
+            <span class="d">${b}</span>
+            <span class="n">
+              <span class="t">${n}</span>
+              <span class="why">${r}</span>
+              ${w ? `<mark class="watch">${w}</mark>` : ``}
+            </span>
+          </div>
+        </div>`).join("")}
+    </div>
+  </section>`).join("");
+
+let cat = "all";
+let yrs = "both";
+
+function apply(){
+  months.dataset.years = yrs;
+  document.querySelectorAll(".row").forEach(row => {
+    const catOk  = cat === "all" || row.dataset.c === cat;
+    const yearOk = yrs === "both"
+      || (yrs === "2026" && row.dataset.a === "yes")
+      || (yrs === "2027" && row.dataset.b === "yes" && row.dataset.bmo === "same");
+    row.hidden = !(catOk && yearOk);
+  });
+  document.querySelectorAll(".month").forEach(m => {
+    m.classList.toggle("empty", ![...m.querySelectorAll(".row")].some(r => !r.hidden));
+  });
+}
+
+function wire(id, onPick){
+  const group = [...document.querySelectorAll(`#${id} .chip`)];
+  group.forEach(chip => chip.addEventListener("click", () => {
+    group.forEach(c => c.setAttribute("aria-pressed", String(c === chip)));
+    onPick(chip);
+    apply();
+  }));
+}
+
+wire("filters", chip => { cat = chip.dataset.f; });
+wire("years",   chip => { yrs = chip.dataset.y; });
+
+months.dataset.years = "both";
+</script>
+</body>
+</html>
