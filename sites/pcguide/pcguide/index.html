@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pastoral Care Guide · Celebration Church</title>
+<meta name="description" content="How Dream Team and Small Group Leaders at Celebration Church care for the people they lead.">
+<meta property="og:title" content="Pastoral Care Guide · Celebration Church">
+<meta property="og:description" content="For Dream Team and Small Group Leaders — practical ways to care for the people you lead.">
+<meta name="theme-color" content="#eae8e4">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%233f5a9c'/><path d='M32 48s-14-9-17.5-18C12 24 15.5 17 22 17c4.2 0 7 2.2 10 6 3-3.8 5.8-6 10-6 6.5 0 10 7 7.5 13C46 39 32 48 32 48z' fill='%23eae8e4'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cobalt:#5b77ba;
+    --cobalt-ink:#3f5a9c;      /* AA on parchment + white */
+    --parchment:#eae8e4;
+    --paper:#f6f5f2;
+    --ink:#262524;
+    --ink-2:#5f5c58;
+    --green:#4f6c53;
+    --evergreen:#283b2e;
+    --olive:#8d995e;
+    --gray:#c9c4bd;
+    --rule:rgba(38,37,36,.14);
+    --display:'Hanken Grotesk', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+    --sans:'Hanken Grotesk', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:76px}
+  body{background:var(--parchment);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+  a{color:var(--cobalt-ink);text-decoration-thickness:1.5px;text-underline-offset:3px}
+  a:hover{color:var(--ink)}
+  :focus-visible{outline:2px solid var(--cobalt-ink);outline-offset:3px;border-radius:4px}
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px}
+
+  /* header */
+  header{padding:22px 0 0}
+  .wordmark{display:inline-block}
+  .wordmark svg{width:168px;height:auto;display:block}
+  .hero{padding-top:44px;padding-bottom:34px}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(40px,10vw,64px);line-height:1.02;letter-spacing:-.035em;margin:10px 0 18px}
+  .lede{font-size:clamp(18px,4.6vw,21px);line-height:1.55;max-width:34em}
+  .for{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .tag{font-size:13px;font-weight:600;border:1px solid var(--rule);background:var(--paper);border-radius:999px;padding:6px 14px}
+
+  /* jump nav */
+  nav.jump{position:sticky;top:0;z-index:5;background:rgba(234,232,228,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  nav.jump ul{list-style:none;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:10px 0}
+  nav.jump ul::-webkit-scrollbar{display:none}
+  nav.jump a{display:block;white-space:nowrap;text-decoration:none;color:var(--ink);font-size:14px;font-weight:600;padding:10px 14px;border-radius:999px;min-height:44px}
+  nav.jump a:hover{background:var(--paper)}
+
+  section{padding:52px 0 8px}
+  h2{font-family:var(--display);font-weight:700;font-size:clamp(28px,7vw,38px);line-height:1.12;letter-spacing:-.025em;margin-bottom:10px}
+  .intro{color:var(--ink-2);margin-bottom:26px;max-width:36em}
+
+  /* care cards */
+  .cards{display:grid;gap:14px}
+  .card{background:var(--paper);border:1px solid var(--rule);border-radius:18px;padding:22px 22px 20px}
+  .card h3{font-family:var(--sans);font-size:19px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+  .card h3 .ico{flex:0 0 auto;width:34px;height:34px;border-radius:10px;background:var(--cobalt-ink);display:grid;place-items:center}
+  .card h3 .ico svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .card p{color:var(--ink)}
+  .links{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:12px;font-size:15px;font-weight:600}
+  .links a::after{content:" \2192"}
+  .tip{margin-top:12px;font-size:14.5px;color:var(--ink-2);border-left:3px solid var(--olive);padding-left:12px}
+
+  /* list rows */
+  .rows{border-top:1px solid var(--rule)}
+  .row{display:grid;grid-template-columns:1fr;gap:4px;padding:20px 0;border-bottom:1px solid var(--rule)}
+  .row h3{font-size:18px;font-weight:700}
+  .row .links{margin-top:6px}
+  @media(min-width:640px){
+    .cards{grid-template-columns:1fr 1fr}
+    .card.wide{grid-column:1/-1}
+    .row{grid-template-columns:200px 1fr;gap:24px}
+  }
+
+  /* callout */
+  .callout{margin-top:44px;background:var(--evergreen);color:var(--parchment);border-radius:22px;padding:28px 26px}
+  .callout .eyebrow{color:#c7d2a0}
+  .callout h2{color:#fff;font-size:clamp(24px,6vw,30px);margin:8px 0 10px}
+  .callout p{color:rgba(234,232,228,.92)}
+  .callout a{color:#fff}
+
+  /* close */
+  .closing{padding:52px 0 10px}
+  .closing blockquote{font-family:var(--display);font-style:normal;font-weight:600;letter-spacing:-.015em;font-size:clamp(22px,5.6vw,28px);line-height:1.4;max-width:30em}
+
+  .contact{display:grid;gap:14px;margin-top:30px}
+  @media(min-width:640px){.contact{grid-template-columns:1fr 1fr}}
+  .contact .card h3{font-size:17px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:14px;padding:12px 20px;border-radius:999px;background:var(--cobalt-ink);color:#fff;font-weight:700;font-size:15px;text-decoration:none}
+  .btn:hover{background:var(--ink);color:#fff}
+  .signoff{margin-top:28px;font-weight:600}
+
+  footer{margin-top:64px;padding:28px 0 calc(36px + env(safe-area-inset-bottom));border-top:1px solid var(--rule);font-size:14px;color:var(--ink-2)}
+  footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+
+  @media print{
+    body{background:#fff;font-size:12pt}
+    nav.jump,.btn,.print{display:none}
+    .card,.callout{break-inside:avoid;border:1px solid #ccc;background:#fff;color:#000}
+    .callout h2,.callout p,.callout a,.callout .eyebrow{color:#000}
+    .links a::after{content:" (" attr(href) ")";font-weight:400;font-size:9pt;color:#555}
+    section{padding-top:24px}
+  }
+  .print{background:none;border:0;font:inherit;color:var(--cobalt-ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:14px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="wordmark" href="https://www.celebrationpeople.org" aria-label="Celebration Church home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="2.8 -80.1 936.3 81.0" width="936" height="81" role="img" aria-label="Celebration Church">
+  <path d="M30.8 -56.6Q41.3 -56.6 48.3 -51.1Q55.4 -45.6 57.6 -35.6H39.4Q37.1 -42.0 30.5 -42.0Q25.8 -42.0 23.0 -38.3Q20.2 -34.7 20.2 -27.9Q20.2 -21.1 23.0 -17.4Q25.8 -13.8 30.5 -13.8Q37.1 -13.8 39.4 -20.2H57.6Q55.4 -10.4 48.3 -4.8Q41.2 0.8 30.8 0.8Q22.6 0.8 16.2 -2.7Q9.9 -6.2 6.3 -12.7Q2.8 -19.2 2.8 -27.9Q2.8 -36.6 6.3 -43.1Q9.9 -49.6 16.2 -53.1Q22.6 -56.6 30.8 -56.6Z M119.0 -23.8H80.3Q80.7 -18.6 83.6 -15.8Q86.6 -13.1 90.9 -13.1Q97.3 -13.1 99.8 -18.5H118.0Q116.6 -13.0 112.9 -8.6Q109.3 -4.2 103.8 -1.7Q98.3 0.8 91.5 0.8Q83.3 0.8 76.9 -2.7Q70.5 -6.2 66.9 -12.7Q63.3 -19.2 63.3 -27.9Q63.3 -36.6 66.8 -43.1Q70.4 -49.6 76.8 -53.1Q83.2 -56.6 91.5 -56.6Q99.6 -56.6 105.9 -53.2Q112.2 -49.8 115.7 -43.5Q119.3 -37.2 119.3 -28.8Q119.3 -26.4 119.0 -23.8ZM101.8 -33.3Q101.8 -37.7 98.8 -40.3Q95.8 -42.9 91.3 -42.9Q87.0 -42.9 84.0 -40.4Q81.1 -37.9 80.4 -33.3Z M145.4 -74.0V0.0H128.2V-74.0Z M210.1 -23.8H171.4Q171.8 -18.6 174.7 -15.8Q177.7 -13.1 182.0 -13.1Q188.4 -13.1 190.9 -18.5H209.1Q207.7 -13.0 204.0 -8.6Q200.4 -4.2 194.9 -1.7Q189.4 0.8 182.6 0.8Q174.4 0.8 168.0 -2.7Q161.6 -6.2 158.0 -12.7Q154.4 -19.2 154.4 -27.9Q154.4 -36.6 157.9 -43.1Q161.5 -49.6 167.9 -53.1Q174.3 -56.6 182.6 -56.6Q190.7 -56.6 197.0 -53.2Q203.3 -49.8 206.8 -43.5Q210.4 -37.2 210.4 -28.8Q210.4 -26.4 210.1 -23.8ZM192.9 -33.3Q192.9 -37.7 189.9 -40.3Q186.9 -42.9 182.4 -42.9Q178.1 -42.9 175.1 -40.4Q172.2 -37.9 171.5 -33.3Z M253.7 -56.6Q260.6 -56.6 266.2 -53.1Q271.8 -49.6 275.0 -43.1Q278.3 -36.6 278.3 -28.0Q278.3 -19.4 275.0 -12.8Q271.8 -6.3 266.2 -2.7Q260.6 0.8 253.7 0.8Q247.7 0.8 243.3 -1.5Q239.0 -3.9 236.5 -7.8V0.0H219.3V-74.0H236.5V-47.9Q238.8 -51.8 243.3 -54.2Q247.8 -56.6 253.7 -56.6ZM248.6 -41.7Q243.5 -41.7 239.9 -38.0Q236.3 -34.3 236.3 -27.9Q236.3 -21.5 239.9 -17.8Q243.5 -14.1 248.6 -14.1Q253.7 -14.1 257.2 -17.8Q260.9 -21.6 260.9 -28.0Q260.9 -34.4 257.3 -38.0Q253.7 -41.7 248.6 -41.7Z M321.9 -56.4V-38.3H317.2Q310.8 -38.3 307.6 -35.5Q304.4 -32.8 304.4 -25.9V0.0H287.3V-55.8H304.4V-46.5Q307.4 -51.1 311.9 -53.7Q316.4 -56.4 321.9 -56.4Z M351.3 -56.6Q357.2 -56.6 361.6 -54.2Q366.1 -51.8 368.5 -47.9V-55.8H385.6V0.0H368.5V-7.9Q366.0 -4.0 361.5 -1.6Q357.1 0.8 351.2 0.8Q344.4 0.8 338.8 -2.7Q333.2 -6.3 329.9 -12.8Q326.7 -19.4 326.7 -28.0Q326.7 -36.6 329.9 -43.1Q333.2 -49.6 338.8 -53.1Q344.4 -56.6 351.3 -56.6ZM356.3 -41.7Q351.2 -41.7 347.6 -38.0Q344.1 -34.4 344.1 -28.0Q344.1 -21.6 347.6 -17.8Q351.2 -14.1 356.3 -14.1Q361.4 -14.1 364.9 -17.8Q368.5 -21.5 368.5 -27.9Q368.5 -34.3 364.9 -38.0Q361.4 -41.7 356.3 -41.7Z M429.1 -14.5V0.0H420.4Q411.1 0.0 405.9 -4.5Q400.7 -9.1 400.7 -19.4V-41.6H393.9V-55.8H400.7V-69.4H417.8V-55.8H429.0V-41.6H417.8V-19.2Q417.8 -16.7 419.0 -15.6Q420.2 -14.5 423.0 -14.5Z M437.0 -70.8Q437.0 -74.8 439.8 -77.4Q442.7 -80.1 447.2 -80.1Q451.6 -80.1 454.4 -77.4Q457.3 -74.8 457.3 -70.8Q457.3 -66.9 454.4 -64.2Q451.6 -61.6 447.2 -61.6Q442.7 -61.6 439.8 -64.2Q437.0 -66.9 437.0 -70.8ZM455.7 -55.8V0.0H438.6V-55.8Z M464.7 -27.9Q464.7 -36.5 468.5 -43.0Q472.3 -49.6 478.9 -53.1Q485.5 -56.6 493.7 -56.6Q501.9 -56.6 508.5 -53.1Q515.1 -49.6 518.9 -43.0Q522.7 -36.5 522.7 -27.9Q522.7 -19.3 518.8 -12.7Q515.0 -6.2 508.3 -2.7Q501.7 0.8 493.5 0.8Q485.3 0.8 478.7 -2.7Q472.2 -6.2 468.4 -12.7Q464.7 -19.2 464.7 -27.9ZM505.3 -27.9Q505.3 -34.6 501.9 -38.2Q498.6 -41.8 493.7 -41.8Q488.7 -41.8 485.4 -38.2Q482.1 -34.7 482.1 -27.9Q482.1 -21.2 485.3 -17.6Q488.6 -14.0 493.5 -14.0Q498.4 -14.0 501.8 -17.6Q505.3 -21.2 505.3 -27.9Z M587.3 -32.6V0.0H570.3V-30.3Q570.3 -35.9 567.4 -39.0Q564.5 -42.1 559.6 -42.1Q554.7 -42.1 551.8 -39.0Q548.9 -35.9 548.9 -30.3V0.0H531.8V-55.8H548.9V-48.4Q551.5 -52.1 555.9 -54.2Q560.3 -56.4 565.8 -56.4Q575.6 -56.4 581.4 -50.0Q587.3 -43.7 587.3 -32.6Z M623.7 -56.0Q633.7 -56.0 640.2 -51.2Q646.8 -46.5 649.1 -37.7H636.8Q635.3 -41.8 632.0 -44.1Q628.7 -46.4 623.7 -46.4Q616.7 -46.4 612.5 -41.4Q608.4 -36.5 608.4 -27.6Q608.4 -18.7 612.5 -13.7Q616.7 -8.7 623.7 -8.7Q633.6 -8.7 636.8 -17.4H649.1Q646.7 -9.0 640.1 -4.0Q633.5 0.9 623.7 0.9Q615.8 0.9 609.7 -2.6Q603.6 -6.2 600.1 -12.6Q596.7 -19.1 596.7 -27.6Q596.7 -36.1 600.1 -42.5Q603.6 -49.0 609.7 -52.5Q615.8 -56.0 623.7 -56.0Z M710.9 -32.5V0.0H699.6V-30.8Q699.6 -38.2 695.9 -42.1Q692.2 -46.1 685.8 -46.1Q679.4 -46.1 675.6 -42.1Q671.9 -38.2 671.9 -30.8V0.0H660.5V-74.0H671.9V-48.7Q674.8 -52.2 679.2 -54.1Q683.7 -56.0 689.0 -56.0Q695.3 -56.0 700.2 -53.3Q705.2 -50.6 708.0 -45.3Q710.9 -40.0 710.9 -32.5Z M775.3 -55.1V0.0H763.9V-6.5Q761.2 -3.1 756.8 -1.1Q752.5 0.8 747.6 0.8Q741.1 0.8 735.9 -1.9Q730.8 -4.6 727.8 -9.9Q724.9 -15.2 724.9 -22.7V-55.1H736.2V-24.4Q736.2 -17.0 739.9 -13.0Q743.6 -9.1 750.0 -9.1Q756.4 -9.1 760.1 -13.0Q763.9 -17.0 763.9 -24.4V-55.1Z M818.2 -56.0V-44.2H815.3Q808.6 -44.2 805.1 -40.8Q801.7 -37.4 801.7 -29.0V0.0H790.3V-55.1H801.7V-47.1Q804.2 -51.3 808.3 -53.6Q812.5 -56.0 818.2 -56.0Z M851.9 -56.0Q861.9 -56.0 868.4 -51.2Q875.0 -46.5 877.3 -37.7H865.0Q863.5 -41.8 860.2 -44.1Q856.9 -46.4 851.9 -46.4Q844.9 -46.4 840.7 -41.4Q836.6 -36.5 836.6 -27.6Q836.6 -18.7 840.7 -13.7Q844.9 -8.7 851.9 -8.7Q861.8 -8.7 865.0 -17.4H877.3Q874.9 -9.0 868.3 -4.0Q861.7 0.9 851.9 0.9Q844.0 0.9 837.9 -2.6Q831.8 -6.2 828.3 -12.6Q824.9 -19.1 824.9 -27.6Q824.9 -36.1 828.3 -42.5Q831.8 -49.0 837.9 -52.5Q844.0 -56.0 851.9 -56.0Z M939.1 -32.5V0.0H927.8V-30.8Q927.8 -38.2 924.1 -42.1Q920.4 -46.1 914.0 -46.1Q907.6 -46.1 903.8 -42.1Q900.1 -38.2 900.1 -30.8V0.0H888.7V-74.0H900.1V-48.7Q903.0 -52.2 907.4 -54.1Q911.9 -56.0 917.2 -56.0Q923.5 -56.0 928.4 -53.3Q933.4 -50.6 936.2 -45.3Q939.1 -40.0 939.1 -32.5Z" fill="#262524" fill-rule="nonzero"/>
+</svg></a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <p class="eyebrow">Leader Resource</p>
+    <h1>Pastoral Care Guide</h1>
+    <p class="lede">Caring for the people you lead is both a responsibility and a privilege. Whether you lead a Small Group or a Dream Team, you get to support, encourage, and walk alongside people through life’s joys and its hardest seasons.</p>
+    <div class="for" aria-label="Who this guide is for">
+      <span class="tag">Dream Team Leaders</span>
+      <span class="tag">Small Group Leaders</span>
+    </div>
+  </div>
+
+  <nav class="jump" aria-label="Jump to a section">
+    <div class="wrap">
+      <ul>
+        <li><a href="#ways">Ways to Care</a></li>
+        <li><a href="#needs">Common Needs</a></li>
+        <li><a href="#celebrate">Reasons to Celebrate</a></li>
+        <li><a href="#pastor">Loop In a Pastor</a></li>
+        <li><a href="#questions">Questions</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="wrap">
+
+    <section id="ways">
+      <h2>Ways to Care for Your People</h2>
+      <p class="intro">You don’t have to do all of these. Pick what fits the moment and the person — and invite your group or team to help carry it.</p>
+
+      <div class="cards">
+        <article class="card">
+          <h3><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 11h16M5 11a7 7 0 0 0 14 0M12 4v3M8.5 5.5l1 2M15.5 5.5l-1 2"/></svg></span>Meal Trains</h3>
+          <p>A Meal Train is a shared schedule where people sign up to bring meals over a set stretch of days. Set one up online in a few minutes, or pass around a simple sign-up sheet.</p>
+          <div class="links">
+            <a href="https://www.mealtrain.com/" target="_blank" rel="noopener">Start a Meal Train</a>
+            <a href="https://www.takethemameal.com/" target="_blank" rel="noopener">TakeThemAMeal</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M3 9h18M12 9v11M12 9c-1.5-3-5-4-5-1.5S12 9 12 9zm0 0c1.5-3 5-4 5-1.5S12 9 12 9z"/></svg></span>Flowers or Gifts</h3>
+          <p>Small gestures — flowers, a gift card, a handwritten note — can bring real comfort in a hard season or help mark a milestone worth celebrating.</p>
+        </article>
+
+        <article class="card">
+          <h3><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg></span>Encouragement</h3>
+          <p>A text, a card, or a quick word on Sunday morning can stay with someone for a long time. A simple reminder that they are seen, valued, and prayed for makes a difference.</p>
+        </article>
+
+        <article class="card">
+          <h3><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6-4.3-4.2 6-.9z"/></svg></span>Celebrations</h3>
+          <p>Birthdays, anniversaries, and personal wins are worth noticing. Recognizing them builds belonging and makes your group or team feel like family.</p>
+        </article>
+
+        <article class="card wide">
+          <h3><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-9-9c-1.2-2.8.6-6 3.7-6 2 0 3.3 1 4.3 2.6C12 6 13.3 5 15.3 5c3.1 0 4.9 3.2 3.7 6-2 4.5-9 9-9 9z"/></svg></span>Prayer and Emotional Support</h3>
+          <p>Taking time to listen, pray, and sit with someone in a hard moment is one of the most meaningful ways to care for them. Your presence matters more than having the right words.</p>
+          <div class="links">
+            <a href="https://celebrationpeople.churchcenter.com/people/forms/496078" target="_blank" rel="noopener">Submit a Prayer Request</a>
+          </div>
+          <p class="tip">Always ask before sharing someone’s prayer request with your group, your team, or our prayer team.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="needs">
+      <h2>Common Needs That May Arise</h2>
+      <p class="intro">When you lead people week after week, you’ll be among the first to know when life gets hard.</p>
+
+      <div class="rows">
+        <div class="row">
+          <h3>Health Challenges</h3>
+          <div>
+            <p>Support people facing surgery, illness, or injury by organizing a Meal Train, offering a ride, covering their serving spot, or helping with practical needs at home.</p>
+            <div class="links"><a href="https://www.mealtrain.com/" target="_blank" rel="noopener">Start a Meal Train</a></div>
+          </div>
+        </div>
+        <div class="row">
+          <h3>Life Transitions</h3>
+          <p>A new baby, an adoption, or welcoming a new family member can be joyful and overwhelming at the same time. Meals, encouragement, and a helping hand go a long way.</p>
+        </div>
+        <div class="row">
+          <h3>Loss and Grief</h3>
+          <p>When someone loses a loved one or walks through another painful change, show up and keep showing up. Check in again in the weeks after, when things get quiet.</p>
+        </div>
+        <div class="row">
+          <h3>Spiritual Support</h3>
+          <div>
+            <p>Some people are hungry to grow deeper; others are wrestling with their faith. Make room for honest conversation, pray together, and help them take their next step.</p>
+            <div class="links">
+              <a href="https://celebrationpeople.churchcenter.com/people/forms/1308291" target="_blank" rel="noopener">I Decided to Follow Jesus</a>
+              <a href="https://celebrationpeople.churchcenter.com/people/forms/609928" target="_blank" rel="noopener">Register for Baptism</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="celebrate">
+      <h2>Reasons to Celebrate</h2>
+      <p class="intro">Care isn’t only for hard days. Rejoice with the people you lead, too.</p>
+
+      <div class="rows">
+        <div class="row">
+          <h3>Milestones</h3>
+          <p>Weddings, births, birthdays, anniversaries, graduations, and new jobs. Celebrating them together strengthens relationships.</p>
+        </div>
+        <div class="row">
+          <h3>Spiritual Growth</h3>
+          <div>
+            <p>Notice breakthroughs and next steps — a decision to follow Jesus, a baptism, a new level of faith. Naming it encourages the person and everyone around them.</p>
+            <div class="links"><a href="https://celebrationpeople.churchcenter.com/people/forms/609928" target="_blank" rel="noopener">Register for Baptism</a></div>
+          </div>
+        </div>
+        <div class="row">
+          <h3>Answered Prayers</h3>
+          <div>
+            <p>When God answers a prayer, stop and celebrate His faithfulness together. If it’s a story worth telling, we’d love to hear it.</p>
+            <div class="links"><a href="https://celebrationpeople.churchcenter.com/people/forms/305760" target="_blank" rel="noopener">Share a Celebration Story</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" id="pastor">
+        <p class="eyebrow">Loop In a Pastor</p>
+        <h2>You don’t carry this alone.</h2>
+        <p>If someone you lead is hospitalized, loses a loved one, or is facing a crisis, let your Small Groups Coach or Dream Team staff leader know right away so our pastoral team can care for them alongside you.</p>
+      </div>
+    </section>
+
+    <section class="closing" id="questions">
+      <blockquote>When you care for people on purpose, you help build a church where everyone feels seen, valued, and encouraged in their faith.</blockquote>
+
+      <div class="contact">
+        <article class="card">
+          <h3>Small Group Leaders</h3>
+          <p>Reach out to your Small Groups Coach, or email the Small Groups team.</p>
+          <a class="btn" href="mailto:smallgroups@celebrationpeople.org?subject=Pastoral%20Care%20Question">Email Small Groups</a>
+        </article>
+        <article class="card">
+          <h3>Dream Team Leaders</h3>
+          <p>Reach out to your Dream Team staff leader, or contact the church office.</p>
+          <a class="btn" href="mailto:admin@celebrationpeople.org?subject=Pastoral%20Care%20Question">Email the Church Office</a>
+          <p style="margin-top:10px;font-size:15px">Or call <a href="tel:+13188281348">318-828-1348</a></p>
+        </article>
+      </div>
+
+      <p class="signoff">Let’s keep moving forward and growing together.</p>
+      <p style="margin-top:10px"><button class="print" onclick="window.print()">Print this guide</button></p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Celebration Church · 8645 Business Park Drive, Shreveport, LA</span>
+    <a href="https://www.celebrationpeople.org">celebrationpeople.org</a>
+  </div>
+</footer>
+
+</body>
+</html>
