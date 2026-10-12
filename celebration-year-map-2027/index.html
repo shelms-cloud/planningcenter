@@ -206,7 +206,7 @@ h1 em{font-style:normal;color:var(--slate-ink)}
 
 /* ---------- calendar ---------- */
 .cal{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:26px;margin-top:22px}
-.cmonth{border:1px solid var(--rule);background:var(--panel);box-shadow:var(--shadow);min-width:0}
+.cmonth{border:1px solid var(--rule);background:var(--panel);box-shadow:var(--shadow);min-width:0;overflow:hidden}
 .cmonth.empty{display:none}
 .cm-head{
   background:var(--hero-bg);color:var(--hero-fg);padding:9px 14px;
@@ -250,10 +250,34 @@ h1 em{font-style:normal;color:var(--slate-ink)}
 .ev.cont[data-c="prayer"]{background:var(--c-prayer)}
 .ev.isflag{background:var(--flag-soft);color:var(--flag-ink);font-weight:600}
 .ev.isnew{font-weight:600;color:var(--brass-ink)}
+.agenda{display:none;border-top:1px solid var(--rule)}
+.ag-day{display:flex;gap:11px;padding:7px 12px;align-items:baseline}
+.ag-day:not(:last-child){border-bottom:1px solid var(--rule-soft)}
+.ag-day.sun{background:var(--sun)}
+.ag-d{
+  flex:0 0 52px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--ink-3);font-variant-numeric:tabular-nums;padding-top:2px;
+}
+.ag-day.sun .ag-d{color:var(--slate-ink)}
+.ag-evs{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.ag-ev{
+  font-size:13px;line-height:1.35;padding:1px 0 1px 8px;border-left:2.5px solid var(--rule);color:var(--ink);
+  min-width:0;overflow-wrap:anywhere;
+}
+.ag-ev[data-c="service"]{border-left-color:var(--c-service)}
+.ag-ev[data-c="groups"]{border-left-color:var(--c-groups)}
+.ag-ev[data-c="conf"]{border-left-color:var(--c-conf)}
+.ag-ev[data-c="missions"]{border-left-color:var(--c-missions)}
+.ag-ev[data-c="prayer"]{border-left-color:var(--c-prayer)}
+.ag-ev .thru{color:var(--ink-3);font-size:11.5px}
+.ag-ev.isflag{background:var(--flag-soft);color:var(--flag-ink);font-weight:600;padding-right:6px;border-radius:0 3px 3px 0}
+.ag-ev.isnew{font-weight:600;color:var(--brass-ink)}
 .cm-tbd{
   border-top:1px solid var(--rule);background:var(--brass-soft);padding:7px 12px;
   font-size:11.5px;color:var(--brass-ink);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;
+  min-width:0;
 }
+.cm-tbd span{min-width:0;overflow-wrap:anywhere}
 .cm-tbd b{font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:9.5px}
 
 /* ---------- list ---------- */
@@ -318,17 +342,13 @@ footer{
   .stamp{text-align:left}
   .shift{grid-template-columns:1fr}
   .shift-key{border-right:none;border-bottom:1px solid var(--rule-soft)}
-  .cal{grid-template-columns:1fr;gap:20px}
-  .day{min-height:40px;padding:2px 2px 3px}
-  .ev{font-size:0;line-height:0;padding:0;height:5px;border-radius:3px;border-left:none}
-  .ev[data-c="service"]{background:var(--c-service)}
-  .ev[data-c="groups"]{background:var(--c-groups)}
-  .ev[data-c="conf"]{background:var(--c-conf)}
-  .ev[data-c="missions"]{background:var(--c-missions)}
-  .ev[data-c="prayer"]{background:var(--c-prayer)}
-  .ev.cont{opacity:.45}
+  .cal{grid-template-columns:1fr;gap:18px}
+  .dow,.grid{display:none}
+  .agenda{display:block}
   .month-head{padding:9px 14px}
-  .d{min-width:88px}
+  .gaps{padding:20px 18px}
+  .gaps ol{padding-left:18px}
+  .d{min-width:84px}
 }
 @media print{
   body{background:#fff}
@@ -367,27 +387,33 @@ footer{
     <div class="shift-body">
       <h2>What changed in this copy</h2>
       <p><b>Baptisms are now the 2nd Sunday</b> of every month, not the last. That fixes two collisions the old rule created &mdash; baptisms no longer land on Easter Sunday in March, or on the Sunday right after Christmas in December. It does create new overlaps in May, July, September and November; each one is marked below.</p>
-      <p><b>Men's One Night and the Radiant Women's Conference show TBD.</b> Both are listed under the month they historically fall in so they hold their place, but neither has a date yet.</p>
-      <p><b>Easter is Mar 28, 2027</b> &mdash; eight days earlier than 2026. Holy Week is Mar 21&ndash;28, and the Easter-focused First Wednesday falls on Mar 3, so Easter planning needs to start in early January.</p>
+      <p><b>Men's One Night and the Radiant Women's Conference show TBD</b>, and <b>every missions trip and camp now carries its month only, not dates.</b> All of them sit under the month they belong to so they hold their place in the year; the date each was projected to from 2026 is kept on the row for reference.</p>
+      <p><b>Easter is Mar 28, 2027</b> &mdash; eight days earlier than 2026. Holy Week is Mar 21&ndash;28, so the whole Easter push moves up a week — promo that went out in mid-March in 2026 needs to start in early March.</p>
     </div>
   </div>
 
   <div class="section-head">
     <h2>Needs a date</h2>
-    <span>Blocking promo and booking</span>
+    <span>Undated items</span>
   </div>
   <div class="open">
     <div>
       <span class="tbd">TBD</span>
       <h3>Men's One Night</h3>
-      <p>Historically the last Saturday of August, which would be Aug 28, 2027. Sits the weekend before Back to Church Sunday and the Fall Small Groups launch.</p>
-      <span class="was">Previously projected: Aug 28, 2027</span>
+      <p>Moved out of August to spring, and the month is settled: April. The date within April is still open. April is clear of Holy Week in March and of the Radiant early-bird launch in May.</p>
+      <span class="was">Was projected Aug 28, 2027 &mdash; now April, day to be set</span>
     </div>
     <div>
       <span class="tbd">TBD</span>
       <h3>Radiant Women's Conference</h3>
       <p>Historically the 4th weekend of September, which would be Sep 24&ndash;25, 2027. The early-bird launch is still pinned to Mother's Day, May 9 &mdash; so there's a launch with no date behind it.</p>
       <span class="was">Previously projected: Sep 24&ndash;25, 2027</span>
+    </div>
+    <div>
+      <span class="tbd">Month only</span>
+      <h3>11 missions trips &amp; camps</h3>
+      <p>Every trip and camp is placed in its month without dates &mdash; Ecuador, England, CY Texas, Belize, CY and CK camps, Honduras, the CY July trip, Indonesia, CYA Italy and Japan. Each row carries the 2026 window it was projected from.</p>
+      <span class="was">Set these before the trips open for sign-up</span>
     </div>
   </div>
 
@@ -441,24 +467,22 @@ footer{
   </div>
   <div class="gaps">
     <ol>
-      <li><b>Men's One Night and Radiant both need dates.</b> Radiant is the more urgent of the two: the early-bird launch is already pinned to Mother's Day, May 9, which means promo goes out roughly four months before the conference has a date.
-        <span>Old rules would give Aug 28 and Sep 24&ndash;25</span></li>
+      <li><b>Men's One Night and Radiant both need dates.</b> Men's has moved to April; the day within it is still open. Radiant is the more urgent: its early-bird launch is already pinned to Mother's Day, May 9, so promo goes out before the conference has a date.
+        <span>Men's is now April; Radiant's old rule would give Sep 24&ndash;25</span></li>
       <li><b>Three Sundays where a displaced event wants the 2nd Sunday that Baptisms now holds.</b> Discover Celebration Pt. 2 needs to move off Palm Sunday (Mar 21) and the natural slot is Mar 14. Pt. 1 needs to move off July 4 and the natural slot is Jul 11. Pt. 1 on Sep 5 is Labor Day weekend &mdash; 2026 moved it a week for exactly that reason, which would be Sep 12. All three land on Baptisms.
         <span>Mar 14 · Jul 11 · Sep 12 &mdash; pick which rhythm yields</span></li>
       <li><b>May 9 is carrying four things.</b> Mother's Day, the Radiant early-bird launch, Small Group Leader Training, and now Baptisms. Worth deciding what comes off.
         <span>Nov 14 is doubled too &mdash; Baptisms plus the final Legacy Sunday</span></li>
       <li><b>Easter Sunday itself isn't an event on the calendar.</b> Everything around it is scheduled, but the service dates aren't blocked.
         <span>Add: Palm Sun Mar 21 · Good Fri Mar 26 · Easter Mar 28</span></li>
-      <li><b>No Christmas Eve or Christmas services on the calendar.</b> Christmas Day 2027 is a Saturday, so Christmas Eve is a Friday &mdash; a clean evening-service slot.
-        <span>Add: Dec 24, 2027 (Friday)</span></li>
       <li><b>Mother's Day and Father's Day are never blocked as service dates.</b> Both now carry weight beyond the service.
         <span>Mother's Day May 9 · Father's Day Jun 20</span></li>
       <li><b>July 4 falls on a Sunday</b> and it's the 1st Sunday, so Discover Celebration Pt. 1 lands on it.
         <span>Independence Day, Sun Jul 4, 2027</span></li>
-      <li><b>Two missions teams are out at the same time in July.</b> Honduras Medical Mission (Jul 17&ndash;24) overlaps the CY Boston Trip (Jul 18&ndash;24).
-        <span>Same overlap existed in 2026</span></li>
-      <li><b>Spring break dates need confirming.</b> The CY Texas trip is built on Caddo/Bossier spring break week.
-        <span>Currently projected Mar 7&ndash;11</span></li>
+      <li><b>Two missions teams overlapped in July last year.</b> Honduras Medical Mission and the CY trip ran at the same time in 2026. Worth separating them when the 2027 dates get set — the CY trip has no destination yet either.
+        <span>Both are undated for now</span></li>
+      <li><b>Spring break dates need confirming</b> before the CY Texas trip can be dated — it is built on Caddo/Bossier spring break week.
+        <span>2026 equivalent was the week of Mar 7</span></li>
     </ol>
   </div>
 
@@ -472,7 +496,7 @@ footer{
 
 <script>
 /* s: ISO start · e: ISO end (span) · m: extra discrete dates · tbd: month name
-   n: name · sn: short name for the calendar · c: category · r: rule · w: watch-out
+   n: name · sn: short name for the calendar · c: category · r: rule · t: time · w: watch-out
    f: "flag" needs a decision | "new" new baptism rule | "tbd" no date      */
 const EV = [
  /* January */
@@ -482,25 +506,26 @@ const EV = [
  {s:"2027-01-02",e:"2027-01-22",n:"21 Days of Prayer",sn:"21 Days",c:"prayer",r:"Starts 1st Saturday"},
  {s:"2027-01-10",n:"Baptisms",c:"service",r:"2nd Sunday",w:"Falls inside 21 Days of Prayer &mdash; and shares the Sunday with leader training",f:"new"},
  {s:"2027-01-17",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+ {s:"2027-01-17",n:"Team One Night",sn:"Team ON",c:"conf",r:"3rd Sunday",t:"4:30p"},
  {s:"2027-01-24",n:"Small Group XPO",sn:"SG XPO",c:"groups",r:"Sunday before launch"},
+ {s:"2027-01-31",n:"Spring Small Groups Launch",sn:"Spring SG",c:"groups",r:"Last Sunday of January",w:"Moved up a week from the 1st Sunday of February"},
  {s:"2027-01-30",n:"Mardi Gras weekend 1 of 2",sn:"Mardi Gras",c:"conf",r:"Two weekends before Fat Tuesday",w:"Fat Tuesday is Feb 9, 2027 &mdash; the first parade weekend lands in January"},
 
  /* February */
  {s:"2027-02-03",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
  {s:"2027-02-06",n:"Mardi Gras weekend 2 of 2",sn:"Mardi Gras",c:"conf",r:"Weekend before Fat Tuesday"},
- {s:"2027-02-07",n:"Spring Small Groups Launch",sn:"Spring SG",c:"groups",r:"1st Sunday",w:"Six days later than 2026 &mdash; pushes the whole spring semester"},
  {s:"2027-02-07",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
- {s:"2027-02-12",n:"Marriage One Night",sn:"Marriage",c:"conf",r:"2nd Friday"},
  {s:"2027-02-14",n:"Baptisms",c:"service",r:"2nd Sunday",w:"Valentine's Day &mdash; and the Ecuador team leaves the same day",f:"new"},
- {s:"2027-02-14",e:"2027-02-20",n:"Ecuador Missions Trip",sn:"Ecuador",c:"missions",r:"3rd full week"},
+ {tbd:"February",n:"Ecuador Missions Trip",sn:"Ecuador",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Feb 14&ndash;20",f:"tbd"},
  {s:"2027-02-21",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
  {s:"2027-02-27",n:"Family Dedication",sn:"Family Ded",c:"service",r:"Last Saturday"},
+ {tbd:"February",n:"Marriage One Night",sn:"Marriage",c:"conf",r:"Date not set",w:"Listed as TBD on the 2027 Calendar Requests doc. Projected from 2026 it would be Feb 12",f:"tbd"},
 
  /* March */
- {s:"2027-03-03",n:"First Wednesday &mdash; Easter focused",sn:"First Wed",c:"service",r:"Last First Wed before Easter",w:"Moves out of April entirely &mdash; Easter planning starts in early January"},
+ {s:"2027-03-03",n:"First Wednesday",c:"service",r:"1st Wednesday"},
  {s:"2027-03-07",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
- {s:"2027-03-07",e:"2027-03-14",n:"England Freedom Mission",sn:"England",c:"missions",r:"2nd week"},
- {s:"2027-03-07",e:"2027-03-11",n:"CY Texas Missions Trip",sn:"CY Texas",c:"missions",r:"Spring break week",w:"Confirm Caddo/Bossier spring break dates for 2027"},
+ {tbd:"March",n:"England Freedom Mission",sn:"England",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Mar 7&ndash;14",f:"tbd"},
+ {tbd:"March",n:"CY Texas Missions Trip",sn:"CY Texas",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Mar 7&ndash;11. Confirm Caddo/Bossier spring break dates for 2027",f:"tbd"},
  {s:"2027-03-14",n:"Baptisms",c:"service",r:"2nd Sunday",w:"The new rule clears Easter &mdash; the old last-Sunday rule put this on Easter Sunday",f:"new"},
  {s:"2027-03-21",n:"Palm Sunday",sn:"Palm Sun",c:"service",r:"Easter minus 7",w:"Not on the calendar"},
  {s:"2027-03-21",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday",w:"Lands on Palm Sunday. Moving it back to Mar 14 now collides with Baptisms",f:"flag"},
@@ -509,11 +534,11 @@ const EV = [
 
  /* April */
  {s:"2027-04-04",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday after Easter"},
- {s:"2027-04-07",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday",w:"A normal, non-Easter First Wednesday &mdash; the Easter one moved to March"},
+ {s:"2027-04-07",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
  {s:"2027-04-11",n:"Baptisms",c:"service",r:"2nd Sunday",f:"new"},
- {s:"2027-04-17",e:"2027-04-24",n:"Belize Construction / Prayer Trip",sn:"Belize",c:"missions",r:"3rd&ndash;4th week"},
+ {tbd:"April",n:"Belize Construction / Prayer Trip",sn:"Belize",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Apr 17&ndash;24",f:"tbd"},
  {s:"2027-04-18",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
- {s:"2027-04-23",n:"Dream Team Night",sn:"Dream Tm",c:"conf",r:"4th Friday"},
+ {tbd:"April",n:"Men's One Night",sn:"Men's ON",c:"conf",r:"April — date not set",w:"Moved out of August to spring. April is settled; the date within it is not",f:"tbd"},
  {s:"2027-04-30",e:"2027-05-01",n:"Freedom Conference (spring)",sn:"Freedom",c:"conf",r:"First weekend of May",w:"Starts on the last day of April"},
 
  /* May */
@@ -533,7 +558,7 @@ const EV = [
  {s:"2027-06-06",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
  {s:"2027-06-13",n:"Baptisms",c:"service",r:"2nd Sunday",w:"The Sunday before Summer Blast week",f:"new"},
  {s:"2027-06-14",e:"2027-06-16",n:"Summer Blast",sn:"Sum Blast",c:"conf",r:"3rd week, Mon&ndash;Wed"},
- {s:"2027-06-18",e:"2027-06-22",n:"CY Summer Camp",sn:"CY Camp",c:"missions",r:"Week after Summer Blast"},
+ {tbd:"June",n:"CY Summer Camp",sn:"CY Camp",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Jun 18&ndash;22",f:"tbd"},
  {s:"2027-06-20",n:"Father's Day",sn:"Fathers Day",c:"service",r:"3rd Sunday of June",w:"Not on the calendar"},
  {s:"2027-06-20",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
  {s:"2027-06-27",n:"Parenting One Night",sn:"Parenting",c:"conf",r:"Last Sunday"},
@@ -545,9 +570,9 @@ const EV = [
  {s:"2027-07-10",n:"Serve Day",c:"conf",r:"2nd Saturday"},
  {s:"2027-07-10",n:"Summer Small Groups End",sn:"SG ends",c:"groups",r:"2nd Saturday"},
  {s:"2027-07-11",n:"Baptisms",c:"service",r:"2nd Sunday",w:"The day after Serve Day &mdash; and the slot Discover Pt. 1 needs",f:"new"},
- {s:"2027-07-12",e:"2027-07-16",n:"CK Summer Camp",sn:"CK Camp",c:"missions",r:"Week after Serve Day"},
- {s:"2027-07-17",e:"2027-07-24",n:"Honduras Medical Mission",sn:"Honduras",c:"missions",r:"3rd&ndash;4th week"},
- {s:"2027-07-18",e:"2027-07-24",n:"CY Boston Trip",sn:"CY Boston",c:"missions",r:"Overlaps Honduras",w:"Two teams out at once &mdash; same as 2026"},
+ {tbd:"July",n:"CK Summer Camp",sn:"CK Camp",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Jul 12&ndash;16",f:"tbd"},
+ {tbd:"July",n:"Honduras Medical Mission",sn:"Honduras",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Jul 17&ndash;24",f:"tbd"},
+ {tbd:"July",n:"CY Missions Trip",sn:"CY Trip",c:"missions",r:"Place and dates not set",w:"Destination still open. 2026 equivalent was the CY Boston Trip, Jul 18&ndash;24, which overlapped Honduras",f:"tbd"},
  {s:"2027-07-18",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
 
  /* August */
@@ -559,10 +584,9 @@ const EV = [
  {s:"2027-08-15",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
  {s:"2027-08-22",n:"Small Group Expo",sn:"SG Expo",c:"groups",r:"Sunday before launch"},
  {s:"2027-08-25",n:"CY Fall Launch",sn:"CY Fall",c:"groups",r:"Wednesday before launch"},
- {tbd:"August",n:"Men's One Night",sn:"Men's ON",c:"conf",r:"No date set",w:"Old rule put it on the last Saturday of August &mdash; Aug 28, 2027",f:"tbd"},
  {s:"2027-08-29",n:"Back to Church Sunday",sn:"Back to Ch",c:"service",r:"Last Sunday of August"},
  {s:"2027-08-29",n:"Fall Small Groups Launch",sn:"Fall SG",c:"groups",r:"Back to Church Sunday"},
- {s:"2027-08-30",e:"2027-09-08",n:"Indonesia Mission Trip",sn:"Indonesia",c:"missions",r:"Straddles the month"},
+ {tbd:"August",n:"Indonesia Mission Trip",sn:"Indonesia",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Aug 30&ndash;Sep 8",f:"tbd"},
 
  /* September */
  {s:"2027-09-01",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
@@ -576,12 +600,13 @@ const EV = [
  {s:"2027-10-06",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
  {s:"2027-10-10",n:"Baptisms",c:"service",r:"2nd Sunday",f:"new"},
  {s:"2027-10-17",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
- {s:"2027-10-20",e:"2027-10-30",n:"CYA Italy Mission Trip",sn:"CYA Italy",c:"missions",r:"Last ten days"},
+ {tbd:"October",n:"CYA Italy Mission Trip",sn:"CYA Italy",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Oct 20&ndash;30",f:"tbd"},
  {s:"2027-10-23",n:"Family Dedication",sn:"Family Ded",c:"service",r:"4th Saturday"},
  {s:"2027-10-24",n:"Legacy Sunday 1 of 4",sn:"Legacy 1",c:"service",r:"Starts 4th Sunday"},
  {s:"2027-10-25",n:"Legacy Dinner #2",sn:"Legacy D2",c:"conf",r:"Monday of Legacy week"},
  {s:"2027-10-29",n:"Legacy Dinner #1",sn:"Legacy D1",c:"conf",r:"Friday of Legacy week"},
  {s:"2027-10-31",n:"Legacy Sunday 2 of 4",sn:"Legacy 2",c:"service",r:"Rolls with Legacy 1"},
+ {tbd:"October",n:"Dream Team Appreciation",sn:"Dream Team",c:"conf",r:"Month set, date not",w:"Moved from April. The old rule was the 4th Friday, which would be Oct 22 — Legacy runs Oct 24&ndash;31",f:"tbd"},
 
  /* November */
  {s:"2027-11-03",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
@@ -593,7 +618,7 @@ const EV = [
  {s:"2027-11-21",n:"CK Teamsgiving",sn:"Teamsgiv",c:"conf",r:"Sunday before Thanksgiving"},
  {s:"2027-11-25",n:"Thanksgiving",c:"service",r:"4th Thursday"},
  {s:"2027-11-28",n:"At the Movies &mdash; week 1",sn:"Movies 1",c:"service",r:"Sunday after Thanksgiving"},
- {s:"2027-11-29",e:"2027-12-06",n:"Japan Mission Trip",sn:"Japan",c:"missions",r:"Straddles the month"},
+ {tbd:"November",n:"Japan Mission Trip",sn:"Japan",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Nov 29&ndash;Dec 6",f:"tbd"},
 
  /* December */
  {s:"2027-12-01",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
@@ -602,7 +627,8 @@ const EV = [
  {s:"2027-12-05",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
  {s:"2027-12-12",n:"Baptisms",c:"service",r:"2nd Sunday",w:"The new rule clears the Sunday right after Christmas, where the old rule put this",f:"new"},
  {s:"2027-12-19",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
- {s:"2027-12-24",n:"Christmas Eve service",sn:"Christmas Ev",sn:"Christmas Ev",c:"service",r:"Friday in 2027",w:"Not on the calendar &mdash; worth blocking now"}
+ {s:"2027-12-24",n:"Christmas Eve service",sn:"Christmas Ev",c:"service",r:"Friday in 2027"},
+ {s:"2027-12-26",n:"Online service only",sn:"Online only",c:"service",r:"Sunday after Christmas"}
 ];
 
 const YEAR = 2027;
@@ -669,6 +695,25 @@ document.getElementById("cal").innerHTML = MON.map((name, mi) => {
       </div>`);
   }
 
+  /* mobile: only days that actually have something, with readable names */
+  const agenda = [];
+  for (let n = 1; n <= days; n++){
+    const d     = new Date(YEAR, mi, n);
+    const start = (byDay.get(key(d)) || []).filter(x => x.start);
+    if (!start.length) continue;
+    agenda.push(`
+      <div class="ag-day${d.getDay() === 0 ? " sun" : ""}">
+        <span class="ag-d">${DOW[d.getDay()]} ${n}</span>
+        <span class="ag-evs">
+          ${start.map(({ev, i}) => `
+            <span class="ag-ev${ev.f === "flag" ? " isflag" : ""}${ev.f === "new" ? " isnew" : ""}"
+                  data-c="${ev.c}" data-i="${i}">${ev.n}${
+                    ev.t ? ` <span class="thru">${ev.t}</span>` : ``}${
+                    ev.e ? ` <span class="thru">through ${AB[dt(ev.e).getMonth()]} ${dt(ev.e).getDate()}</span>` : ``}</span>`).join("")}
+        </span>
+      </div>`);
+  }
+
   const tbd = EV.map((ev,i) => ({ev,i})).filter(({ev}) => ev.tbd === name);
 
   return `
@@ -676,6 +721,7 @@ document.getElementById("cal").innerHTML = MON.map((name, mi) => {
       <div class="cm-head"><span class="nm">${name}</span><span class="ct">${YEAR}</span></div>
       <div class="dow">${DOW.map(d => `<span>${d}</span>`).join("")}</div>
       <div class="grid">${cells.join("")}</div>
+      <div class="agenda">${agenda.join("")}</div>
       ${tbd.length ? `<div class="cm-tbd"><b>No date yet</b>${tbd.map(({ev,i}) => `<span data-i="${i}">${ev.n}</span>`).join("")}</div>` : ``}
     </section>`;
 }).join("");
@@ -700,7 +746,7 @@ document.getElementById("months").innerHTML = MON.map(name => {
             <span class="d">${label(ev)}</span>
             <span class="n">
               <span class="t">${ev.n}</span>
-              <span class="why">${ev.r}</span>
+              <span class="why">${ev.r}${ev.t ? " &middot; " + ev.t : ""}</span>
               ${ev.w ? `<mark class="watch">${ev.w}</mark>` : ``}
             </span>
           </div>`).join("")}
@@ -708,7 +754,8 @@ document.getElementById("months").innerHTML = MON.map(name => {
     </section>`;
 }).join("");
 
-document.getElementById("count").textContent = EV.length + " items · 2 undated";
+document.getElementById("count").textContent =
+  EV.length + " items · " + EV.filter(e => e.tbd).length + " undated";
 
 /* ---------- filter both views together ---------- */
 let cat = "all";
@@ -717,7 +764,10 @@ function apply(){
   const ok = i => cat === "all" || EV[i].c === cat;
 
   document.querySelectorAll(".row").forEach(r => { r.hidden = !ok(+r.dataset.i); });
-  document.querySelectorAll(".cal .ev, .cm-tbd span[data-i]").forEach(e => { e.hidden = !ok(+e.dataset.i); });
+  document.querySelectorAll(".cal .ev, .ag-ev, .cm-tbd span[data-i]").forEach(e => { e.hidden = !ok(+e.dataset.i); });
+  document.querySelectorAll(".ag-day").forEach(r => {
+    r.hidden = ![...r.querySelectorAll(".ag-ev")].some(e => !e.hidden);
+  });
 
   document.querySelectorAll(".cm-tbd").forEach(t => {
     t.hidden = ![...t.querySelectorAll("span[data-i]")].some(s => !s.hidden);
@@ -726,7 +776,7 @@ function apply(){
     m.classList.toggle("empty", ![...m.querySelectorAll(".row")].some(r => !r.hidden));
   });
   document.querySelectorAll(".cmonth").forEach(m => {
-    m.classList.toggle("empty", ![...m.querySelectorAll(".ev, .cm-tbd span[data-i]")].some(e => !e.hidden));
+    m.classList.toggle("empty", ![...m.querySelectorAll(".ev, .ag-ev, .cm-tbd span[data-i]")].some(e => !e.hidden));
   });
 }
 
