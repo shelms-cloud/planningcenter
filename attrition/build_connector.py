@@ -35,14 +35,18 @@ def main():
     # ---- Check-ins -------------------------------------------------------
     ci = read_all("checkins/2*.csv").drop_duplicates("checkin_id")
     periods = read_all("checkins/periods_*.csv").drop_duplicates("event_period_id")
-    periods["local"] = to_local(periods["starts_at"])
+    # Check-Ins "event periods" for Sunday events open on Saturday afternoon, so a
+    # period starting Saturday 3pm or later belongs to Sunday.
+    loc = to_local(periods["starts_at"])
+    sat_pm = (loc.dt.weekday == 5) & (loc.dt.hour >= 15)
+    periods["local"] = loc.where(~sat_pm, loc + pd.Timedelta(days=1))
     ci = ci.merge(periods[["event_period_id", "event_id", "local"]], on="event_period_id", how="left")
     missing = ci["local"].isna().sum()
     if missing:
         print(f"warning: {missing} check-ins have no event period date; dropped")
     ci = ci.dropna(subset=["local"])
     ci["date"] = ci["local"].dt.date.astype(str)
-    ci["service_time"] = ci["local"].dt.strftime("%a %-I:%M %p")
+    ci["service_time"] = None  # periods don't record which service someone attended
     guest = ci["person_id"].isna() | (ci["one_time_guest"].str.lower() == "true")
     pd.DataFrame({"date": ci.loc[guest, "date"], "event_id": ci.loc[guest, "event_id"]}).to_csv(
         TIDY_DIR / "guests.csv", index=False)
