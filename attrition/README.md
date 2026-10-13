@@ -1,0 +1,46 @@
+# Attrition & retention analysis
+
+Pulls Celebration Church's Planning Center data (People, Check-Ins, Groups,
+Services, Giving), applies the definitions below, and builds:
+
+- `out/dashboard.html`: the shareable dashboard (aggregates only)
+- `out/metrics.json`: every number on the dashboard, with numerators and denominators
+- `out/private/at_risk.html` / `.csv` and `out/private/lapsed.csv`: names for
+  pastoral follow-up. **Gitignored. Keep inside the pastoral team.**
+
+## Run it
+
+1. Create a Planning Center Personal Access Token at
+   <https://api.planningcenteronline.com/oauth/applications> while logged in as a
+   user with read access to People, Check-Ins, Groups, Services and Giving.
+2. Expose it as `PCO_APP_ID` and `PCO_SECRET`, and allow
+   `api.planningcenteronline.com` in the environment's network settings.
+3. `./run.sh`. A first full pull takes roughly 20–40 minutes, mostly group
+   attendance (one request per group meeting). Re-runs skip pages already
+   downloaded; delete `data/raw` for a fresh pull.
+
+`AS_OF=YYYY-MM-DD ./run.sh` pins "today" for a reproducible rerun.
+
+## Definitions (all in `config.py`)
+
+| Term | Rule |
+|---|---|
+| Attendance day | A distinct day with a check-in (any event, including volunteer), group attendance marked present, or confirmed serving on a Services plan |
+| Regular attender | 6+ attendance days in a 91-day window (2+ a month over 3 months) |
+| Lapsed | Regular in the 91 days ending one year before `AS_OF`, and no check-in, group attendance, confirmed serving or gift in the last 90 days |
+| Engaged | Group: attended a group meeting in the prior 6 months. Serving: confirmed on a plan or volunteer check-in in the prior 6 months. Giving: a gift in 2 of 3 baseline months |
+| First-time guest | First attendance in the last 12 months, no earlier activity since `HISTORY_START`, People record created no more than 60 days before |
+| At risk | Regular in the 3 months before the last 90 days, and attendance in the last 90 days down 50%+ |
+
+Ministry area comes from Check-Ins event names via `EVENT_RULES` in
+`config.py`. Review the mapping table on the dashboard's data-gaps panel and
+adjust the rules if an event is misfiled.
+
+## Pipeline
+
+`fetch_pco.py` (raw API pages → `data/raw`) → `build.py` (tidy CSVs →
+`data/tidy`) → `analyze.py` (`out/metrics.json`, private CSVs) → `render.py`
+(HTML). `narrative.json` holds the written findings and recommendations.
+
+`tests/make_fixture.py` generates a synthetic dataset for testing the pipeline;
+its output is fake and must never be presented.
