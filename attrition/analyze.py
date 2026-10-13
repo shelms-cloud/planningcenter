@@ -397,7 +397,7 @@ def main():
         return "Kids (0-10)" if age < 11 else "Students (11-17)" if age < 18 else "Adults (18+)"
     by = {}
     for label, ids, ref in [("then", base, W["baseline"][1]), ("now", cur, C.AS_OF)]:
-        for pid in ids:
+        for pid in sorted(ids):
             g = grp(pid, ref)
             by.setdefault(g, {"then": 0, "now": 0})[label] += 1
     m["net_growth"]["regulars_by_age"] = by
