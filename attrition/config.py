@@ -49,6 +49,9 @@ AT_RISK_DROP = 0.5
 # (guards against long-time people who simply never checked in before).
 NEW_PERSON_GRACE_DAYS = 60
 
+# Days of history required before a first visit before we call someone "new".
+NEWCOMER_LOOKBACK_DAYS = int(os.environ.get("NEWCOMER_LOOKBACK_DAYS", "183"))
+
 HEALTHY_ATTRITION = (0.10, 0.15)
 
 
@@ -75,9 +78,12 @@ def windows(as_of: dt.date = AS_OF) -> dict[str, tuple[dt.date, dt.date]]:
 EVENT_RULES: list[tuple[str, str]] = [
     (r"dream team|serve day|all assignments|admin|prayer team|rehearsal", "serving"),
     (r"test|practice|tester", "ignore"),
-    (r"kids|childcare|summer blast|first wednesday$", "kids"),
+    # One-off events that draw many people from outside the church: they count as
+    # activity (so the person is not "lapsed") but not as attendance days or first visits.
+    (r"conference|summer blast|childcare|one night|men's night|\bxo\b|make waves|radiant|friendsgiving", "special"),
+    (r"kids", "kids"),
     (r"student|middle school|motion", "students"),
-    (r"\bcy\b|cya|young adult|friendsgiving", "cya"),
+    (r"\bcy\b|cya|young adult", "cya"),
 ]
 DEFAULT_EVENT_AREA = "adults"
 
