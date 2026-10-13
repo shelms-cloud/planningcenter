@@ -217,7 +217,7 @@ app.append($(`<header>
 app.append($(`<div class="tiles">
   <div class="tile"><div class="eyebrow">Annual attrition</div><div class="big num">${pct(A.rate, 1)}</div>
     <span class="pill ${stCls}">${stTxt} (10–15%)</span>
-    <div class="def">${fmt(A.lapsed)} of ${fmt(A.baseline_regulars)} people who were regular attenders a year ago have had no attendance, group, serving or giving activity in 90 days.</div></div>
+    <div class="def">${fmt(A.lapsed)} of ${fmt(A.baseline_regulars)} people who were regular attenders a year ago have had no check-in, group or serving activity in 90 days.</div></div>
   <div class="tile"><div class="eyebrow">Newcomer retention</div><div class="big num">${pct(NC.retention_rate, 0)}</div>
     <div class="def">${fmt(NC.retention_numerator)} of ${fmt(NC.retention_denominator)} first-time guests (first visit ${dfmt(W.newcomer[0])} – ${dfmt(NC.mature_cutoff)}) went on to become regular attenders.</div></div>
   <div class="tile"><div class="eyebrow">Net growth underneath Sunday</div><div class="big num">${NG.net > 0 ? '+' : ''}${fmt(NG.net)}</div>
@@ -263,7 +263,7 @@ const ans = (k) => (N.answers || {})[k] || '';
     <tr><td>Still around but no longer regular</td><td class="r">${fmt(A.declined_not_lapsed)}</td></tr>
     <tr><td>Still regular today</td><td class="r">${fmt(A.still_regular)}</td></tr></tbody></table>`));
   s.append(g);
-  s.append($(src(`<b>Source:</b> Check-Ins check-ins, Groups attendance, Services scheduled people (confirmed), Giving donations. Cohort window ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])}; quiet window ${dfmt(W.recent_quiet[0])} – ${dfmt(W.recent_quiet[1])}. <code>metrics.json → attrition</code>`)));
+  s.append($(src(`<b>Source:</b> Check-Ins check-ins, Groups attendance, Services scheduled people (confirmed only). Cohort window ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])}; quiet window ${dfmt(W.recent_quiet[0])} – ${dfmt(W.recent_quiet[1])}. <code>metrics.json → attrition</code>`)));
 }
 
 // ---------- 2. Breakouts ----------
@@ -271,7 +271,7 @@ const ans = (k) => (N.answers || {})[k] || '';
   const s = section('Question 2', 'Who we lose: attrition by segment', ans('breakouts'));
   const B = M.breakouts;
   const dims = [
-    ['engagement', 'Engagement (group / serving)'], ['any_engaged', 'Group, serving or giving'], ['giving', 'Giving'],
+    ['engagement', 'Engagement (group / serving)'], ['any_engaged', M.giving_available ? 'Group, serving or giving' : 'Group or serving'], ['giving', 'Giving'],
     ['age_band', 'Age band'], ['household_type', 'Household type'], ['tenure', 'Tenure at the start'],
     ['ministry_area', 'Ministry area'], ['service_time', 'Service time'], ['campus', 'Campus'],
   ];
@@ -280,6 +280,8 @@ const ans = (k) => (N.answers || {})[k] || '';
   dims.forEach(([k, label]) => {
     const rows = (B[k] || []).filter(r => r.regulars > 0);
     if (!rows.length) return;
+    if (k === 'service_time' && rows.length < 2) { grid.append($(`<div style="display:grid;gap:8px"><h3>${label}</h3><p class="small">Not measurable. Sunday check-ins are recorded against one session per day, not a specific service time.</p></div>`)); return; }
+    if (k === 'giving' && !M.giving_available) return;
     if (k === 'campus' && rows.length < 2) { grid.append($(`<div style="display:grid;gap:8px"><h3>${label}</h3><p class="small">One campus (${esc(rows[0].segment)}), so there is nothing to compare.</p></div>`)); return; }
     const box = $(`<div style="display:grid;gap:10px"><h3>${label}</h3></div>`);
     box.append(hbars(rows.map(r => ({ label: k === 'ministry_area' ? (areaName[r.segment] || r.segment) : r.segment, value: r.lapse_rate, n: r.regulars, thin: r.small_sample, raw: r })), {
@@ -291,7 +293,7 @@ const ans = (k) => (N.answers || {})[k] || '';
   });
   s.append(grid);
   s.append($(`<p class="small">Bars show the share of each segment's regular attenders who lapsed. The dark tick marks the church-wide rate (${pct(A.rate, 1)}). Faded bars have fewer than 20 people, so read them as directional only.</p>`));
-  s.append($(src(`<b>Definitions:</b> Group = attended a group meeting in the 6 months to ${dfmt(W.baseline[1])}. Serving = confirmed on a Services plan or checked in as a volunteer in those 6 months. Regular giver = a gift in at least 2 of the 3 months of the baseline window. Age at ${dfmt(W.baseline[1])} from birthdate. Household type from the person's Planning Center household (kids = anyone under 18). Tenure = time since the earlier of their People record or first recorded activity. Ministry area = the Check-Ins event they most often attended. <code>metrics.json → breakouts</code>`)));
+  s.append($(src(`<b>Definitions:</b> Group = marked present at a group meeting in the 6 months to ${dfmt(W.baseline[1])}. Serving = confirmed on a Services plan or checked in as a Dream Team volunteer in those 6 months. ${M.giving_available ? 'Regular giver = a gift in at least 2 of the 3 months of the baseline window.' : 'Giving could not be included (see data gaps).'} Age at ${dfmt(W.baseline[1])} from birthdate. Household type from the person's Planning Center household (kids = anyone under 18). Tenure = time since the earlier of their People record or first recorded activity. Ministry area = the Check-Ins event they most often attended. <code>metrics.json → breakouts</code>`)));
 }
 
 // ---------- 3. Funnel ----------
@@ -385,6 +387,7 @@ const ans = (k) => (N.answers || {})[k] || '';
     g.append(left);
     const right = $(`<div style="display:grid;gap:10px"><h3>How often each signal showed up 3–6 months before the last visit</h3></div>`);
     const sig = EW.signals.filter(x => x.period === '6-3 months before');
+    if (sig.length) right.append($(`<p class="small">Measured for ${fmt(sig[0].lapsed_n)} lapsed and ${fmt(sig[0].stayed_n)} comparison people.</p>`));
     const t = $(`<div class="tablewrap"><table><thead><tr><th>Signal</th><th class="r">Lapsed</th><th class="r">Stayed</th><th class="r">Lapse risk if seen</th></tr></thead><tbody></tbody></table></div>`);
     sig.forEach(x => t.querySelector('tbody').append($(`<tr><td>${esc(x.signal)}</td><td class="r">${pct(x.lapsed_pct)}</td><td class="r">${pct(x.stayed_pct)}</td><td class="r">${x.relative_risk ? x.relative_risk + '×' : '<span class="small">too rare</span>'}</td></tr>`)));
     right.append(t);
@@ -394,7 +397,7 @@ const ans = (k) => (N.answers || {})[k] || '';
     right.append(t2);
     g.append(right);
     s.append(g);
-    s.append($(src(`<b>Method:</b> each lapsed person is lined up on their last attendance date. People who stayed are compared over the same calendar dates (drawn from the lapsed group's dates) so seasons match. A signal compares a 3-month window with the 6 months before it: attendance rate fell by half or more; attended a group, served, or gave (2+ gifts) before and not at all in the window. "Lapse risk if seen" = lapse rate among people showing the signal ÷ lapse rate among those who didn't. <code>metrics.json → early_warning</code>`)));
+    s.append($(src(`<b>Method:</b> each lapsed person is lined up on their last attendance date. People who stayed are compared over the same calendar dates (drawn from the lapsed group's dates) so seasons match. Each signal compares a 3-month window with the person's own baseline (${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])}): attendance in the window was half or less of their baseline; they attended a group or served in the 6 months to ${dfmt(W.baseline[1])} and not at all in the window. Windows that would overlap the baseline are skipped, so only people whose last visit came late enough are counted (n shown in the table). "Lapse risk if seen" = lapse rate among people showing the signal ÷ lapse rate among those who didn't. <code>metrics.json → early_warning</code>`)));
   }
 }
 
@@ -422,13 +425,13 @@ if (N.recommendations?.length) {
   s.append(box);
   const D = M.data_gaps;
   const rows = [
-    ['Active people in Planning Center', fmt(D.active_people)],
-    ['…with no recorded activity of any kind since ' + dfmt(M.history_start), fmt(D.active_with_no_activity_since_history_start)],
+    ['Active people in Planning Center', fmt(D.active_people_in_pco)],
+    ['People with any check-in, group attendance or confirmed serving since ' + dfmt(M.history_start), fmt(D.people_with_any_activity)],
     ['Last year\'s regulars missing a birthdate', pct(D.missing_birthdate_pct_of_regulars, 1)],
     ['Last year\'s regulars with no household record', pct(D.no_household_pct_of_regulars, 1)],
     ['Last year\'s regulars under 18', pct(D.baseline_regulars_under_18_pct, 1)],
     ['Group meetings with no attendance taken', pct(D.group_meetings_without_attendance_pct, 1)],
-    ['Current group members with no group attendance recorded in 90 days', fmt(D.current_members_with_no_recorded_group_attendance_90d)],
+    ['Groups that met but never recorded attendance', D.groups_meeting ? `${fmt(D.groups_never_recording_attendance)} of ${fmt(D.groups_meeting)}` : '—'],
     ['Possible duplicate person records (same name and birthdate)', fmt(D.possible_duplicate_people)],
   ];
   const seen = D.baseline_regulars_seen_via || {};
@@ -443,13 +446,13 @@ if (N.recommendations?.length) {
   const defs = [
     ['Attendance day', 'A distinct day a person checked in (any event, including as a volunteer), was marked present at a group meeting, or was confirmed on a Services plan. Several check-ins on one day count once.'],
     ['Regular attender', '6 or more attendance days in a 91-day window: your "2+ times a month on average over 3 months".'],
-    ['Lapsed', `Regular in ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])} and no check-in, group attendance, confirmed serving or gift from ${dfmt(W.recent_quiet[0])} to ${dfmt(W.recent_quiet[1])}.`],
+    ['Lapsed', `Regular in ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])} and no check-in (including conferences and events), group attendance or confirmed serving from ${dfmt(W.recent_quiet[0])} to ${dfmt(W.recent_quiet[1])}.${M.giving_available ? ' Gifts also count as activity.' : ' Giving is not included (see data gaps).'}`],
     ['Annual attrition rate', 'Lapsed ÷ regular attenders in the baseline window.'],
-    ['Engaged', 'In a group (attended a group meeting), serving (confirmed on a plan or volunteer check-in), or giving regularly (a gift in 2 of 3 months). Each is tracked separately and in combination.'],
+    ['Engaged', 'In a group (marked present at a group meeting) or serving (confirmed on a Services plan or Dream Team check-in), tracked separately and combined. Giving was requested but could not be measured.'],
     ['Newcomer retention rate', 'Share of first-time guests with at least 4 months to settle in who became regular attenders.'],
     ['Net growth', 'Newcomers who became regular and are still active, minus lapsed regulars.'],
   ];
   s.append($(`<div class="tablewrap"><table><tbody>${defs.map(d => `<tr><td style="width:28%"><b>${d[0]}</b></td><td>${d[1]}</td></tr>`).join('')}</tbody></table></div>`));
-  s.append($(src(`Every figure is computed by <code>attrition/analyze.py</code> from Planning Center API pages saved in <code>attrition/data/raw</code>. Each activity row in <code>data/tidy/activity.csv</code> carries a reference to the API page and record it came from.`)));
+  s.append($(src(`Every figure is computed by <code>attrition/analyze.py</code> from Planning Center records pulled through the Planning Center connector into <code>attrition/data/connector</code>, each batch checked against Planning Center's own record count. Each activity row in <code>data/tidy/activity.csv</code> carries the Planning Center record ID it came from.`)));
 }
 </script>

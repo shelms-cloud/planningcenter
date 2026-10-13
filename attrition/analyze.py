@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import os
 
 import numpy as np
 import pandas as pd
@@ -130,12 +131,16 @@ def person_profile(t, cohort: set, ref: dt.date, a: pd.DataFrame, att: pd.DataFr
             lambda b: isinstance(b, dt.date) and (ref - b).days < 18 * 365.25)
         comp = members.groupby("household_id").agg(kids=("is_child", "sum"), n=("person_id", "size"))
         comp["adults"] = comp["n"] - comp["kids"]
-        htype = np.select([comp["kids"] > 0, comp["adults"] == 1, comp["adults"] == 2],
-                          ["Family with kids", "Single adult", "Couple (no kids at home)"],
-                          "3+ adults")
+        # Households of 9+ are usually catch-all records, not one home.
+        htype = np.select([comp["n"] >= 9, comp["kids"] > 0, comp["adults"] == 1, comp["adults"] == 2],
+                          ["Large household record (9+)", "Family with kids", "Single adult",
+                           "Couple (no kids at home)"], "3+ adults")
         htype = pd.Series(htype, index=comp.index)
         df["household_id"] = main_hh.reindex(df.index)
-        df["household_type"] = df["household_id"].map(htype).fillna("No household record")
+        df["household_type"] = df["household_id"].map(htype)
+        # Planning Center usually has no household record for a single adult.
+        df.loc[df["household_type"].isna() & (df["age"] >= 18), "household_type"] = "Single adult"
+        df["household_type"] = df["household_type"].fillna("No household record")
     else:
         df["household_id"] = None
         df["household_type"] = "No household record"
@@ -143,8 +148,9 @@ def person_profile(t, cohort: set, ref: dt.date, a: pd.DataFrame, att: pd.DataFr
     # Tenure at ref: earliest of People record creation and first activity
     first_act = a.groupby("person_id")["date"].min()
     created = p["created_at"].reindex(df.index)
-    first_seen = pd.concat([created, first_act.reindex(df.index)], axis=1).min(axis=1)
-    yrs = first_seen.map(lambda d: (ref - d).days / 365.25 if isinstance(d, dt.date) else np.nan)
+    both = pd.concat([pd.to_datetime(created), pd.to_datetime(first_act.reindex(df.index))], axis=1)
+    first_seen = both.min(axis=1)
+    yrs = first_seen.map(lambda d: (pd.Timestamp(ref) - d).days / 365.25 if pd.notna(d) else np.nan)
     df["tenure"] = pd.cut(yrs, [-1, 1, 3, 1e9], labels=["Under 1 year", "1-3 years", "3+ years"]
                           ).astype(str).replace("nan", "Unknown")
 
@@ -377,14 +383,14 @@ def main():
     reg_gained = (newc[newc["regular"]].assign(m=newc["regular_on"].map(
         lambda d: d.strftime("%Y-%m") if isinstance(d, dt.date) else None)).groupby("m").size()
         if len(newc) else pd.Series(dtype=int))
-    start_m = C.HISTORY_START.strftime("%Y-%m")
+    start_m = (C.HISTORY_START + dt.timedelta(days=C.NEWCOMER_LOOKBACK_DAYS)).strftime("%Y-%m")
     months = pd.period_range(start_m, C.AS_OF.strftime("%Y-%m"), freq="M").strftime("%Y-%m")
     m["seasonality"] = [{
         "month": mo,
         "lost": int(lost_m.get(mo, 0)) if mo < quiet_cut.strftime("%Y-%m") else None,
         "first_visits": int(gained_m.get(mo, 0)) if mo >= (C.HISTORY_START + dt.timedelta(
             days=C.NEWCOMER_LOOKBACK_DAYS)).strftime("%Y-%m") else None,
-        "became_regular": int(reg_gained.get(mo, 0)),
+        "became_regular": int(reg_gained.get(mo, 0)) if mo >= start_m else None,
     } for mo in months]
     m["seasonality_note"] = (f"'Lost' = ever-regular people whose last attendance fell in that month and "
                              f"who have had no activity of any kind for {C.LAPSE_QUIET_DAYS}+ days. Months "
@@ -571,8 +577,9 @@ def data_gaps(t, a, att, prof, base) -> dict:
     seen = set(a["person_id"])
     W = C.windows()
     out = {
-        "active_people": len(active),
-        "active_with_no_activity_since_history_start": int((~active["person_id"].isin(seen)).sum()),
+        "people_records_used": len(p),
+        "active_people_in_pco": int(os.environ.get("ACTIVE_PEOPLE_TOTAL", len(active))),
+        "people_with_any_activity": len(seen),
         "missing_birthdate_pct_of_regulars": rate(prof["age"].isna().sum(), len(prof)),
         "no_household_pct_of_regulars": rate((prof["household_type"] == "No household record").sum(), len(prof)),
         "no_service_time_pct_of_regulars": rate((prof["service_time"] == "No service time recorded").sum(), len(prof)),
@@ -586,10 +593,14 @@ def data_gaps(t, a, att, prof, base) -> dict:
         out["group_meetings"] = len(ge)
         out["group_meetings_without_attendance_pct"] = rate((ge["attendees"].astype(int) == 0).sum(), len(ge))
         gm = t["group_members"]
-        out["current_group_members"] = int(gm["person_id"].nunique()) if len(gm) else 0
-        in_att = set(a.loc[(a["source"] == "group") & in_window(a["date"], W["current"]), "person_id"])
-        out["current_members_with_no_recorded_group_attendance_90d"] = int(
-            (~gm["person_id"].drop_duplicates().isin(in_att)).sum()) if len(gm) else 0
+        per_group = ge.assign(att=ge["attendees"].astype(int)).groupby("group_id")["att"].sum()
+        out["groups_meeting"] = int(len(per_group))
+        out["groups_never_recording_attendance"] = int((per_group == 0).sum())
+        if len(gm):
+            out["current_group_members"] = int(gm["person_id"].nunique())
+            in_att = set(a.loc[(a["source"] == "group") & in_window(a["date"], W["current"]), "person_id"])
+            out["current_members_with_no_recorded_group_attendance_90d"] = int(
+                (~gm["person_id"].drop_duplicates().isin(in_att)).sum())
     dup = p.dropna(subset=["birthdate"]).groupby(
         [p["first_name"].str.lower(), p["last_name"].str.lower(), "birthdate"]).size()
     out["possible_duplicate_people"] = int((dup[dup > 1] - 1).sum())
