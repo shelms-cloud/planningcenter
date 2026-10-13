@@ -50,7 +50,7 @@ section.q { background: var(--surface); border: 1px solid var(--line); border-ra
 .qnum { color: var(--accent); font-weight: 800; font-size: 13px; letter-spacing: .06em }
 .answer { font-size: 16px; font-weight: 600; max-width: 70ch }
 .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 22px 28px }
-.grid2 > * { min-width: 0 }
+.grid2 > * { min-width: 0; align-content: start; align-self: start }
 .source { font-size: 12px; color: var(--muted); border-top: 1px dashed transparent; padding-top: 2px }
 .source b { font-weight: 600; color: var(--ink-2) }
 
@@ -117,6 +117,7 @@ const fmt = (x) => x == null ? '—' : Number(x).toLocaleString('en-US');
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const dfmt = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 const mfmt = (ym) => new Date(ym + '-15T12:00:00').toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+const signed = (x) => x == null ? '—' : (x > 0 ? '+' : x < 0 ? '−' : '') + fmt(Math.abs(x));
 const W = M.windows, A = M.attrition, NG = M.net_growth, NC = M.newcomers;
 const app = document.getElementById('app');
 const tip = document.getElementById('tip');
@@ -201,7 +202,7 @@ function svgBars(cats, series, { height = 250, xLabel = (x) => x, yFmt = fmt } =
   s += `<line class="axis" x1="${L}" x2="${Wd - R}" y1="${yp(0)}" y2="${yp(0)}"/></svg>`;
   const el = $(`<div class="chart">${s}</div>`); bindTips(el); return el;
 }
-function niceMax(v) { if (v > 4) { const n = niceMax0(v); return Math.ceil(n / 4) * 4; } return niceMax0(v); }
+function niceMax(v) { if (v <= 4) return niceMax0(v); const raw = v / 4, p = Math.pow(10, Math.floor(Math.log10(raw))); for (const m of [1, 2, 2.5, 5, 10]) if (m * p >= raw) return 4 * m * p; return 40 * p; }
 function niceMax0(v) { const p = Math.pow(10, Math.floor(Math.log10(v))); for (const m of [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) if (m * p >= v) return m * p; return 10 * p; }
 const legend = (items) => `<div class="legend">${items.map(([c, t]) => `<span><i style="background:${c}"></i>${esc(t)}</span>`).join('')}</div>`;
 const src = (html) => `<p class="source">${html}</p>`;
@@ -220,9 +221,9 @@ app.append($(`<div class="tiles">
     <div class="def">${fmt(A.lapsed)} of ${fmt(A.baseline_regulars)} people who were regular attenders a year ago have had no check-in, group or serving activity in 90 days.</div></div>
   <div class="tile"><div class="eyebrow">Newcomer retention</div><div class="big num">${pct(NC.retention_rate, 0)}</div>
     <div class="def">${fmt(NC.retention_numerator)} of ${fmt(NC.retention_denominator)} first-time guests (first visit ${dfmt(W.newcomer[0])} – ${dfmt(NC.mature_cutoff)}) went on to become regular attenders.</div></div>
-  <div class="tile"><div class="eyebrow">Net growth underneath Sunday</div><div class="big num">${NG.net > 0 ? '+' : ''}${fmt(NG.net)}</div>
-    <span class="pill ${NG.net > 0 ? 'good' : NG.net < 0 ? 'crit' : 'warn'}">${NG.net > 0 ? 'Growing' : NG.net < 0 ? 'Shrinking' : 'Flat'}</span>
-    <div class="def">${fmt(NG.retained_newcomers)} newcomers became regular and are still active, against ${fmt(NG.lapsed)} lapsed regulars. Regular attenders: ${fmt(NG.regulars_then)} a year ago → ${fmt(NG.regulars_now)} now.</div></div>
+  <div class="tile"><div class="eyebrow">Net growth underneath Sunday</div><div class="big num">${signed(NG.net)}${NG.net_loose_rule != null ? ` <span style="font-size:24px">to ${signed(NG.net_loose_rule)}</span>` : ''}</div>
+    ${(() => { const lo = Math.min(NG.net, NG.net_loose_rule ?? NG.net), hi = Math.max(NG.net, NG.net_loose_rule ?? NG.net); return lo > 0 ? '<span class="pill good">Growing</span>' : hi < 0 ? '<span class="pill crit">Shrinking</span>' : '<span class="pill warn">Essentially flat</span>'; })()}
+    <div class="def">${fmt(NG.retained_newcomers)}${NG.retained_newcomers_loose_rule != null ? `–${fmt(NG.retained_newcomers_loose_rule)}` : ''} newcomers became regular and are still active, against ${fmt(NG.lapsed)} lapsed regulars. The range depends on how strictly "first-time guest" is defined.</div></div>
 </div>`));
 
 if (N.summary) app.append($(`<div class="callout"><div class="eyebrow">In one paragraph</div><p>${N.summary}</p></div>`));
@@ -333,15 +334,21 @@ const ans = (k) => (N.answers || {})[k] || '';
   const g = $('<div class="grid2"></div>');
   const left = $(`<div style="display:grid;gap:10px"><h3>Where today's ${fmt(NG.regulars_now)} regular attenders came from</h3>
      <div class="stack">${Object.entries(comp).map(([k, v], i) => `<div style="flex:${v};background:${cols[i]}" data-tip="${esc(`<b>${k}</b><br>${fmt(v)} (${pct(v / tot)})`)}"></div>`).join('')}</div>
-     ${legend(Object.entries(comp).map(([k, v], i) => [cols[i], `${k}: ${fmt(v)}`]))}
+     ${legend(Object.entries(comp).map(([k, v], i) => [cols[i], `${k[0].toUpperCase() + k.slice(1)}: ${fmt(v)}`]))}
      <table><tbody>
        <tr><td>Newcomers who became regular and are still active</td><td class="r">+${fmt(NG.retained_newcomers)}</td></tr>
        <tr><td>Regular attenders who lapsed</td><td class="r">−${fmt(NG.lapsed)}</td></tr>
-       <tr><td><b>Net</b></td><td class="r"><b>${NG.net > 0 ? '+' : ''}${fmt(NG.net)}</b></td></tr>
+       <tr><td><b>Net</b> (strict newcomer rule)</td><td class="r"><b>${signed(NG.net)}</b></td></tr>
+       ${NG.net_loose_rule != null ? `<tr><td>Net if Planning Center's first-time flag also counts (${fmt(NG.retained_newcomers_loose_rule)} newcomers)</td><td class="r">${signed(NG.net_loose_rule)}</td></tr>` : ''}
        <tr><td>Change in regular attenders, year over year</td><td class="r">${NG.regulars_change > 0 ? '+' : ''}${fmt(NG.regulars_change)} (${pct(NG.regulars_change_rate, 1)})</td></tr>
      </tbody></table></div>`);
   bindTips(left); g.append(left);
   const right = $(`<div style="display:grid;gap:10px"><h3>Regular attenders, rolling 3-month count</h3></div>`);
+  if (NG.regulars_by_age) {
+    const order = ['Kids (0-10)', 'Students (11-17)', 'Adults (18+)', 'Age unknown'];
+    const rows = order.filter(k => NG.regulars_by_age[k]).map(k => { const r = NG.regulars_by_age[k]; const ch = r.then ? (r.now - r.then) / r.then : null; return `<tr><td>${k}</td><td class="r">${fmt(r.then)}</td><td class="r">${fmt(r.now)}</td><td class="r">${ch == null ? '—' : (ch > 0 ? '+' : '') + pct(ch)}</td></tr>`; }).join('');
+    left.append($(`<div style="display:grid;gap:6px"><h3>Regular attenders by age, a year ago vs now</h3><div class="tablewrap"><table><thead><tr><th>Group</th><th class="r">Then</th><th class="r">Now</th><th class="r">Change</th></tr></thead><tbody>${rows}</tbody></table></div><p class="small">Some of the kids' decline and the students' rise is children aging from one band into the next; together, under-18 regulars went from ${fmt((NG.regulars_by_age['Kids (0-10)']||{}).then + (NG.regulars_by_age['Students (11-17)']||{}).then)} to ${fmt((NG.regulars_by_age['Kids (0-10)']||{}).now + (NG.regulars_by_age['Students (11-17)']||{}).now)}. Kids' and volunteers' check-in recording was steady all year. Adult check-ins at Sunday Experience roughly doubled from February 2026, which reflects more complete recording as much as growth, so the adult change overstates real growth.</p></div>`));
+  }
   const rr = Object.entries(NG.trend.regulars_rolling || {});
   if (rr.length) right.append(svgLine([{ name: 'Regular attenders', color: 'var(--s1)', values: rr.map(r => r[1]) }], rr.map(r => r[0]), { xLabel: (x) => mfmt(x.slice(0, 7)) }));
   g.append(right);
@@ -352,10 +359,19 @@ const ans = (k) => (N.answers || {})[k] || '';
     const months = [...new Set([...hc.map(x => x[0]), ...ci.map(x => x[0])])].sort();
     const g2 = $('<div class="grid2"></div>');
     if (hc.length) { const b = $(`<div style="display:grid;gap:8px"><h3>Average Sunday headcount by month</h3></div>`); b.append(svgLine([{ name: 'Headcount', color: 'var(--s1)', values: months.map(m => (NG.trend.sunday_headcount_avg || {})[m] ?? null) }], months, { xLabel: mfmt, height: 200 })); g2.append(b); }
-    if (ci.length) { const b = $(`<div style="display:grid;gap:8px"><h3>Average Sunday check-ins by month</h3></div>`); b.append(svgLine([{ name: 'Check-ins', color: 'var(--s1)', values: months.map(m => (NG.trend.sunday_checkins_avg || {})[m] ?? null) }], months, { xLabel: mfmt, height: 200 })); g2.append(b); }
+    const BE = NG.trend.sunday_checkins_by_event || {};
+    if (Object.keys(BE).length) {
+      const evMonths = [...new Set(Object.values(BE).flatMap(o => Object.keys(o)))].sort().filter(m => m >= M.history_start.slice(0, 7));
+      const spec = [['Sunday Experience', 'Adults (Sunday Experience)', 'var(--s2)'], ['Sunday Kids Check-In', 'Kids', 'var(--s1)'], ['Sunday Dream Team Check-In', 'Dream Team volunteers', 'var(--s3)']].filter(x => BE[x[0]]);
+      const b = $(`<div style="display:grid;gap:8px"><h3>Average people checked in per Sunday, by event</h3></div>`);
+      b.append(svgLine(spec.map(([k, label, c]) => ({ name: label, color: c, values: evMonths.map(m => BE[k][m] ?? null) })), evMonths, { xLabel: mfmt, height: 220 }));
+      b.append($(legend(spec.map(([k, label, c]) => [c, label]))));
+      b.append($(`<p class="small">The adult line doubles from February 2026 while kids and volunteers hold steady, which points to a change in how adults are checked in. The latest month is partial, and Sunday Experience records are sometimes entered up to two weeks late.</p>`));
+      g2.append(b);
+    } else if (ci.length) { const b = $(`<div style="display:grid;gap:8px"><h3>Average Sunday check-ins by month</h3></div>`); b.append(svgLine([{ name: 'Check-ins', color: 'var(--s1)', values: months.map(m => (NG.trend.sunday_checkins_avg || {})[m] ?? null) }], months, { xLabel: mfmt, height: 200 })); g2.append(b); }
     s.append(g2);
   }
-  s.append($(src(`<b>Source:</b> Regular-attender counts use the same 6-in-91-days rule as everywhere else. Headcounts are Check-Ins headcounts summed per Sunday. Returning = regular now, not a regular a year ago, and not a first-time guest this year (people coming back, or irregular attenders who stepped up). <code>metrics.json → net_growth</code>`)));
+  s.append($(src(`<b>Source:</b> Regular-attender counts use the same 6-in-91-days rule as everywhere else. Sunday check-ins count distinct people per event per Sunday. Returning = regular now, not a regular a year ago, and not a first-time guest this year (people coming back, or irregular attenders who stepped up). <code>metrics.json → net_growth</code>`)));
 }
 
 // ---------- 5. Seasonality ----------
@@ -397,7 +413,7 @@ const ans = (k) => (N.answers || {})[k] || '';
     right.append(t2);
     g.append(right);
     s.append(g);
-    s.append($(src(`<b>Method:</b> each lapsed person is lined up on their last attendance date. People who stayed are compared over the same calendar dates (drawn from the lapsed group's dates) so seasons match. Each signal compares a 3-month window with the person's own baseline (${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])}): attendance in the window was half or less of their baseline; they attended a group or served in the 6 months to ${dfmt(W.baseline[1])} and not at all in the window. Windows that would overlap the baseline are skipped, so only people whose last visit came late enough are counted (n shown in the table). "Lapse risk if seen" = lapse rate among people showing the signal ÷ lapse rate among those who didn't. <code>metrics.json → early_warning</code>`)));
+    s.append($(src(`<b>Method:</b> each lapsed person is lined up on their last attendance date. People who stayed are measured at every lapsed person's last-visit date and averaged, so the comparison covers the same calendar dates and seasons. Each signal compares a 3-month window with the person's own baseline (${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])}): attendance in the window was half or less of their baseline; they attended a group or served in the 6 months to ${dfmt(W.baseline[1])} and not at all in the window. Windows that would overlap the baseline are skipped, so only people whose last visit came late enough are counted (n shown in the table). "Lapse risk if seen" = lapse rate among people showing the signal ÷ lapse rate among those who didn't. <code>metrics.json → early_warning</code>`)));
   }
 }
 

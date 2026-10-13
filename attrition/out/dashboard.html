@@ -1,0 +1,474 @@
+<title>Celebration Retention Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: a single reading column of numbered questions (they match the brief's order),
+   headline tiles first, then one panel per question, then findings, gaps, definitions. */
+:root {
+  --bg: #f6f5f2; --surface: #fcfcfb; --ink: #262524; --ink-2: #52514e; --muted: #75716b;
+  --line: #e3e0da; --axis: #c3c2b7; --brand: #283b2e; --brand-soft: #e6ece5; --accent: #3f5a9c;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --band: rgba(12,163,12,.14);
+  --good: #0ca30c; --warn: #b07a00; --crit: #d03b3b;
+  --sans: 'Hanken Grotesk', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121412; --surface: #1a1b19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #9a968f;
+  --line: #2c2c2a; --axis: #45443f; --brand: #a9c7ae; --brand-soft: #1f2a22; --accent: #9db0e6;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --band: rgba(12,163,12,.22);
+  --good: #0ca30c; --warn: #fab219; --crit: #e66767; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121412; --surface: #1a1b19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #9a968f;
+  --line: #2c2c2a; --axis: #45443f; --brand: #a9c7ae; --brand-soft: #1f2a22; --accent: #9db0e6;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --band: rgba(12,163,12,.22);
+  --good: #0ca30c; --warn: #fab219; --crit: #e66767; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.55 var(--sans); padding: 32px 16px 64px }
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 28px }
+h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.2 }
+h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; letter-spacing: -.01em; color: var(--brand) }
+h2 { font-size: 21px; font-weight: 700 }
+h3 { font-size: 15px; font-weight: 700 }
+p { margin: 0; max-width: 68ch }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+.sub { color: var(--ink-2) }
+.small { font-size: 13px; color: var(--muted) }
+.num { font-variant-numeric: tabular-nums }
+header { display: grid; gap: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line) }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--ink-2) }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 16px; display: grid; gap: 6px; align-content: start }
+.tile .big { font-size: 44px; font-weight: 800; line-height: 1; letter-spacing: -.02em }
+.tile .def { font-size: 13px; color: var(--ink-2) }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 99px; border: 1px solid currentColor; width: max-content }
+.pill.good { color: var(--good) } .pill.warn { color: var(--warn) } .pill.crit { color: var(--crit) }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor }
+
+section.q { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 22px clamp(16px, 3vw, 26px); display: grid; gap: 16px; min-width: 0 }
+.qhead { display: grid; gap: 4px }
+.qnum { color: var(--accent); font-weight: 800; font-size: 13px; letter-spacing: .06em }
+.answer { font-size: 16px; font-weight: 600; max-width: 70ch }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 22px 28px }
+.grid2 > * { min-width: 0; align-content: start; align-self: start }
+.source { font-size: 12px; color: var(--muted); border-top: 1px dashed transparent; padding-top: 2px }
+.source b { font-weight: 600; color: var(--ink-2) }
+
+/* horizontal rate bars (HTML so labels stay readable at phone width) */
+.hb { display: grid; gap: 7px }
+.hb-row { display: grid; grid-template-columns: minmax(96px, 34%) 1fr 64px; align-items: center; gap: 10px; font-size: 13px }
+.hb-label { color: var(--ink-2); line-height: 1.25 }
+.hb-label .n { color: var(--muted); font-size: 12px }
+.hb-track { position: relative; height: 16px }
+.hb-bar { position: absolute; left: 0; top: 2px; bottom: 2px; background: var(--s2); border-radius: 0 4px 4px 0; min-width: 2px }
+.hb-bar.blue { background: var(--s1) } .hb-bar.green { background: var(--s3) }
+.hb-row.thin .hb-bar { opacity: .45 }
+.hb-ref { position: absolute; top: -3px; bottom: -3px; border-left: 2px solid var(--ink); opacity: .55 }
+.hb-val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600 }
+.hb-row:hover .hb-label { color: var(--ink) }
+
+.stack { display: flex; gap: 2px; height: 30px; border-radius: 4px; overflow: hidden }
+.stack > div { min-width: 2px }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-2) }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px }
+
+.chart { overflow-x: auto }
+.chart svg { display: block; width: 100%; min-width: 520px; height: auto }
+.chart svg text { fill: var(--muted); font: 500 11px var(--sans) }
+.chart .grid line { stroke: var(--line) }
+.chart .axis { stroke: var(--axis) }
+.chart .hit { fill: transparent }
+.tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 12.5px; padding: 7px 10px; border-radius: 6px; max-width: 260px; z-index: 9; line-height: 1.4 }
+.tip b { font-weight: 700 }
+
+table { border-collapse: collapse; width: 100%; font-size: 13.5px }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 700 }
+td.r, th.r { text-align: right; font-variant-numeric: tabular-nums }
+.tablewrap { overflow-x: auto }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden }
+.seg button { font: 600 13px var(--sans); background: transparent; color: var(--ink-2); border: 0; padding: 6px 12px; cursor: pointer }
+.seg button[aria-pressed="true"] { background: var(--brand-soft); color: var(--ink) }
+.seg button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+
+ol.findings, ol.recs { margin: 0; padding-left: 22px; display: grid; gap: 12px; max-width: 74ch }
+ol.findings li::marker, ol.recs li::marker { font-weight: 800; color: var(--accent) }
+.recs li b { display: block }
+.callout { background: var(--brand-soft); border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px }
+.gaps { display: grid; gap: 10px }
+.gap { display: grid; grid-template-columns: 1fr; gap: 2px; padding: 10px 0; border-bottom: 1px solid var(--line) }
+.gap .impact { font-size: 13px; color: var(--ink-2) }
+details summary { cursor: pointer; font-weight: 600 }
+.inconclusive { color: var(--warn); font-weight: 700 }
+@media (max-width: 520px) { .hb-row { grid-template-columns: 1fr 52px; } .hb-label { grid-column: 1 / -1 } }
+</style>
+
+<div class="wrap" id="app"></div>
+<div class="tip" id="tip" hidden></div>
+
+<script id="metrics" type="application/json">{"as_of": "2026-10-13", "history_start": "2025-07-14", "windows": {"baseline": ["2025-07-15", "2025-10-13"], "recent_quiet": ["2026-07-16", "2026-10-13"], "current": ["2026-07-15", "2026-10-13"], "newcomer": ["2025-10-14", "2026-10-13"], "at_risk_prior": ["2026-04-16", "2026-07-15"], "at_risk_recent": ["2026-07-16", "2026-10-13"]}, "definitions": {}, "attrition": {"baseline_regulars": 636, "lapsed": 102, "rate": 0.1604, "declined_not_lapsed": 104, "declined_rate": 0.1635, "still_regular": 430, "still_regular_rate": 0.6761, "lapsed_marked_inactive_in_pco": 2, "benchmark": [0.1, 0.15], "households": {"baseline": 337, "lapsed": 40, "rate": 0.1187}, "adults_only": {"baseline": 389, "lapsed": 63, "rate": 0.162}}, "giving_available": false, "breakouts": {"engagement": [{"segment": "Group + serving", "regulars": 203, "lapsed": 32, "lapse_rate": 0.1576, "declined": 16, "declined_rate": 0.0788, "small_sample": false}, {"segment": "Group only", "regulars": 65, "lapsed": 12, "lapse_rate": 0.1846, "declined": 16, "declined_rate": 0.2462, "small_sample": false}, {"segment": "Serving only", "regulars": 117, "lapsed": 16, "lapse_rate": 0.1368, "declined": 16, "declined_rate": 0.1368, "small_sample": false}, {"segment": "Neither", "regulars": 251, "lapsed": 42, "lapse_rate": 0.1673, "declined": 56, "declined_rate": 0.2231, "small_sample": false}], "giving": [], "any_engaged": [{"segment": "Group or serving", "regulars": 385, "lapsed": 60, "lapse_rate": 0.1558, "declined": 48, "declined_rate": 0.1247, "small_sample": false}, {"segment": "Neither", "regulars": 251, "lapsed": 42, "lapse_rate": 0.1673, "declined": 56, "declined_rate": 0.2231, "small_sample": false}], "age_band": [{"segment": "Kids (0-10)", "regulars": 205, "lapsed": 35, "lapse_rate": 0.1707, "declined": 41, "declined_rate": 0.2, "small_sample": false}, {"segment": "Students (11-17)", "regulars": 34, "lapsed": 2, "lapse_rate": 0.0588, "declined": 6, "declined_rate": 0.1765, "small_sample": false}, {"segment": "18-29", "regulars": 61, "lapsed": 19, "lapse_rate": 0.3115, "declined": 10, "declined_rate": 0.1639, "small_sample": false}, {"segment": "30-44", "regulars": 84, "lapsed": 16, "lapse_rate": 0.1905, "declined": 4, "declined_rate": 0.0476, "small_sample": false}, {"segment": "45-64", "regulars": 139, "lapsed": 18, "lapse_rate": 0.1295, "declined": 24, "declined_rate": 0.1727, "small_sample": false}, {"segment": "65+", "regulars": 105, "lapsed": 10, "lapse_rate": 0.0952, "declined": 17, "declined_rate": 0.1619, "small_sample": false}, {"segment": "Unknown", "regulars": 8, "lapsed": 2, "lapse_rate": 0.25, "declined": 2, "declined_rate": 0.25, "small_sample": true}], "household_type": [{"segment": "Single adult", "regulars": 63, "lapsed": 15, "lapse_rate": 0.2381, "declined": 12, "declined_rate": 0.1905, "small_sample": false}, {"segment": "Couple (no kids at home)", "regulars": 82, "lapsed": 13, "lapse_rate": 0.1585, "declined": 13, "declined_rate": 0.1585, "small_sample": false}, {"segment": "Family with kids", "regulars": 407, "lapsed": 71, "lapse_rate": 0.1744, "declined": 63, "declined_rate": 0.1548, "small_sample": false}, {"segment": "3+ adults", "regulars": 62, "lapsed": 3, "lapse_rate": 0.0484, "declined": 8, "declined_rate": 0.129, "small_sample": false}, {"segment": "No household record", "regulars": 2, "lapsed": 0, "lapse_rate": 0.0, "declined": 2, "declined_rate": 1.0, "small_sample": true}, {"segment": "Large household record (9+)", "regulars": 20, "lapsed": 0, "lapse_rate": 0.0, "declined": 6, "declined_rate": 0.3, "small_sample": false}], "tenure": [{"segment": "Under 1 year", "regulars": 86, "lapsed": 24, "lapse_rate": 0.2791, "declined": 17, "declined_rate": 0.1977, "small_sample": false}, {"segment": "1-3 years", "regulars": 135, "lapsed": 25, "lapse_rate": 0.1852, "declined": 18, "declined_rate": 0.1333, "small_sample": false}, {"segment": "3+ years", "regulars": 415, "lapsed": 53, "lapse_rate": 0.1277, "declined": 69, "declined_rate": 0.1663, "small_sample": false}], "campus": [{"segment": "Shreveport Campus", "regulars": 636, "lapsed": 102, "lapse_rate": 0.1604, "declined": 104, "declined_rate": 0.1635, "small_sample": false}], "service_time": [{"segment": "No service time recorded", "regulars": 636, "lapsed": 102, "lapse_rate": 0.1604, "declined": 104, "declined_rate": 0.1635, "small_sample": false}], "ministry_area": [{"segment": "kids", "regulars": 210, "lapsed": 36, "lapse_rate": 0.1714, "declined": 43, "declined_rate": 0.2048, "small_sample": false}, {"segment": "students", "regulars": 15, "lapsed": 0, "lapse_rate": 0.0, "declined": 0, "declined_rate": 0.0, "small_sample": true}, {"segment": "cya", "regulars": 38, "lapsed": 14, "lapse_rate": 0.3684, "declined": 7, "declined_rate": 0.1842, "small_sample": false}, {"segment": "adults", "regulars": 373, "lapsed": 52, "lapse_rate": 0.1394, "declined": 54, "declined_rate": 0.1448, "small_sample": false}], "ministry_area_fallback_share": 0.2201}, "newcomers": {"funnel_all": [{"stage": "First visit", "n": 742}, {"stage": "Second visit", "n": 335}, {"stage": "Third visit", "n": 231}, {"stage": "Regular attender", "n": 103}, {"stage": "Connected to a group or team", "n": 50}], "funnel_mature": [{"stage": "First visit", "n": 418}, {"stage": "Second visit", "n": 211}, {"stage": "Third visit", "n": 163}, {"stage": "Regular attender", "n": 78}, {"stage": "Connected to a group or team", "n": 40}], "mature_cutoff": "2026-06-15", "retention_rate": 0.1866, "retention_numerator": 78, "retention_denominator": 418, "connected_any": 106, "one_time_guest_checkins": 80, "by_month": [{"month": "2025-10", "first_visits": 25, "second": 12, "regular": 4, "mature": true}, {"month": "2025-11", "first_visits": 48, "second": 24, "regular": 7, "mature": true}, {"month": "2025-12", "first_visits": 33, "second": 21, "regular": 8, "mature": true}, {"month": "2026-01", "first_visits": 44, "second": 27, "regular": 12, "mature": true}, {"month": "2026-02", "first_visits": 55, "second": 22, "regular": 8, "mature": true}, {"month": "2026-03", "first_visits": 50, "second": 30, "regular": 8, "mature": true}, {"month": "2026-04", "first_visits": 68, "second": 34, "regular": 14, "mature": true}, {"month": "2026-05", "first_visits": 69, "second": 28, "regular": 11, "mature": true}, {"month": "2026-06", "first_visits": 42, "second": 22, "regular": 10, "mature": false}, {"month": "2026-07", "first_visits": 50, "second": 26, "regular": 11, "mature": false}, {"month": "2026-08", "first_visits": 104, "second": 40, "regular": 6, "mature": false}, {"month": "2026-09", "first_visits": 126, "second": 46, "regular": 4, "mature": false}, {"month": "2026-10", "first_visits": 28, "second": 3, "regular": 0, "mature": false}]}, "net_growth": {"retained_newcomers": 88, "lapsed": 102, "net": -14, "regulars_then": 636, "regulars_now": 721, "regulars_change": 85, "regulars_change_rate": 0.1336, "now_composition": {"still regular from a year ago": 430, "newcomers who became regular": 67, "returning / previously irregular": 224}, "trend": {"sunday_checkins_avg": {"2025-07": 342, "2025-08": 387, "2025-09": 383, "2025-10": 332, "2025-11": 328, "2025-12": 266, "2026-01": 251, "2026-02": 408, "2026-03": 426, "2026-04": 615, "2026-05": 398, "2026-06": 474, "2026-07": 471, "2026-08": 544, "2026-09": 520, "2026-10": 351}, "sunday_checkins_by_event": {"Sunday Experience": {"2025-07": 168, "2025-08": 178, "2025-09": 166, "2025-10": 144, "2025-11": 127, "2025-12": 117, "2026-01": 104, "2026-02": 224, "2026-03": 219, "2026-04": 362, "2026-05": 215, "2026-06": 284, "2026-07": 288, "2026-08": 326, "2026-09": 310, "2026-10": 188}, "Sunday Kids Check-In": {"2025-07": 164, "2025-08": 187, "2025-09": 196, "2025-10": 171, "2025-11": 183, "2025-12": 136, "2026-01": 177, "2026-02": 164, "2026-03": 170, "2026-04": 200, "2026-05": 151, "2026-06": 158, "2026-07": 146, "2026-08": 176, "2026-09": 158, "2026-10": 138}, "Sunday Dream Team Check-In": {"2025-07": 128, "2025-08": 148, "2025-09": 138, "2025-10": 128, "2025-11": 136, "2025-12": 123, "2026-01": 99, "2026-02": 122, "2026-03": 133, "2026-04": 166, "2026-05": 133, "2026-06": 132, "2026-07": 130, "2026-08": 143, "2026-09": 140, "2026-10": 134}}, "regulars_rolling": {"2025-10-13": 636, "2026-01-12": 558, "2026-04-13": 699, "2026-07-14": 662, "2026-10-13": 721}}, "regulars_by_age": {"Adults (18+)": {"then": 389, "now": 485}, "Kids (0-10)": {"then": 205, "now": 169}, "Students (11-17)": {"then": 34, "now": 56}, "Age unknown": {"then": 8, "now": 11}}, "retained_newcomers_loose_rule": 137, "net_loose_rule": 35}, "seasonality": [{"month": "2025-10", "lost": 10, "first_visits": 36, "became_regular": 2}, {"month": "2025-11", "lost": 22, "first_visits": 48, "became_regular": 6}, {"month": "2025-12", "lost": 9, "first_visits": 33, "became_regular": 3}, {"month": "2026-01", "lost": 5, "first_visits": 44, "became_regular": 13}, {"month": "2026-02", "lost": 4, "first_visits": 55, "became_regular": 10}, {"month": "2026-03", "lost": 12, "first_visits": 50, "became_regular": 9}, {"month": "2026-04", "lost": 39, "first_visits": 68, "became_regular": 12}, {"month": "2026-05", "lost": 33, "first_visits": 69, "became_regular": 10}, {"month": "2026-06", "lost": 25, "first_visits": 42, "became_regular": 12}, {"month": "2026-07", "lost": null, "first_visits": 50, "became_regular": 12}, {"month": "2026-08", "lost": null, "first_visits": 104, "became_regular": 10}, {"month": "2026-09", "lost": null, "first_visits": 126, "became_regular": 5}, {"month": "2026-10", "lost": null, "first_visits": 28, "became_regular": 0}], "seasonality_note": "'Lost' = ever-regular people whose last attendance fell in that month and who have had no activity of any kind for 90+ days. Months from Jul 2026 on are not yet knowable.", "early_warning": {"lapsed_n": 102, "stayed_n": 534, "signals": [{"period": "6-3 months before", "signal": "Attendance fell by half or more", "lapsed_n": 51, "stayed_n": 267, "lapsed_pct": 0.3137, "stayed_pct": 0.1693, "lapse_rate_with_signal": 0.2614, "lapse_rate_without": 0.1363, "relative_risk": 1.92}, {"period": "6-3 months before", "signal": "Stopped attending their group", "lapsed_n": 51, "stayed_n": 267, "lapsed_pct": 0.2157, "stayed_pct": 0.1141, "lapse_rate_with_signal": 0.2653, "lapse_rate_without": 0.1446, "relative_risk": 1.83}, {"period": "6-3 months before", "signal": "Stopped serving", "lapsed_n": 51, "stayed_n": 267, "lapsed_pct": 0.1176, "stayed_pct": 0.0368, "lapse_rate_with_signal": 0.3792, "lapse_rate_without": 0.1489, "relative_risk": 2.55}, {"period": "3-0 months before", "signal": "Attendance fell by half or more", "lapsed_n": 68, "stayed_n": 356, "lapsed_pct": 0.3971, "stayed_pct": 0.1325, "lapse_rate_with_signal": 0.364, "lapse_rate_without": 0.1172, "relative_risk": 3.11}, {"period": "3-0 months before", "signal": "Stopped attending their group", "lapsed_n": 68, "stayed_n": 356, "lapsed_pct": 0.2059, "stayed_pct": 0.1102, "lapse_rate_with_signal": 0.2629, "lapse_rate_without": 0.1456, "relative_risk": 1.81}, {"period": "3-0 months before", "signal": "Stopped serving", "lapsed_n": 68, "stayed_n": 356, "lapsed_pct": 0.1618, "stayed_pct": 0.0395, "lapse_rate_with_signal": 0.439, "lapse_rate_without": 0.1429, "relative_risk": 3.07}], "curve": {"lapsed": [3.45, 3.34, 2.91, 2.91, 2.29, 2.32, 2.9, 2.34, 2.07], "stayed": [3.96, 3.72, 3.61, 3.57, 3.13, 3.04, 3.84, 3.65, 3.63]}, "curve_months": [-9, -8, -7, -6, -5, -4, -3, -2, -1], "baseline_days_avg": {"lapsed": 9.56, "stayed": 10.9}}, "at_risk_count": 73, "data_gaps": {"people_records_used": 4268, "active_people_in_pco": 9541, "people_with_any_activity": 3072, "missing_birthdate_pct_of_regulars": 0.0126, "no_household_pct_of_regulars": 0.0031, "no_service_time_pct_of_regulars": 1.0, "campuses": 1, "activity_rows_by_source": {"checkin": 40553, "group": 8658, "serve": 11381}, "group_meetings": 1555, "group_meetings_without_attendance_pct": 0.3814, "groups_meeting": 206, "groups_never_recording_attendance": 39, "possible_duplicate_people": 32, "event_area_map": [{"name": "Sunday Experience", "area": "adults", "checkins": 15008}, {"name": "Sunday Kids Check-In", "area": "kids", "checkins": 11179}, {"name": "Sunday Dream Team Check-In", "area": "serving", "checkins": 8770}, {"name": "Wednesday Night Kids Check-In", "area": "kids", "checkins": 2385}, {"name": "Summer Blast 2026", "area": "special", "checkins": 440}, {"name": "CY Night", "area": "cya", "checkins": 322}, {"name": "Discover Celebration: Step 1", "area": "adults", "checkins": 306}, {"name": "Serve Day", "area": "serving", "checkins": 281}, {"name": "Discover Celebration: Step 2", "area": "adults", "checkins": 279}, {"name": "Radiant Women's Conference: All Assignments", "area": "serving", "checkins": 269}, {"name": "Radiant Women's Conference: All Assignments", "area": "serving", "checkins": 240}, {"name": "Marriage One Night: All Assignments", "area": "serving", "checkins": 215}, {"name": "Men's Conference", "area": "special", "checkins": 160}, {"name": "Parenting One Night", "area": "special", "checkins": 117}, {"name": "Freedom Conference", "area": "special", "checkins": 110}, {"name": "First Wednesday Dream Team", "area": "serving", "checkins": 100}, {"name": "Christmas Eve Dream Team", "area": "serving", "checkins": 99}, {"name": "Freedom Conference: All Assignments", "area": "serving", "checkins": 91}, {"name": "Christmas Eve Kids Classes", "area": "kids", "checkins": 78}, {"name": "Parenting One Night Childcare", "area": "special", "checkins": 60}, {"name": "Prayer Service", "area": "adults", "checkins": 21}, {"name": "Sunday Evening Service", "area": "adults", "checkins": 16}, {"name": "Mid-Week Dream Team", "area": "serving", "checkins": 5}, {"name": "Christmas Eve", "area": "adults", "checkins": 2}], "baseline_regulars_under_18_pct": 0.3758, "baseline_regulars_seen_via": {"check-ins only": 251, "check-ins plus group/serving": 361, "group/serving only, never checked in": 24}}}</script>
+<script id="narrative" type="application/json">{"summary": "Of the 636 people who were regular attenders a year ago, 102 (16.0%) have gone completely quiet. That is just above the 10\u201315% healthy range, and another 104 (16.4%) are still around but no longer regular. We are replacing them, but only about one for one: 88 to 137 newcomers became regular and are still here, against 102 who lapsed. Underneath the Sunday numbers we are essentially flat. The losses concentrate among young adults, singles and people in their first year, and they cluster from April to June. Stepping back from serving is the clearest early warning.", "answers": {"attrition": "16.0% annual attrition (102 of 636), just above the 10\u201315% healthy range. Counted by household it is 11.9%, inside the range, because many losses are one family member drifting rather than whole families leaving.", "breakouts": "Young adults (18\u201329: 31%), the CYA ministry (37%), single adults (24%) and people in their first year (28%) lapse at roughly twice the rate of people with 3+ years at the church (13%) and adults 65+ (10%). Being in a group or on a team did not change the outright lapse rate much (16% vs 17%), but it did keep people regular: 76% of those in a group and serving are still regular, against 61% of those in neither.", "funnel": "Half of first-time guests never come back. Of guests who have had four months to settle in, 50% returned, 39% came a third time, 19% became regular and 10% connected to a group or team. The two biggest leaks are between the first and second visit, and between the third visit and becoming regular.", "net_growth": "Essentially flat. Between 88 and 137 newcomers became regular and are still active, against 102 lapsed regulars, so the net is \u221214 to +35 depending on how strictly a first-time guest is defined. The count of regular attenders rose from 636 to 721, but most of that rise comes from adults being checked in more consistently since February. Among under-18s, whose check-in recording was steady, regulars fell from 239 to 225.", "seasonality": "Losses cluster from April to June: 97 of the 159 measurable losses (61%) were people whose last visit fell in those three months, the stretch after Easter into summer. First-time guests peaked in August and September 2026 (104 and 126). This is one year of data, so treat it as a pattern to watch, not a settled trend.", "early_warning": "Three to six months before their last visit, lapsed people were 2.5 times as likely to have stopped serving, and about twice as likely to have halved their attendance or dropped out of their group, compared with people who stayed. They were also lighter attenders from the start: 9.6 attendance days in the baseline quarter, against 10.9 for those who stayed."}, "findings": ["<b>Attrition is slightly above healthy.<\/b> 16.0% of last year's regular attenders (102 of 636) have had no check-in, group or serving activity in 90 days. Counted by household it is 11.9% (40 of 337). Only 68% of last year's regulars are still regular today.", "<b>We lose young adults, singles and newcomers first.<\/b> 31% of regular attenders aged 18\u201329 lapsed (19 of 61), and 37% of those whose main ministry was CYA (14 of 38). Single adults lapsed at 24% (15 of 63) and first-year people at 28% (24 of 86). People with 3+ years at the church lapsed at 13% and adults 65+ at 10%.", "<b>The front door works; the second step doesn't.<\/b> 742 first-time guests came in the last 12 months. Half never returned, and of those with four months to settle in only 19% became regular and 10% connected to a group or team.", "<b>We are flat underneath the Sunday numbers.<\/b> Newcomers who stuck (88\u2013137) roughly match regulars who left (102). Sunday adult check-ins doubled from February 2026, but kids' and volunteers' check-ins held steady, so most of that rise is better recording, not growth.", "<b>Stopping serving is the clearest warning, and spring is when people slip away.<\/b> People who stopped serving were 2.5 times as likely to lapse in the following three to six months, and 61% of losses came after visits in April\u2013June."], "recommendations": [{"title": "Assimilation and follow-up: win the second visit.", "body": " Set up a Planning Center Workflow that creates a card automatically for every first-time guest. A named person calls or texts within 48 hours with a specific invitation for next Sunday, and personally invites them to Discover Celebration by their third visit. Review the workflow weekly in staff meeting. The target is to move the return rate from 50% to 60% and the regular rate from 19% to 25% over the next year."}, {"title": "Serving: make Dream Team leaders the early-warning system.", "body": " When a regular volunteer has not served or has declined for six weeks, their team leader (not staff) reaches out within a week. Once a month, walk through the private at-risk list (73 people today) by ministry, with an owner and an outcome noted for each name. Help every first-year attender find a team by their third month, since serving is what most clearly holds people."}, {"title": "Groups: build a young-adult on-ramp, take attendance, and plan for spring.", "body": " Invite every CY Night and 18\u201329 regular into a short-term group within a month. Require every group to record attendance in Planning Center: 38% of group meetings had none, and 39 of 206 groups never recorded any, which hides who is drifting. Because most losses start after Easter, launch a spring group semester and a serving push in the weeks right after Easter, rather than letting the calendar go quiet into summer."}], "gaps": [{"title": "Giving is not included.", "body": "The Planning Center connector account isn't authorized to read Giving, so lapsed means no check-in, group attendance or confirmed serving. Some of the 102 lapsed people may still be giving, so attrition is somewhat overstated, and the giving breakout could not be built. Re-run with Giving access to close this gap."}, {"title": "Adult check-in coverage changed mid-year.", "body": "Sunday Experience averaged about 105\u2013170 people checked in per Sunday before February 2026 and 220\u2013360 after, while kids and volunteers held steady. Adults who attend without being checked in are invisible, so the baseline cohort leans toward kids, volunteers and group members, and recent adult growth is overstated. The household rate (11.9%) and the under-18 comparison are the most reliable views."}, {"title": "Some Sunday check-ins are entered late.", "body": "Some Sunday Experience records were entered up to two weeks after the service, so the most recent Sundays may be incomplete. A few people on the at-risk list may simply have recent visits not yet entered."}, {"title": "Group attendance is incomplete.", "body": "38% of the 1,555 group meetings since July 2025 have no attendance recorded, and 39 of 206 groups never recorded any. Group engagement is therefore undercounted, and the group-dropout warning sign is weaker than it would be with complete records."}, {"title": "History starts July 2025.", "body": "Data was pulled through the Planning Center connector, one page at a time, from July 14, 2025 on (about 65,000 activity records, each batch checked against Planning Center's own count, with spot-checks of individual records). Tenure therefore comes from the date each People record was created. A first-time guest is counted only if their People record was created within 60 days of the first visit, which can miss guests with an older record (for example from a past event). The \u221214 to +35 range on net growth reflects this."}, {"title": "No service-time or campus split.", "body": "Check-ins are recorded against one session per Sunday, not a specific service time, so attrition by service time is not measurable. There is one campus."}, {"title": "The database is much larger than the active church.", "body": "Planning Center lists 9,541 active people, but only 3,072 had any check-in, group attendance or confirmed serving in the last 15 months. Planning Center's active status is not a usable measure of attendance. There are also 32 possible duplicate person records, and 25 household records with 9 or more members, which are treated as a separate category."}, {"title": "Some segments are small.", "body": "Students (34 regulars), CYA (38) and single adults (63) are small groups, so read their rates as directional. One-time-guest check-ins with no person record (80 in the last year) cannot be followed at all."}]}</script>
+<script>
+const M = JSON.parse(document.getElementById('metrics').textContent);
+const N = JSON.parse(document.getElementById('narrative').textContent);
+const $ = (h) => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
+const pct = (x, d = 0) => x == null ? '—' : (x * 100).toFixed(d) + '%';
+const fmt = (x) => x == null ? '—' : Number(x).toLocaleString('en-US');
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const dfmt = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const mfmt = (ym) => new Date(ym + '-15T12:00:00').toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+const signed = (x) => x == null ? '—' : (x > 0 ? '+' : x < 0 ? '−' : '') + fmt(Math.abs(x));
+const W = M.windows, A = M.attrition, NG = M.net_growth, NC = M.newcomers;
+const app = document.getElementById('app');
+const tip = document.getElementById('tip');
+function showTip(e, html) { tip.innerHTML = html; tip.hidden = false; const x = Math.min(e.clientX + 14, innerWidth - 270); tip.style.left = x + 'px'; tip.style.top = (e.clientY + 14) + 'px'; }
+function hideTip() { tip.hidden = true; }
+function bindTips(root) { root.querySelectorAll('[data-tip]').forEach(el => { el.addEventListener('mousemove', e => showTip(e, el.dataset.tip)); el.addEventListener('mouseleave', hideTip); }); }
+
+function status(rate) {
+  const [lo, hi] = M.attrition.benchmark;
+  if (rate == null) return ['warn', 'No data'];
+  if (rate <= hi) return ['good', rate < lo ? 'Below the healthy range' : 'Within the healthy range'];
+  if (rate <= hi + 0.05) return ['warn', 'Above the healthy range'];
+  return ['crit', 'Well above the healthy range'];
+}
+
+// ---------- chart helpers ----------
+function hbars(rows, { ref = null, max = null, color = '', valueFmt = (r) => pct(r.value), tipFn = null } = {}) {
+  const vmax = max ?? Math.max(0.0001, ...rows.map(r => r.value ?? 0), ref ?? 0) * 1.1;
+  const el = $('<div class="hb"></div>');
+  rows.forEach(r => {
+    const w = Math.max(0, (r.value ?? 0) / vmax * 100);
+    const row = $(`<div class="hb-row ${r.thin ? 'thin' : ''}" data-tip="${esc(tipFn ? tipFn(r) : '')}">
+      <div class="hb-label">${esc(r.label)} ${r.n != null ? `<span class="n">n=${fmt(r.n)}${r.thin ? ' · small sample' : ''}</span>` : ''}</div>
+      <div class="hb-track"><div class="hb-bar ${color}" style="width:${w}%"></div>${ref != null ? `<div class="hb-ref" style="left:${ref / vmax * 100}%"></div>` : ''}</div>
+      <div class="hb-val">${r.value == null ? '—' : valueFmt(r)}</div></div>`);
+    el.append(row);
+  });
+  bindTips(el);
+  return el;
+}
+
+function svgLine(series, xs, { yFmt = fmt, height = 240, xLabel = (x) => x, yMin = 0 } = {}) {
+  const Wd = 720, H = height, L = 46, R = 16, T = 14, B = 30;
+  const all = series.flatMap(s => s.values).filter(v => v != null);
+  let ymax = Math.max(...all, 1); ymax = niceMax(ymax);
+  const ymin = yMin;
+  const xp = (i) => L + (xs.length === 1 ? 0 : i * (Wd - L - R) / (xs.length - 1));
+  const yp = (v) => T + (H - T - B) * (1 - (v - ymin) / (ymax - ymin));
+  let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img">`;
+  s += '<g class="grid">';
+  for (let k = 0; k <= 4; k++) { const v = ymin + (ymax - ymin) * k / 4; s += `<line x1="${L}" x2="${Wd - R}" y1="${yp(v)}" y2="${yp(v)}"/><text x="${L - 8}" y="${yp(v) + 4}" text-anchor="end">${yFmt(v)}</text>`; }
+  s += '</g>';
+  const step = Math.ceil(xs.length / 9);
+  xs.forEach((x, i) => { if (i % step === 0 || i === xs.length - 1) s += `<text x="${xp(i)}" y="${H - 8}" text-anchor="middle">${esc(xLabel(x))}</text>`; });
+  s += `<line class="axis" x1="${L}" x2="${Wd - R}" y1="${yp(ymin)}" y2="${yp(ymin)}"/>`;
+  series.forEach(se => {
+    const pts = se.values.map((v, i) => v == null ? null : [xp(i), yp(v)]);
+    let d = ''; pts.forEach((p, i) => { if (!p) return; d += (d && pts[i - 1] ? 'L' : 'M') + p[0].toFixed(1) + ',' + p[1].toFixed(1); });
+    s += `<path d="${d}" fill="none" stroke="${se.color}" stroke-width="2" stroke-linejoin="round"/>`;
+    const last = pts.map((p, i) => [p, i]).filter(x => x[0]).pop();
+    if (last) s += `<circle cx="${last[0][0]}" cy="${last[0][1]}" r="4" fill="${se.color}" stroke="var(--surface)" stroke-width="2"/>`;
+  });
+  const colW = (Wd - L - R) / Math.max(1, xs.length - 1);
+  xs.forEach((x, i) => {
+    const lines = series.map(se => `<i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${se.color};margin-right:5px"></i>${esc(se.name)}: <b>${se.values[i] == null ? '—' : yFmt(se.values[i])}</b>`).join('<br>');
+    s += `<rect class="hit" x="${xp(i) - colW / 2}" y="${T}" width="${colW}" height="${H - T - B}" data-tip="${esc('<b>' + esc(xLabel(x)) + '</b><br>' + lines)}"/>`;
+  });
+  s += '</svg>';
+  const el = $(`<div class="chart">${s}</div>`); bindTips(el); return el;
+}
+
+function svgBars(cats, series, { height = 250, xLabel = (x) => x, yFmt = fmt } = {}) {
+  const Wd = 720, H = height, L = 40, R = 10, T = 12, B = 30;
+  const ymax = niceMax(Math.max(1, ...series.flatMap(s => s.values.filter(v => v != null))));
+  const yp = (v) => T + (H - T - B) * (1 - v / ymax);
+  const gw = (Wd - L - R) / cats.length, bw = Math.max(3, Math.min(16, (gw - 6) / series.length - 2));
+  let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img"><g class="grid">`;
+  for (let k = 0; k <= 4; k++) { const v = ymax * k / 4; s += `<line x1="${L}" x2="${Wd - R}" y1="${yp(v)}" y2="${yp(v)}"/><text x="${L - 6}" y="${yp(v) + 4}" text-anchor="end">${yFmt(v)}</text>`; }
+  s += '</g>';
+  const step = Math.ceil(cats.length / 12);
+  cats.forEach((c, i) => {
+    const gx = L + i * gw + gw / 2, x0 = gx - (series.length * (bw + 2) - 2) / 2;
+    series.forEach((se, j) => {
+      const v = se.values[i]; if (v == null || v === 0) return;
+      const x = x0 + j * (bw + 2), y = yp(v), h = yp(0) - y;
+      s += `<path d="M${x},${y + h}V${y + Math.min(3, h)}q0,-3 3,-3h${bw - 6}q3,0 3,3V${y + h}Z" fill="${se.color}"/>`;
+    });
+    if (i % step === 0) s += `<text x="${gx}" y="${H - 9}" text-anchor="middle">${esc(xLabel(c))}</text>`;
+    const lines = series.map(se => `${esc(se.name)}: <b>${se.values[i] == null ? 'not yet knowable' : yFmt(se.values[i])}</b>`).join('<br>');
+    s += `<rect class="hit" x="${L + i * gw}" y="${T}" width="${gw}" height="${H - T - B}" data-tip="${esc('<b>' + esc(xLabel(c)) + '</b><br>' + lines)}"/>`;
+  });
+  s += `<line class="axis" x1="${L}" x2="${Wd - R}" y1="${yp(0)}" y2="${yp(0)}"/></svg>`;
+  const el = $(`<div class="chart">${s}</div>`); bindTips(el); return el;
+}
+function niceMax(v) { if (v <= 4) return niceMax0(v); const raw = v / 4, p = Math.pow(10, Math.floor(Math.log10(raw))); for (const m of [1, 2, 2.5, 5, 10]) if (m * p >= raw) return 4 * m * p; return 40 * p; }
+function niceMax0(v) { const p = Math.pow(10, Math.floor(Math.log10(v))); for (const m of [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) if (m * p >= v) return m * p; return 10 * p; }
+const legend = (items) => `<div class="legend">${items.map(([c, t]) => `<span><i style="background:${c}"></i>${esc(t)}</span>`).join('')}</div>`;
+const src = (html) => `<p class="source">${html}</p>`;
+
+// ---------- header + headline tiles ----------
+const [stCls, stTxt] = status(A.rate);
+app.append($(`<header>
+  <div class="eyebrow">Celebration Church · Shreveport · Planning Center data</div>
+  <h1>Attrition &amp; retention, ${dfmt(W.baseline[1]).replace(/^\w+ \d+, /, '')}–${dfmt(M.as_of).replace(/^\w+ \d+, /, '')}</h1>
+  <div class="meta"><span>Data as of <b>${dfmt(M.as_of)}</b></span><span>Baseline: regulars ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])}</span><span>Lapse check: no activity ${dfmt(W.recent_quiet[0])} – ${dfmt(W.recent_quiet[1])}</span></div>
+</header>`));
+
+app.append($(`<div class="tiles">
+  <div class="tile"><div class="eyebrow">Annual attrition</div><div class="big num">${pct(A.rate, 1)}</div>
+    <span class="pill ${stCls}">${stTxt} (10–15%)</span>
+    <div class="def">${fmt(A.lapsed)} of ${fmt(A.baseline_regulars)} people who were regular attenders a year ago have had no check-in, group or serving activity in 90 days.</div></div>
+  <div class="tile"><div class="eyebrow">Newcomer retention</div><div class="big num">${pct(NC.retention_rate, 0)}</div>
+    <div class="def">${fmt(NC.retention_numerator)} of ${fmt(NC.retention_denominator)} first-time guests (first visit ${dfmt(W.newcomer[0])} – ${dfmt(NC.mature_cutoff)}) went on to become regular attenders.</div></div>
+  <div class="tile"><div class="eyebrow">Net growth underneath Sunday</div><div class="big num">${signed(NG.net)}${NG.net_loose_rule != null ? ` <span style="font-size:24px">to ${signed(NG.net_loose_rule)}</span>` : ''}</div>
+    ${(() => { const lo = Math.min(NG.net, NG.net_loose_rule ?? NG.net), hi = Math.max(NG.net, NG.net_loose_rule ?? NG.net); return lo > 0 ? '<span class="pill good">Growing</span>' : hi < 0 ? '<span class="pill crit">Shrinking</span>' : '<span class="pill warn">Essentially flat</span>'; })()}
+    <div class="def">${fmt(NG.retained_newcomers)}${NG.retained_newcomers_loose_rule != null ? `–${fmt(NG.retained_newcomers_loose_rule)}` : ''} newcomers became regular and are still active, against ${fmt(NG.lapsed)} lapsed regulars. The range depends on how strictly "first-time guest" is defined.</div></div>
+</div>`));
+
+if (N.summary) app.append($(`<div class="callout"><div class="eyebrow">In one paragraph</div><p>${N.summary}</p></div>`));
+
+function section(n, title, answer) {
+  const s = $(`<section class="q"><div class="qhead"><div class="qnum">${n}</div><h2>${esc(title)}</h2>${answer ? `<p class="answer">${answer}</p>` : ''}</div></section>`);
+  app.append(s); return s;
+}
+const ans = (k) => (N.answers || {})[k] || '';
+
+// ---------- 1. Attrition ----------
+{
+  const s = section('Question 1', 'Overall annual attrition', ans('attrition'));
+  const b = A.baseline_regulars || 1;
+  const stack = $(`<div style="display:grid;gap:8px">
+    <h3>What happened to last year's ${fmt(A.baseline_regulars)} regular attenders</h3>
+    <div class="stack">
+      <div style="flex:${A.still_regular};background:var(--s1)" data-tip="${esc(`<b>Still regular</b><br>${fmt(A.still_regular)} (${pct(A.still_regular_rate)})`)}"></div>
+      <div style="flex:${A.declined_not_lapsed};background:var(--s3)" data-tip="${esc(`<b>Still around, no longer regular</b><br>${fmt(A.declined_not_lapsed)} (${pct(A.declined_rate)})`)}"></div>
+      <div style="flex:${A.lapsed};background:var(--s2)" data-tip="${esc(`<b>Lapsed</b><br>${fmt(A.lapsed)} (${pct(A.rate)})`)}"></div>
+    </div>
+    ${legend([['var(--s1)', `Still regular ${pct(A.still_regular_rate)}`], ['var(--s3)', `Still around, not regular ${pct(A.declined_rate)}`], ['var(--s2)', `Lapsed ${pct(A.rate)}`]])}
+  </div>`);
+  bindTips(stack); s.append(stack);
+  const rows = [{ label: 'All regular attenders', value: A.rate, n: A.baseline_regulars }];
+  if (A.adults_only) rows.push({ label: 'Adults (18+) only', value: A.adults_only.rate, n: A.adults_only.baseline });
+  if (A.households) rows.push({ label: 'Households (all members quiet)', value: A.households.rate, n: A.households.baseline });
+  const g = $(`<div class="grid2"><div style="display:grid;gap:10px"><h3>Attrition rate against the 10–15% benchmark</h3></div><div style="display:grid;gap:8px"></div></div>`);
+  const bench = $(`<div style="position:relative"></div>`);
+  const hb = hbars(rows, { max: Math.max(0.3, ...rows.map(r => (r.value || 0) * 1.15)) });
+  // shade the healthy band on every track
+  hb.querySelectorAll('.hb-track').forEach(t => { const mx = Math.max(0.3, ...rows.map(r => (r.value || 0) * 1.15)); t.append($(`<div style="position:absolute;top:-2px;bottom:-2px;left:${10 / mx}%;width:${5 / mx}%;background:var(--band);border-inline:1px solid var(--good)" title="10–15% healthy range"></div>`)); });
+  g.children[0].append(hb, $(`<p class="small">Green band = 10–15% healthy range. Household view counts a family as lapsed only when nobody in it has any activity, which corrects for parents who don't check in.</p>`));
+  g.children[1].append($(`<table><tbody>
+    <tr><td>Regular attenders a year ago</td><td class="r">${fmt(A.baseline_regulars)}</td></tr>
+    <tr><td>Lapsed (no activity of any kind in 90 days)</td><td class="r">${fmt(A.lapsed)}</td></tr>
+    <tr><td>…of whom Planning Center already marks inactive</td><td class="r">${fmt(A.lapsed_marked_inactive_in_pco)}</td></tr>
+    <tr><td>Still around but no longer regular</td><td class="r">${fmt(A.declined_not_lapsed)}</td></tr>
+    <tr><td>Still regular today</td><td class="r">${fmt(A.still_regular)}</td></tr></tbody></table>`));
+  s.append(g);
+  s.append($(src(`<b>Source:</b> Check-Ins check-ins, Groups attendance, Services scheduled people (confirmed only). Cohort window ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])}; quiet window ${dfmt(W.recent_quiet[0])} – ${dfmt(W.recent_quiet[1])}. <code>metrics.json → attrition</code>`)));
+}
+
+// ---------- 2. Breakouts ----------
+{
+  const s = section('Question 2', 'Who we lose: attrition by segment', ans('breakouts'));
+  const B = M.breakouts;
+  const dims = [
+    ['engagement', 'Engagement (group / serving)'], ['any_engaged', M.giving_available ? 'Group, serving or giving' : 'Group or serving'], ['giving', 'Giving'],
+    ['age_band', 'Age band'], ['household_type', 'Household type'], ['tenure', 'Tenure at the start'],
+    ['ministry_area', 'Ministry area'], ['service_time', 'Service time'], ['campus', 'Campus'],
+  ];
+  const grid = $('<div class="grid2"></div>');
+  const areaName = { kids: 'Kids', students: 'Students', cya: 'CYA (college & young adults)', adults: 'Adults' };
+  dims.forEach(([k, label]) => {
+    const rows = (B[k] || []).filter(r => r.regulars > 0);
+    if (!rows.length) return;
+    if (k === 'service_time' && rows.length < 2) { grid.append($(`<div style="display:grid;gap:8px"><h3>${label}</h3><p class="small">Not measurable. Sunday check-ins are recorded against one session per day, not a specific service time.</p></div>`)); return; }
+    if (k === 'giving' && !M.giving_available) return;
+    if (k === 'campus' && rows.length < 2) { grid.append($(`<div style="display:grid;gap:8px"><h3>${label}</h3><p class="small">One campus (${esc(rows[0].segment)}), so there is nothing to compare.</p></div>`)); return; }
+    const box = $(`<div style="display:grid;gap:10px"><h3>${label}</h3></div>`);
+    box.append(hbars(rows.map(r => ({ label: k === 'ministry_area' ? (areaName[r.segment] || r.segment) : r.segment, value: r.lapse_rate, n: r.regulars, thin: r.small_sample, raw: r })), {
+      ref: A.rate, max: Math.max(0.4, ...rows.map(r => r.lapse_rate || 0)) * 1.05,
+      tipFn: (r) => `<b>${esc(r.label)}</b><br>${fmt(r.raw.lapsed)} of ${fmt(r.raw.regulars)} lapsed (${pct(r.value, 1)})<br>${fmt(r.raw.declined)} more no longer regular (${pct(r.raw.declined_rate, 1)})`,
+    }));
+    if (k === 'ministry_area' && B.ministry_area_fallback_share != null) box.append($(`<p class="small">${pct(B.ministry_area_fallback_share)} assigned by age because they had no check-in to a ministry event in the baseline window.</p>`));
+    grid.append(box);
+  });
+  s.append(grid);
+  s.append($(`<p class="small">Bars show the share of each segment's regular attenders who lapsed. The dark tick marks the church-wide rate (${pct(A.rate, 1)}). Faded bars have fewer than 20 people, so read them as directional only.</p>`));
+  s.append($(src(`<b>Definitions:</b> Group = marked present at a group meeting in the 6 months to ${dfmt(W.baseline[1])}. Serving = confirmed on a Services plan or checked in as a Dream Team volunteer in those 6 months. ${M.giving_available ? 'Regular giver = a gift in at least 2 of the 3 months of the baseline window.' : 'Giving could not be included (see data gaps).'} Age at ${dfmt(W.baseline[1])} from birthdate. Household type from the person's Planning Center household (kids = anyone under 18). Tenure = time since the earlier of their People record or first recorded activity. Ministry area = the Check-Ins event they most often attended. <code>metrics.json → breakouts</code>`)));
+}
+
+// ---------- 3. Funnel ----------
+{
+  const s = section('Question 3', 'The newcomer funnel', ans('funnel'));
+  const wrap = $(`<div style="display:grid;gap:12px">
+    <div class="seg" role="group" aria-label="Which newcomers"><button id="fn-mature" aria-pressed="true">Had 4+ months to settle in</button><button id="fn-all" aria-pressed="false">All first visits, last 12 months</button></div>
+    <div id="fn-body"></div></div>`);
+  const draw = (stages) => {
+    const top = stages[0].n || 1;
+    const rows = stages.map((st, i) => ({ label: st.stage, value: st.n / top, n: null, st, prev: i ? stages[i - 1].n : null }));
+    const body = wrap.querySelector('#fn-body'); body.innerHTML = '';
+    body.append(hbars(rows, { max: 1, color: 'blue', valueFmt: (r) => fmt(r.st.n),
+      tipFn: (r) => `<b>${esc(r.label)}</b><br>${fmt(r.st.n)} people · ${pct(r.value)} of first-timers${r.prev != null ? `<br>${pct(r.prev ? r.st.n / r.prev : null)} of the previous stage (drop-off ${fmt(r.prev - r.st.n)})` : ''}` }));
+    const t = $(`<div class="tablewrap"><table><thead><tr><th>Stage</th><th class="r">People</th><th class="r">% of first-timers</th><th class="r">Kept from previous stage</th><th class="r">Lost at this step</th></tr></thead><tbody></tbody></table></div>`);
+    stages.forEach((st, i) => t.querySelector('tbody').append($(`<tr><td>${esc(st.stage)}</td><td class="r">${fmt(st.n)}</td><td class="r">${pct(st.n / top)}</td><td class="r">${i ? pct(stages[i - 1].n ? st.n / stages[i - 1].n : null) : ''}</td><td class="r">${i ? fmt(stages[i - 1].n - st.n) : ''}</td></tr>`)));
+    body.append(t);
+  };
+  wrap.querySelector('#fn-mature').onclick = (e) => { e.target.setAttribute('aria-pressed', 'true'); wrap.querySelector('#fn-all').setAttribute('aria-pressed', 'false'); draw(NC.funnel_mature); };
+  wrap.querySelector('#fn-all').onclick = (e) => { e.target.setAttribute('aria-pressed', 'true'); wrap.querySelector('#fn-mature').setAttribute('aria-pressed', 'false'); draw(NC.funnel_all); };
+  draw(NC.funnel_mature);
+  s.append(wrap);
+  if (NC.by_month?.length) {
+    const t = $(`<details><summary>By month of first visit</summary><div class="tablewrap"><table><thead><tr><th>First visit</th><th class="r">First-timers</th><th class="r">Came back</th><th class="r">Became regular</th><th></th></tr></thead><tbody></tbody></table></div></details>`);
+    NC.by_month.forEach(r => t.querySelector('tbody').append($(`<tr><td>${mfmt(r.month)}</td><td class="r">${fmt(r.first_visits)}</td><td class="r">${pct(r.first_visits ? r.second / r.first_visits : null)}</td><td class="r">${pct(r.first_visits ? r.regular / r.first_visits : null)}</td><td class="small">${r.mature ? '' : 'still settling in'}</td></tr>`)));
+    s.append(t);
+  }
+  s.append($(src(`<b>Definitions:</b> A first-time guest is a person whose first recorded attendance (check-in or group visit) falls ${dfmt(W.newcomer[0])} – ${dfmt(W.newcomer[1])}, with no earlier activity of any kind since ${dfmt(M.history_start)} and a People record created no more than 60 days before that visit. Visits are distinct days attended. Regular = 6+ attendance days within any 91-day stretch. Connected = attended a group, served, or checked in as a volunteer on or after the first visit. ${fmt(NC.one_time_guest_checkins)} one-time-guest check-ins in the window have no person record and cannot be followed. <code>metrics.json → newcomers</code>`)));
+}
+
+// ---------- 4. Net growth ----------
+{
+  const s = section('Question 4', 'Net growth underneath the Sunday numbers', ans('net_growth'));
+  const comp = NG.now_composition;
+  const tot = Object.values(comp).reduce((a, b) => a + b, 0) || 1;
+  const cols = ['var(--s1)', 'var(--s3)', 'var(--s2)'];
+  const g = $('<div class="grid2"></div>');
+  const left = $(`<div style="display:grid;gap:10px"><h3>Where today's ${fmt(NG.regulars_now)} regular attenders came from</h3>
+     <div class="stack">${Object.entries(comp).map(([k, v], i) => `<div style="flex:${v};background:${cols[i]}" data-tip="${esc(`<b>${k}</b><br>${fmt(v)} (${pct(v / tot)})`)}"></div>`).join('')}</div>
+     ${legend(Object.entries(comp).map(([k, v], i) => [cols[i], `${k[0].toUpperCase() + k.slice(1)}: ${fmt(v)}`]))}
+     <table><tbody>
+       <tr><td>Newcomers who became regular and are still active</td><td class="r">+${fmt(NG.retained_newcomers)}</td></tr>
+       <tr><td>Regular attenders who lapsed</td><td class="r">−${fmt(NG.lapsed)}</td></tr>
+       <tr><td><b>Net</b> (strict newcomer rule)</td><td class="r"><b>${signed(NG.net)}</b></td></tr>
+       ${NG.net_loose_rule != null ? `<tr><td>Net if Planning Center's first-time flag also counts (${fmt(NG.retained_newcomers_loose_rule)} newcomers)</td><td class="r">${signed(NG.net_loose_rule)}</td></tr>` : ''}
+       <tr><td>Change in regular attenders, year over year</td><td class="r">${NG.regulars_change > 0 ? '+' : ''}${fmt(NG.regulars_change)} (${pct(NG.regulars_change_rate, 1)})</td></tr>
+     </tbody></table></div>`);
+  bindTips(left); g.append(left);
+  const right = $(`<div style="display:grid;gap:10px"><h3>Regular attenders, rolling 3-month count</h3></div>`);
+  if (NG.regulars_by_age) {
+    const order = ['Kids (0-10)', 'Students (11-17)', 'Adults (18+)', 'Age unknown'];
+    const rows = order.filter(k => NG.regulars_by_age[k]).map(k => { const r = NG.regulars_by_age[k]; const ch = r.then ? (r.now - r.then) / r.then : null; return `<tr><td>${k}</td><td class="r">${fmt(r.then)}</td><td class="r">${fmt(r.now)}</td><td class="r">${ch == null ? '—' : (ch > 0 ? '+' : '') + pct(ch)}</td></tr>`; }).join('');
+    left.append($(`<div style="display:grid;gap:6px"><h3>Regular attenders by age, a year ago vs now</h3><div class="tablewrap"><table><thead><tr><th>Group</th><th class="r">Then</th><th class="r">Now</th><th class="r">Change</th></tr></thead><tbody>${rows}</tbody></table></div><p class="small">Some of the kids' decline and the students' rise is children aging from one band into the next; together, under-18 regulars went from ${fmt((NG.regulars_by_age['Kids (0-10)']||{}).then + (NG.regulars_by_age['Students (11-17)']||{}).then)} to ${fmt((NG.regulars_by_age['Kids (0-10)']||{}).now + (NG.regulars_by_age['Students (11-17)']||{}).now)}. Kids' and volunteers' check-in recording was steady all year. Adult check-ins at Sunday Experience roughly doubled from February 2026, which reflects more complete recording as much as growth, so the adult change overstates real growth.</p></div>`));
+  }
+  const rr = Object.entries(NG.trend.regulars_rolling || {});
+  if (rr.length) right.append(svgLine([{ name: 'Regular attenders', color: 'var(--s1)', values: rr.map(r => r[1]) }], rr.map(r => r[0]), { xLabel: (x) => mfmt(x.slice(0, 7)) }));
+  g.append(right);
+  s.append(g);
+  const hc = Object.entries(NG.trend.sunday_headcount_avg || {});
+  const ci = Object.entries(NG.trend.sunday_checkins_avg || {});
+  if (hc.length || ci.length) {
+    const months = [...new Set([...hc.map(x => x[0]), ...ci.map(x => x[0])])].sort();
+    const g2 = $('<div class="grid2"></div>');
+    if (hc.length) { const b = $(`<div style="display:grid;gap:8px"><h3>Average Sunday headcount by month</h3></div>`); b.append(svgLine([{ name: 'Headcount', color: 'var(--s1)', values: months.map(m => (NG.trend.sunday_headcount_avg || {})[m] ?? null) }], months, { xLabel: mfmt, height: 200 })); g2.append(b); }
+    const BE = NG.trend.sunday_checkins_by_event || {};
+    if (Object.keys(BE).length) {
+      const evMonths = [...new Set(Object.values(BE).flatMap(o => Object.keys(o)))].sort().filter(m => m >= M.history_start.slice(0, 7));
+      const spec = [['Sunday Experience', 'Adults (Sunday Experience)', 'var(--s2)'], ['Sunday Kids Check-In', 'Kids', 'var(--s1)'], ['Sunday Dream Team Check-In', 'Dream Team volunteers', 'var(--s3)']].filter(x => BE[x[0]]);
+      const b = $(`<div style="display:grid;gap:8px"><h3>Average people checked in per Sunday, by event</h3></div>`);
+      b.append(svgLine(spec.map(([k, label, c]) => ({ name: label, color: c, values: evMonths.map(m => BE[k][m] ?? null) })), evMonths, { xLabel: mfmt, height: 220 }));
+      b.append($(legend(spec.map(([k, label, c]) => [c, label]))));
+      b.append($(`<p class="small">The adult line doubles from February 2026 while kids and volunteers hold steady, which points to a change in how adults are checked in. The latest month is partial, and Sunday Experience records are sometimes entered up to two weeks late.</p>`));
+      g2.append(b);
+    } else if (ci.length) { const b = $(`<div style="display:grid;gap:8px"><h3>Average Sunday check-ins by month</h3></div>`); b.append(svgLine([{ name: 'Check-ins', color: 'var(--s1)', values: months.map(m => (NG.trend.sunday_checkins_avg || {})[m] ?? null) }], months, { xLabel: mfmt, height: 200 })); g2.append(b); }
+    s.append(g2);
+  }
+  s.append($(src(`<b>Source:</b> Regular-attender counts use the same 6-in-91-days rule as everywhere else. Sunday check-ins count distinct people per event per Sunday. Returning = regular now, not a regular a year ago, and not a first-time guest this year (people coming back, or irregular attenders who stepped up). <code>metrics.json → net_growth</code>`)));
+}
+
+// ---------- 5. Seasonality ----------
+{
+  const s = section('Question 5', 'Seasonality: when we lose and gain people', ans('seasonality'));
+  const rows = M.seasonality;
+  s.append($(`<h3>Regular attenders gained and lost each month</h3>`));
+  s.append(svgBars(rows.map(r => r.month), [
+    { name: 'Newcomers who became regular', color: 'var(--s1)', values: rows.map(r => r.became_regular) },
+    { name: 'Regulars who went quiet', color: 'var(--s2)', values: rows.map(r => r.lost) },
+  ], { xLabel: mfmt }));
+  s.append($(legend([['var(--s1)', 'Newcomers who became regular that month'], ['var(--s2)', 'Regulars whose last visit was that month']])));
+  s.append($(`<h3>First-time guests each month</h3>`));
+  s.append(svgBars(rows.map(r => r.month), [{ name: 'First-time guests', color: 'var(--s1)', values: rows.map(r => r.first_visits) }], { xLabel: mfmt, height: 180 }));
+  s.append($(src(esc(M.seasonality_note) + ' <code>metrics.json → seasonality</code>')));
+}
+
+// ---------- 6. Early warning ----------
+{
+  const s = section('Question 6', 'Early warning signs', ans('early_warning'));
+  const EW = M.early_warning;
+  if (!EW.lapsed_n) { s.append($('<p>No lapsed regulars to study.</p>')); }
+  else {
+    const g = $('<div class="grid2"></div>');
+    const left = $(`<div style="display:grid;gap:10px"><h3>Average attendance days per month before the last visit</h3></div>`);
+    left.append(svgLine([{ name: `Lapsed (${fmt(EW.lapsed_n)})`, color: 'var(--s2)', values: EW.curve.lapsed }, { name: `Stayed (${fmt(EW.stayed_n)})`, color: 'var(--s1)', values: EW.curve.stayed }],
+      EW.curve_months, { xLabel: (m) => `${m} mo`, yFmt: (v) => (Math.round(v * 10) / 10).toString(), height: 220 }));
+    left.append($(legend([['var(--s2)', 'Lapsed, aligned to their last visit'], ['var(--s1)', 'Stayed, over the same calendar dates']])));
+    g.append(left);
+    const right = $(`<div style="display:grid;gap:10px"><h3>How often each signal showed up 3–6 months before the last visit</h3></div>`);
+    const sig = EW.signals.filter(x => x.period === '6-3 months before');
+    if (sig.length) right.append($(`<p class="small">Measured for ${fmt(sig[0].lapsed_n)} lapsed and ${fmt(sig[0].stayed_n)} comparison people.</p>`));
+    const t = $(`<div class="tablewrap"><table><thead><tr><th>Signal</th><th class="r">Lapsed</th><th class="r">Stayed</th><th class="r">Lapse risk if seen</th></tr></thead><tbody></tbody></table></div>`);
+    sig.forEach(x => t.querySelector('tbody').append($(`<tr><td>${esc(x.signal)}</td><td class="r">${pct(x.lapsed_pct)}</td><td class="r">${pct(x.stayed_pct)}</td><td class="r">${x.relative_risk ? x.relative_risk + '×' : '<span class="small">too rare</span>'}</td></tr>`)));
+    right.append(t);
+    const late = EW.signals.filter(x => x.period === '3-0 months before');
+    const t2 = $(`<details><summary>Same signals in the final 3 months</summary><div class="tablewrap"><table><thead><tr><th>Signal</th><th class="r">Lapsed</th><th class="r">Stayed</th><th class="r">Lapse risk if seen</th></tr></thead><tbody></tbody></table></div></details>`);
+    late.forEach(x => t2.querySelector('tbody').append($(`<tr><td>${esc(x.signal)}</td><td class="r">${pct(x.lapsed_pct)}</td><td class="r">${pct(x.stayed_pct)}</td><td class="r">${x.relative_risk ? x.relative_risk + '×' : '<span class="small">too rare</span>'}</td></tr>`)));
+    right.append(t2);
+    g.append(right);
+    s.append(g);
+    s.append($(src(`<b>Method:</b> each lapsed person is lined up on their last attendance date. People who stayed are measured at every lapsed person's last-visit date and averaged, so the comparison covers the same calendar dates and seasons. Each signal compares a 3-month window with the person's own baseline (${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])}): attendance in the window was half or less of their baseline; they attended a group or served in the 6 months to ${dfmt(W.baseline[1])} and not at all in the window. Windows that would overlap the baseline are skipped, so only people whose last visit came late enough are counted (n shown in the table). "Lapse risk if seen" = lapse rate among people showing the signal ÷ lapse rate among those who didn't. <code>metrics.json → early_warning</code>`)));
+  }
+}
+
+// ---------- 7. At risk ----------
+{
+  const s = section('Question 7', 'People at risk right now', '');
+  s.append($(`<div class="callout"><p><b>${fmt(M.at_risk_count)} people</b> were regular attenders in the 3 months before ${dfmt(W.at_risk_recent[0])} and have attended at least 50% less since. Names are kept in a separate private list for pastoral follow-up and are not part of this report.</p></div>`));
+}
+
+// ---------- Findings & recommendations ----------
+if (N.findings?.length) {
+  const s = section('Summary', 'What the data says', '');
+  s.append($(`<ol class="findings">${N.findings.map(f => `<li>${f}</li>`).join('')}</ol>`));
+}
+if (N.recommendations?.length) {
+  const s = section('Next steps', 'Recommendations for staff', '');
+  s.append($(`<ol class="recs">${N.recommendations.map(r => `<li><b>${r.title}</b>${r.body}</li>`).join('')}</ol>`));
+}
+
+// ---------- Data gaps ----------
+{
+  const s = section('Accuracy', 'Data gaps and how they affect these numbers', '');
+  const box = $('<div class="gaps"></div>');
+  (N.gaps || []).forEach(gp => box.append($(`<div class="gap"><b>${gp.title}</b><div class="impact">${gp.body}</div></div>`)));
+  s.append(box);
+  const D = M.data_gaps;
+  const rows = [
+    ['Active people in Planning Center', fmt(D.active_people_in_pco)],
+    ['People with any check-in, group attendance or confirmed serving since ' + dfmt(M.history_start), fmt(D.people_with_any_activity)],
+    ['Last year\'s regulars missing a birthdate', pct(D.missing_birthdate_pct_of_regulars, 1)],
+    ['Last year\'s regulars with no household record', pct(D.no_household_pct_of_regulars, 1)],
+    ['Last year\'s regulars under 18', pct(D.baseline_regulars_under_18_pct, 1)],
+    ['Group meetings with no attendance taken', pct(D.group_meetings_without_attendance_pct, 1)],
+    ['Groups that met but never recorded attendance', D.groups_meeting ? `${fmt(D.groups_never_recording_attendance)} of ${fmt(D.groups_meeting)}` : '—'],
+    ['Possible duplicate person records (same name and birthdate)', fmt(D.possible_duplicate_people)],
+  ];
+  const seen = D.baseline_regulars_seen_via || {};
+  Object.entries(seen).forEach(([k, v]) => rows.push([`Last year's regulars seen via ${k}`, fmt(v)]));
+  s.append($(`<details><summary>Data quality figures</summary><div class="tablewrap"><table><tbody>${rows.map(r => `<tr><td>${esc(r[0])}</td><td class="r">${r[1]}</td></tr>`).join('')}</tbody></table></div></details>`));
+  if (D.event_area_map?.length) s.append($(`<details><summary>How Check-Ins events were mapped to ministry areas</summary><div class="tablewrap"><table><thead><tr><th>Event</th><th>Area</th><th class="r">Check-ins</th></tr></thead><tbody>${D.event_area_map.map(e => `<tr><td>${esc(e.name)}</td><td>${esc(e.area)}</td><td class="r">${fmt(e.checkins)}</td></tr>`).join('')}</tbody></table></div></details>`));
+}
+
+// ---------- Definitions ----------
+{
+  const s = section('Reference', 'Definitions used throughout', '');
+  const defs = [
+    ['Attendance day', 'A distinct day a person checked in (any event, including as a volunteer), was marked present at a group meeting, or was confirmed on a Services plan. Several check-ins on one day count once.'],
+    ['Regular attender', '6 or more attendance days in a 91-day window: your "2+ times a month on average over 3 months".'],
+    ['Lapsed', `Regular in ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])} and no check-in (including conferences and events), group attendance or confirmed serving from ${dfmt(W.recent_quiet[0])} to ${dfmt(W.recent_quiet[1])}.${M.giving_available ? ' Gifts also count as activity.' : ' Giving is not included (see data gaps).'}`],
+    ['Annual attrition rate', 'Lapsed ÷ regular attenders in the baseline window.'],
+    ['Engaged', 'In a group (marked present at a group meeting) or serving (confirmed on a Services plan or Dream Team check-in), tracked separately and combined. Giving was requested but could not be measured.'],
+    ['Newcomer retention rate', 'Share of first-time guests with at least 4 months to settle in who became regular attenders.'],
+    ['Net growth', 'Newcomers who became regular and are still active, minus lapsed regulars.'],
+  ];
+  s.append($(`<div class="tablewrap"><table><tbody>${defs.map(d => `<tr><td style="width:28%"><b>${d[0]}</b></td><td>${d[1]}</td></tr>`).join('')}</tbody></table></div>`));
+  s.append($(src(`Every figure is computed by <code>attrition/analyze.py</code> from Planning Center records pulled through the Planning Center connector into <code>attrition/data/connector</code>, each batch checked against Planning Center's own record count. Each activity row in <code>data/tidy/activity.csv</code> carries the Planning Center record ID it came from.`)));
+}
+</script>

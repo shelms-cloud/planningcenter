@@ -36,6 +36,20 @@ Ministry area comes from Check-Ins event names via `EVENT_RULES` in
 `config.py`. Review the mapping table on the dashboard's data-gaps panel and
 adjust the rules if an event is misfiled.
 
+## Running it through the Planning Center connector (Oct 2026 run)
+
+The published numbers came from data pulled through the Planning Center
+connector, because the session could not reach the API directly. Helper agents
+copied each page into `data/connector/*.csv` following `data/connector/*TASK.md`,
+and each batch's row count was checked against Planning Center's own total
+(`data/connector/logs/done.txt`). Spot-checks against fresh API reads: 40 check-in rows,
+7 check-in rows and 75 People fields, all matching. Then:
+
+    AS_OF=2026-10-13 HISTORY_START=2025-07-14 NEWCOMER_LOOKBACK_DAYS=90 ACTIVE_PEOPLE_TOTAL=9541 \
+      sh -c 'python3 build_connector.py && python3 analyze.py && python3 render.py'
+
+Giving was not readable by the connector account, so it is excluded.
+
 ## Pipeline
 
 `fetch_pco.py` (raw API pages → `data/raw`) → `build.py` (tidy CSVs →

@@ -51,6 +51,9 @@ NEW_PERSON_GRACE_DAYS = 60
 
 # Days of history required before a first visit before we call someone "new".
 NEWCOMER_LOOKBACK_DAYS = int(os.environ.get("NEWCOMER_LOOKBACK_DAYS", "183"))
+# "record" (default): People record created within NEW_PERSON_GRACE_DAYS of the first visit.
+# "flag_or_record": also accept Planning Center's first-time check-in flag.
+NEWCOMER_RULE = os.environ.get("NEWCOMER_RULE", "record")
 
 HEALTHY_ATTRITION = (0.10, 0.15)
 

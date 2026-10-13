@@ -278,7 +278,12 @@ def main():
             return False
         c = created.get(pid)
         new_record = isinstance(c, dt.date) and c >= first - grace
-        return (pid, first) in flagged or new_record or (not flagged and not isinstance(c, dt.date))
+        if C.NEWCOMER_RULE == "flag_or_record":
+            return (pid, first) in flagged or new_record
+        # Default: the People record must be new. Planning Center's own first-time flag
+        # also fires for long-time attenders checked in for the first time (adult check-in
+        # coverage roughly doubled in Feb 2026), so it is only used when no record date exists.
+        return new_record or (not isinstance(c, dt.date) and (pid, first) in flagged)
 
     newc = []
     for pid, first in first_att.items():
@@ -361,6 +366,16 @@ def main():
     ci = ci.assign(month=ci["date"].map(lambda d: d.strftime("%Y-%m")))
     trend["sunday_checkins_avg"] = {k: round(v) for k, v in
                                     ci.groupby(["month", "date"]).size().groupby("month").mean().items()}
+    names = dict(zip(t["events"].get("event_id", []), t["events"].get("name", [])))
+    by_ev = {}
+    for nm in ["Sunday Experience", "Sunday Kids Check-In", "Sunday Dream Team Check-In"]:
+        sub = a[(a["source"] == "checkin") & (a["event_id"].map(names) == nm)]
+        sub = sub[[d.weekday() == 6 for d in sub["date"]]]
+        if len(sub):
+            sub = sub.assign(month=sub["date"].map(lambda d: d.strftime("%Y-%m")))
+            by_ev[nm] = {k: round(v) for k, v in sub.groupby(["month", "date"])["person_id"].nunique()
+                         .groupby("month").mean().items()}
+    trend["sunday_checkins_by_event"] = by_ev
     reg_by_q = {}
     for months_back in range(0, 25, 3):
         end = C.AS_OF - dt.timedelta(days=round(months_back * 30.44))
@@ -370,6 +385,32 @@ def main():
         reg_by_q[end.isoformat()] = len(regulars(att, w))
     trend["regulars_rolling"] = dict(sorted(reg_by_q.items()))
     m["net_growth"]["trend"] = trend
+    # Regulars then vs now by age group: kids' check-in recording was steady all year,
+    # adults' was not (Sunday Experience coverage roughly doubled from Feb 2026).
+    bd = people.set_index("person_id")["birthdate"]
+
+    def grp(pid, ref):
+        b = bd.get(pid)
+        if not isinstance(b, dt.date):
+            return "Age unknown"
+        age = (ref - b).days / 365.25
+        return "Kids (0-10)" if age < 11 else "Students (11-17)" if age < 18 else "Adults (18+)"
+    by = {}
+    for label, ids, ref in [("then", base, W["baseline"][1]), ("now", cur, C.AS_OF)]:
+        for pid in ids:
+            g = grp(pid, ref)
+            by.setdefault(g, {"then": 0, "now": 0})[label] += 1
+    m["net_growth"]["regulars_by_age"] = by
+    # Alternative newcomer rule, so the range is visible
+    alt = 0
+    for pid, first in first_att.items():
+        if (C.HISTORY_START + dt.timedelta(days=C.NEWCOMER_LOOKBACK_DAYS) <= first <= C.AS_OF
+                and in_window(pd.Series([first]), W["newcomer"]).iat[0] and first_any.get(pid) == first
+                and ((pid, first) in flagged or (isinstance(created.get(pid), dt.date) and created.get(pid) >= first - grace))
+                and ever_regular_from(dates_by_p[pid]) is not None and pid in active_recent):
+            alt += 1
+    m["net_growth"]["retained_newcomers_loose_rule"] = alt
+    m["net_growth"]["net_loose_rule"] = alt - len(lapsed)
 
     # ---- 5. Seasonality --------------------------------------------------
     last_any = any_act.groupby("person_id")["date"].max()
@@ -430,13 +471,13 @@ def early_warning(a, att, base, lapsed, last_att) -> dict:
     W = C.windows()
     b0, b1 = (ordinal(d) for d in W["baseline"])
     six0 = b1 - 181
-    rng = np.random.default_rng(7)
-    lap_ref = {p: last_att[p] for p in lapsed if p in last_att.index}
+    lap_ref = {p: last_att[p] for p in sorted(lapsed) if p in last_att.index}
     if not lap_ref:
         return {"lapsed_n": 0}
-    ref_pool = np.array(list(lap_ref.values()))
+    # People who stayed are evaluated at every lapsed person's reference date and
+    # averaged, so the comparison covers the same calendar dates with no random draw.
+    ref_weights = pd.Series(list(lap_ref.values())).value_counts()
     stayed = sorted(base - lapsed)
-    stay_ref = dict(zip(stayed, rng.choice(ref_pool, size=len(stayed))))
 
     vol = a[(a["source"] == "checkin") & (a["kind"] == "volunteer")]
     sets = {"att": att, "group": a[a["source"] == "group"],
@@ -479,36 +520,57 @@ def early_warning(a, att, base, lapsed, last_att) -> dict:
             curve.append(count("att", pid, lo, lo + 29) if lo >= ordinal(C.HISTORY_START) else None)
         return out, curve
 
-    res = {"lapsed": [], "stayed": []}
-    curves = {"lapsed": [], "stayed": []}
-    for grp, refs in [("lapsed", lap_ref), ("stayed", stay_ref)]:
-        for pid, ref in refs.items():
+    total_w = float(ref_weights.sum())
+    lap_rows, lap_curves = [], []
+    for pid, ref in lap_ref.items():
+        s_, curve = signals(pid, ref)
+        lap_rows.append(s_)
+        lap_curves.append(curve)
+    # stayed: per period, effective n and effective hits (weighted over reference dates)
+    st_n = {p: 0.0 for p in periods}
+    st_hits = {p: {} for p in periods}
+    st_curve_sum, st_curve_n = np.zeros(9), np.zeros(9)
+    for pid in stayed:
+        for ref, w in ref_weights.items():
             s_, curve = signals(pid, ref)
-            res[grp].append(s_)
-            curves[grp].append(curve)
+            wt = w / total_w
+            for p in periods:
+                if s_[p] is None:
+                    continue
+                st_n[p] += wt
+                for sig, hit in s_[p].items():
+                    st_hits[p][sig] = st_hits[p].get(sig, 0.0) + wt * hit
+            for i, c in enumerate(curve):
+                if c is not None:
+                    st_curve_sum[i] += wt * c
+                    st_curve_n[i] += wt
 
-    out = {"lapsed_n": len(res["lapsed"]), "stayed_n": len(res["stayed"]), "signals": []}
+    out = {"lapsed_n": len(lap_rows), "stayed_n": len(stayed), "signals": []}
     for period in periods:
-        lap = [r[period] for r in res["lapsed"] if r[period] is not None]
-        sty = [r[period] for r in res["stayed"] if r[period] is not None]
-        if not lap or not sty:
+        lap = [r[period] for r in lap_rows if r[period] is not None]
+        if not lap or st_n[period] < 1:
             continue
         for sig in lap[0]:
             lh = sum(r[sig] for r in lap)
-            sh = sum(r[sig] for r in sty)
-            p_with = rate(lh, lh + sh)
-            p_without = rate(len(lap) - lh, len(lap) + len(sty) - lh - sh)
+            sh = st_hits[period].get(sig, 0.0)
+            n_l, n_s = len(lap), st_n[period]
+            p_with = lh / (lh + sh) if lh + sh else None
+            p_without = (n_l - lh) / (n_l + n_s - lh - sh) if (n_l + n_s - lh - sh) else None
             out["signals"].append({
-                "period": period, "signal": sig, "lapsed_n": len(lap), "stayed_n": len(sty),
-                "lapsed_pct": rate(lh, len(lap)), "stayed_pct": rate(sh, len(sty)),
-                "lapse_rate_with_signal": p_with, "lapse_rate_without": p_without,
+                "period": period, "signal": sig, "lapsed_n": n_l, "stayed_n": round(n_s),
+                "lapsed_pct": rate(lh, n_l), "stayed_pct": round(sh / n_s, 4),
+                "lapse_rate_with_signal": round(p_with, 4) if p_with is not None else None,
+                "lapse_rate_without": round(p_without, 4) if p_without is not None else None,
                 "relative_risk": round(p_with / p_without, 2) if p_with and p_without else None,
             })
+    curves = {"lapsed": lap_curves}
 
     def mean(vals):
         v = [x for x in vals if x is not None]
         return round(float(np.mean(v)), 2) if len(v) >= 10 else None
-    out["curve"] = {g: [mean([c[i] for c in curves[g]]) for i in range(9)] for g in curves}
+    out["curve"] = {"lapsed": [mean([c[i] for c in lap_curves]) for i in range(9)],
+                    "stayed": [round(float(st_curve_sum[i] / st_curve_n[i]), 2) if st_curve_n[i] else None
+                               for i in range(9)]}
     out["curve_months"] = list(range(-9, 0))
     out["baseline_days_avg"] = {
         "lapsed": round(float(np.mean([count("att", p, b0, b1) for p in lap_ref])), 2),
