@@ -12,10 +12,15 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 
-from config import DATA_DIR, TIDY_DIR, TZ, event_area
+from config import AS_OF, DATA_DIR, TIDY_DIR, TZ, event_area
 
 SRC = DATA_DIR / "connector"
 LOCAL = ZoneInfo(TZ)
+# Internal staff paperwork submitted through People forms; not a sign of church involvement.
+STAFF_FORMS = (r"purchase order|check request|time sheet|reimburs|graphic request|facilities request|time off|"
+               r"vacation/sick|video request|mileage|communications request|staff website|receipts|"
+               r"intern oversight|budget request|reserve a room|employment|student event schedules|"
+               r"new building prep|admin team brunch")
 
 
 def read_all(pattern: str) -> pd.DataFrame:
@@ -95,9 +100,38 @@ def main():
             "person_id": pp["person_id"], "date": pp["date"], "source": "serve", "kind": "confirmed",
             "event_id": pp["team_id"], "service_time": None, "ref": "services/plan_people/" + pp["plan_person_id"]}))
 
+    # ---- Forms the person submitted (staff paperwork excluded) ------------
+    forms = read_all("forms/forms.csv")
+    subs = read_all("forms/batch_*.csv")
+    if len(subs):
+        subs = subs.drop_duplicates("submission_id").merge(forms[["form_id", "name"]], on="form_id", how="left")
+        staff = subs["name"].fillna("").str.contains(STAFF_FORMS, case=False, regex=True)
+        print(f"forms: {len(subs)} submissions, {int(staff.sum())} on staff/admin forms excluded")
+        subs = subs[~staff]
+        act.append(pd.DataFrame({
+            "person_id": subs["person_id"], "date": to_local(subs["created_at"]).dt.date.astype(str),
+            "source": "form", "kind": None, "event_id": subs["form_id"], "service_time": None,
+            "ref": "people/form_submissions/" + subs["submission_id"]}))
+
+    # ---- Event registrations (Registrations app) --------------------------
+    reg = read_all("registrations/batch_*.csv")
+    if len(reg):
+        reg = reg.drop_duplicates("attendee_id").dropna(subset=["person_id"])
+        act.append(pd.DataFrame({
+            "person_id": reg["person_id"], "date": to_local(reg["created_at"]).dt.date.astype(str),
+            "source": "register", "kind": None, "event_id": reg["signup_id"], "service_time": None,
+            "ref": "registrations/attendees/" + reg["attendee_id"]}))
+
     activity = pd.concat(act, ignore_index=True).dropna(subset=["person_id", "date"])
-    activity.to_csv(TIDY_DIR / "activity.csv", index=False)
-    print(activity.groupby("source").size().to_string())
+
+    # ---- Staff notes: who on staff touched whom (note text not pulled) ----
+    notes = read_all("notes/notes_*.csv")
+    if len(notes):
+        notes = notes.drop_duplicates("note_id").dropna(subset=["person_id"])
+        cats = read_all("notes/note_categories.csv").rename(columns={"name": "category"})
+        notes = notes.merge(cats, left_on="note_category_id", right_on="category_id", how="left")
+        notes["date"] = to_local(notes["created_at"]).dt.date.astype(str)
+        notes[["person_id", "date", "category", "created_by_id"]].to_csv(TIDY_DIR / "staff_notes.csv", index=False)
 
     # ---- People & households --------------------------------------------
     people = read_all("people/*.csv").drop_duplicates("person_id")
@@ -114,6 +148,22 @@ def main():
                 people[col] = to_local(people[col]).dt.date.astype(str).replace("NaT", None)
         people["campus_id"] = "17728"
         people.to_csv(TIDY_DIR / "people.csv", index=False)
+        # A child's check-in also counts as activity for the adults in the child's
+        # household: a parent who drops kids off is at church even if not checked in.
+        if len(hh):
+            age = (pd.Timestamp(AS_OF) - pd.to_datetime(people.set_index("person_id")["birthdate"], errors="coerce")).dt.days / 365.25
+            kids = set(age[age < 18].index)
+            adults = hh[~hh["person_id"].isin(kids)][["household_id", "person_id"]]
+            kci = activity[(activity["source"] == "checkin") & activity["person_id"].isin(kids)
+                           & (activity["kind"] != "volunteer")]
+            kci = kci.merge(hh[["household_id", "person_id"]], on="person_id")[["household_id", "date", "event_id"]]
+            cred = kci.merge(adults, on="household_id").drop_duplicates(["person_id", "date"])
+            activity = pd.concat([activity, pd.DataFrame({
+                "person_id": cred["person_id"], "date": cred["date"], "source": "household", "kind": "child checked in",
+                "event_id": cred["event_id"], "service_time": None, "ref": "households/" + cred["household_id"]})],
+                ignore_index=True)
+    activity.to_csv(TIDY_DIR / "activity.csv", index=False)
+    print(activity.groupby("source").size().to_string())
     pd.DataFrame([{"campus_id": "17728", "campus": "Shreveport Campus"}]).to_csv(TIDY_DIR / "campuses.csv", index=False)
     for name in ["group_members", "headcounts", "groups"]:
         p = TIDY_DIR / f"{name}.csv"

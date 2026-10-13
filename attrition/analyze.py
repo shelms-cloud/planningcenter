@@ -25,7 +25,7 @@ SMALL_N = 20  # breakout rows smaller than this are shown but flagged
 def load():
     t = {}
     for name in ["people", "households", "events", "activity", "guests", "group_members",
-                 "group_events", "headcounts", "campuses", "groups", "first_time"]:
+                 "group_events", "headcounts", "campuses", "groups", "first_time", "staff_notes"]:
         path = C.TIDY_DIR / f"{name}.csv"
         try:
             t[name] = pd.read_csv(path, dtype=str) if path.exists() else pd.DataFrame()
@@ -442,30 +442,42 @@ def main():
 
     # ---- 7. At-risk (private) ---------------------------------------------
     at_risk = build_at_risk(t, a, att, lapsed, active_recent)
+    # Most recent staff note on each person's profile: shows who has already been contacted.
+    notes = t["staff_notes"]
+    last_note = (pd.to_datetime(notes["date"]).dt.date.groupby(notes["person_id"]).max()
+                 if len(notes) else pd.Series(dtype=object))
+    at_risk.insert(len(at_risk.columns) - 1, "last_staff_note",
+                   at_risk["person_id"].map(last_note) if len(at_risk) else [])
     C.PRIVATE_DIR.mkdir(parents=True, exist_ok=True)
     at_risk.to_csv(C.PRIVATE_DIR / "at_risk.csv", index=False)
     lap = prof[prof["lapsed"]].join(people.set_index("person_id")[["first_name", "last_name", "membership"]])
     lap["last_attended"] = last_att.reindex(lap.index)
     lap["last_any_activity"] = last_any.reindex(lap.index)
+    lap["last_staff_note"] = last_note.reindex(lap.index)
     lap["pco_link"] = [f"https://people.planningcenteronline.com/people/AC{i}" for i in lap.index]
     lap[["first_name", "last_name", "age_band", "household_type", "ministry_area", "engagement",
-         "giving", "last_attended", "last_any_activity", "status", "membership", "pco_link"]
+         "giving", "last_attended", "last_any_activity", "last_staff_note", "status", "membership", "pco_link"]
         ].sort_values("last_attended", ascending=False).to_csv(C.PRIVATE_DIR / "lapsed.csv")
     # Still around but no longer regular: what kept each person in touch recently.
     rec = a[in_window(a["date"], W["recent_quiet"]) & a["person_id"].isin(declined)]
     label = np.select([rec["source"] == "group",
                        (rec["source"] == "serve") | (rec["area"] == "serving"),
-                       rec["area"] == "special"],
-                      ["group", "serving", "event/conference"], "Sunday/ministry check-in")
+                       rec["area"] == "special",
+                       rec["source"] == "form",
+                       rec["source"] == "register",
+                       rec["source"] == "household"],
+                      ["group", "serving", "event/conference", "filled out a form",
+                       "registered for an event", "checked in their kids"], "Sunday/ministry check-in")
     doing = pd.Series(label, index=rec.index).groupby(rec["person_id"]).agg(lambda x: "; ".join(sorted(set(x))))
     dec = prof[prof["declined"]].join(people.set_index("person_id")[["first_name", "last_name", "membership"]])
     dec["last90_days"] = days_in(att, W["recent_quiet"]).reindex(dec.index).fillna(0).astype(int)
     dec["still_doing"] = doing.reindex(dec.index).fillna("")
     dec["last_attended"] = last_att.reindex(dec.index)
+    dec["last_staff_note"] = last_note.reindex(dec.index)
     dec["pco_link"] = [f"https://people.planningcenteronline.com/people/AC{i}" for i in dec.index]
     dec.sort_values(["last90_days", "baseline_days"], ascending=[True, False])[
         ["first_name", "last_name", "age_band", "household_type", "ministry_area", "engagement",
-         "baseline_days", "last90_days", "still_doing", "last_attended", "membership", "pco_link"]
+         "baseline_days", "last90_days", "still_doing", "last_attended", "last_staff_note", "membership", "pco_link"]
     ].to_csv(C.PRIVATE_DIR / "declined.csv")
     m["at_risk_count"] = len(at_risk)
 

@@ -79,17 +79,17 @@ th {{ font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(
 between {W['at_risk_prior'][0]:%b %d} and {W['at_risk_prior'][1]:%b %d, %Y} and have attended at least
 {int(C.AT_RISK_DROP * 100)}% less since. Sorted by the size of the drop. "Other signals" compares the same two windows.
 Check the household before calling: one family member's check-ins can drop simply because a child aged out of kids' ministry.</p>
-{table(risk, ["name", "age", "membership", "prior_90d_attendances", "last_90d_attendances", "drop_pct", "last_attended", "days_since", "other_signals"],
-       ["Name", "Age", "Membership", "Prior 3 mo", "Last 3 mo", "Drop %", "Last attended", "Days since", "Other signals"])}
+{table(risk, ["name", "age", "membership", "prior_90d_attendances", "last_90d_attendances", "drop_pct", "last_attended", "days_since", "other_signals", "last_staff_note"],
+       ["Name", "Age", "Membership", "Prior 3 mo", "Last 3 mo", "Drop %", "Last attended", "Days since", "Other signals", "Last staff note"])}
 <h2>Already lapsed ({len(lapsed)})</h2>
-<p>Regular attenders a year ago with no activity of any kind in the last 90 days, most recent first.</p>
-{table(lapsed, ["name", "age_band", "household_type", "ministry_area", "engagement", "last_attended", "status", "membership"],
-       ["Name", "Age band", "Household", "Ministry", "Engagement a year ago", "Last attended", "PCO status", "Membership"]) if len(lapsed) else ""}
+<p>Regular attenders a year ago with no activity of any kind in the last 90 days (no check-in for themselves or their kids, group, serving, form or event registration), most recent first. "Last staff note" is the newest note on their profile; blank means no note on file.</p>
+{table(lapsed, ["name", "age_band", "household_type", "ministry_area", "engagement", "last_attended", "last_staff_note", "status", "membership"],
+       ["Name", "Age band", "Household", "Ministry", "Engagement a year ago", "Last attended", "Last staff note", "PCO status", "Membership"]) if len(lapsed) else ""}
 <h2>Still around, no longer regular ({len(declined)})</h2>
 <p>Regular attenders a year ago who still came at least once in the last 90 days, but fewer than 6 times. Fewest recent visits first.
 "Still doing" shows what kept them in touch over those 90 days.</p>
-{table(declined, ["name", "age_band", "household_type", "ministry_area", "engagement", "baseline_days", "last90_days", "still_doing", "last_attended", "membership"],
-       ["Name", "Age band", "Household", "Ministry", "Engagement a year ago", "Visits then (13 wks)", "Visits last 90 days", "Still doing", "Last attended", "Membership"]) if len(declined) else ""}
+{table(declined, ["name", "age_band", "household_type", "ministry_area", "engagement", "baseline_days", "last90_days", "still_doing", "last_attended", "last_staff_note", "membership"],
+       ["Name", "Age band", "Household", "Ministry", "Engagement a year ago", "Visits then (13 wks)", "Visits last 90 days", "Still doing", "Last attended", "Last staff note", "Membership"]) if len(declined) else ""}
 </main>"""
     (C.PRIVATE_DIR / "at_risk.html").write_text(page)
 
