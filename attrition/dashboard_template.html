@@ -218,7 +218,7 @@ app.append($(`<header>
 app.append($(`<div class="tiles">
   <div class="tile"><div class="eyebrow">Annual attrition</div><div class="big num">${pct(A.rate, 1)}</div>
     <span class="pill ${stCls}">${stTxt} (10–15%)</span>
-    <div class="def">${fmt(A.lapsed)} of ${fmt(A.baseline_regulars)} people who were regular attenders a year ago have had no check-in, group or serving activity in 90 days.</div></div>
+    <div class="def">${fmt(A.lapsed)} of ${fmt(A.baseline_regulars)} people who were regular attenders a year ago have had no activity of any kind in 90 days: no check-in for themselves or their kids, no group, serving, form or event registration.</div></div>
   <div class="tile"><div class="eyebrow">Newcomer retention</div><div class="big num">${pct(NC.retention_rate, 0)}</div>
     <div class="def">${fmt(NC.retention_numerator)} of ${fmt(NC.retention_denominator)} first-time guests (first visit ${dfmt(W.newcomer[0])} – ${dfmt(NC.mature_cutoff)}) went on to become regular attenders.</div></div>
   <div class="tile"><div class="eyebrow">Net growth underneath Sunday</div><div class="big num">${signed(NG.net)}${NG.net_loose_rule != null ? ` <span style="font-size:24px">to ${signed(NG.net_loose_rule)}</span>` : ''}</div>
@@ -322,7 +322,7 @@ const ans = (k) => (N.answers || {})[k] || '';
     NC.by_month.forEach(r => t.querySelector('tbody').append($(`<tr><td>${mfmt(r.month)}</td><td class="r">${fmt(r.first_visits)}</td><td class="r">${pct(r.first_visits ? r.second / r.first_visits : null)}</td><td class="r">${pct(r.first_visits ? r.regular / r.first_visits : null)}</td><td class="small">${r.mature ? '' : 'still settling in'}</td></tr>`)));
     s.append(t);
   }
-  s.append($(src(`<b>Definitions:</b> A first-time guest is a person whose first recorded attendance (check-in or group visit) falls ${dfmt(W.newcomer[0])} – ${dfmt(W.newcomer[1])}, with no earlier activity of any kind since ${dfmt(M.history_start)} and a People record created no more than 60 days before that visit. Visits are distinct days attended. Regular = 6+ attendance days within any 91-day stretch. Connected = attended a group, served, or checked in as a volunteer on or after the first visit. ${fmt(NC.one_time_guest_checkins)} one-time-guest check-ins in the window have no person record and cannot be followed. <code>metrics.json → newcomers</code>`)));
+  s.append($(src(`<b>Definitions:</b> A first-time guest is a person whose first recorded attendance (check-in or group visit) falls ${dfmt(W.newcomer[0])} – ${dfmt(W.newcomer[1])}, with no earlier check-in, group or serving since ${dfmt(M.history_start)} and a People record created no more than 60 days before that visit. Visits are distinct days attended. Regular = 6+ attendance days within any 91-day stretch. Connected = attended a group, served, or checked in as a volunteer on or after the first visit. ${fmt(NC.one_time_guest_checkins)} one-time-guest check-ins in the window have no person record and cannot be followed. <code>metrics.json → newcomers</code>`)));
 }
 
 // ---------- 4. Net growth ----------
@@ -442,7 +442,7 @@ if (N.recommendations?.length) {
   const D = M.data_gaps;
   const rows = [
     ['Active people in Planning Center', fmt(D.active_people_in_pco)],
-    ['People with any check-in, group attendance or confirmed serving since ' + dfmt(M.history_start), fmt(D.people_with_any_activity)],
+    ['People with any activity (check-in, child checked in, group, serving, form or registration) since ' + dfmt(M.history_start), fmt(D.people_with_any_activity)],
     ['Last year\'s regulars missing a birthdate', pct(D.missing_birthdate_pct_of_regulars, 1)],
     ['Last year\'s regulars with no household record', pct(D.no_household_pct_of_regulars, 1)],
     ['Last year\'s regulars under 18', pct(D.baseline_regulars_under_18_pct, 1)],
@@ -462,7 +462,7 @@ if (N.recommendations?.length) {
   const defs = [
     ['Attendance day', 'A distinct day a person checked in (any event, including as a volunteer), was marked present at a group meeting, or was confirmed on a Services plan. Several check-ins on one day count once.'],
     ['Regular attender', '6 or more attendance days in a 91-day window: your "2+ times a month on average over 3 months".'],
-    ['Lapsed', `Regular in ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])} and no check-in (including conferences and events), group attendance or confirmed serving from ${dfmt(W.recent_quiet[0])} to ${dfmt(W.recent_quiet[1])}.${M.giving_available ? ' Gifts also count as activity.' : ' Giving is not included (see data gaps).'}`],
+    ['Lapsed', `Regular in ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])} and no activity from ${dfmt(W.recent_quiet[0])} to ${dfmt(W.recent_quiet[1])}: no check-in (including conferences and events), no check-in of a child in their household, no group attendance, confirmed serving, form submission (staff paperwork forms excluded) or event registration. Staff notes are not counted as the person's activity.${M.giving_available ? ' Gifts also count as activity.' : ' Giving is not included (see data gaps).'}`],
     ['Annual attrition rate', 'Lapsed ÷ regular attenders in the baseline window.'],
     ['Engaged', 'In a group (marked present at a group meeting) or serving (confirmed on a Services plan or Dream Team check-in), tracked separately and combined. Giving was requested but could not be measured.'],
     ['Newcomer retention rate', 'Share of first-time guests with at least 4 months to settle in who became regular attenders.'],

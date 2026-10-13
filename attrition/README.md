@@ -27,7 +27,7 @@ Services, Giving), applies the definitions below, and builds:
 |---|---|
 | Attendance day | A distinct day with a check-in (any event, including volunteer), group attendance marked present, or confirmed serving on a Services plan |
 | Regular attender | 6+ attendance days in a 91-day window (2+ a month over 3 months) |
-| Lapsed | Regular in the 91 days ending one year before `AS_OF`, and no check-in, group attendance, confirmed serving or gift in the last 90 days |
+| Lapsed | Regular in the 91 days ending one year before `AS_OF`, and no activity in the last 90 days: no check-in (their own, or a child in their household), group attendance, confirmed serving, People form submission (staff paperwork forms excluded), event registration or gift. Staff notes are shown as "last staff note" on the private lists, not counted as activity |
 | Engaged | Group: attended a group meeting in the prior 6 months. Serving: confirmed on a plan or volunteer check-in in the prior 6 months. Giving: a gift in 2 of 3 baseline months |
 | First-time guest | First attendance in the last 12 months, no earlier activity since `HISTORY_START`, People record created no more than 60 days before |
 | At risk | Regular in the 3 months before the last 90 days, and attendance in the last 90 days down 50%+ |
@@ -48,7 +48,9 @@ and each batch's row count was checked against Planning Center's own total
     AS_OF=2026-10-13 HISTORY_START=2025-07-14 NEWCOMER_LOOKBACK_DAYS=90 ACTIVE_PEOPLE_TOTAL=9541 \
       sh -c 'python3 build_connector.py && python3 analyze.py && python3 render.py'
 
-Giving was not readable by the connector account, so it is excluded.
+Giving was not readable by the connector account, so it is excluded. Forms (`data/connector/forms`), Registrations attendees (`data/connector/registrations`) and People notes (`data/connector/notes`, no note text) were pulled the same way; `FORMS_TASK.md`, `REG_TASK.md` and `NOTES_TASK.md` describe each pull.
+
+`yearly.py` compares fall-to-fall retention for 2023-24, 2024-25 and 2025-26 using check-ins from January 2023 (`data/connector/checkins_hist`) plus forms, registrations and children's check-ins, and writes `out/yearly.json`.
 
 ## Pipeline
 

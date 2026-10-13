@@ -131,10 +131,10 @@ def newcomers(att, history_start):
 def main():
     ci = load_checkins()
     act = ci[ci["area"] != "ignore"]  # any real check-in keeps someone from being "gone quiet"
+    att = act[act["area"] != "special"][["person_id", "date", "area", "name"]]
     checkins_only = act[["person_id", "date"]]
     extra = other_activity(act)
     act = pd.concat([checkins_only, extra[["person_id", "date"]]], ignore_index=True)
-    att = act[act["area"] != "special"][["person_id", "date", "area", "name"]]
     history_start = dt.date(2023, 1, 1)  # first day of the pulled history
     kids_ids = set(att.loc[att["area"] == "kids", "person_id"])
     by_year = att.assign(year=pd.to_datetime(att["date"]).dt.year)

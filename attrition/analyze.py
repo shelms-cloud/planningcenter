@@ -257,8 +257,14 @@ def main():
         (prof["ministry_source"] == "age (fallback)").sum(), len(prof))
 
     # ---- 3. Newcomer funnel -------------------------------------------------
-    first_any = any_act.groupby("person_id")["date"].min()
+    # "No earlier activity" looks at being present (check-ins, groups, serving) only.
+    # Forms, registrations and a child's check-in often come before an adult's first
+    # recorded check-in (adults were not routinely checked in before Feb 2026), so they
+    # would wrongly disqualify real newcomers; they are reported separately below.
+    present = a[a["source"].isin(["checkin", "group", "serve"])]
+    first_any = present.groupby("person_id")["date"].min()
     first_att = att.groupby("person_id")["date"].min()
+    first_other = a[a["source"].isin(["form", "register", "household"])].groupby("person_id")["date"].min()
     created = people.set_index("person_id")["created_at"]
     grace = dt.timedelta(days=C.NEW_PERSON_GRACE_DAYS)
     connect = a[(a["source"].isin(["group", "serve"])) |
@@ -325,6 +331,9 @@ def main():
         "retention_numerator": int(mature["regular"].sum()), "retention_denominator": len(mature),
         "connected_any": int(nw["connected"].sum()),
         "one_time_guest_checkins": int(in_window(guests["date"], W["newcomer"]).sum()) if len(guests) else 0,
+        "earlier_contact_before_first_checkin": int(sum(
+            1 for p, f in zip(nw["person_id"], nw["first"])
+            if isinstance(first_other.get(p), dt.date) and first_other[p] < f)) if len(nw) else 0,
         "by_month": [],
     }
     if len(nw):

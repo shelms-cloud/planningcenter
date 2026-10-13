@@ -30,26 +30,26 @@
  "definitions": {},
  "attrition": {
   "baseline_regulars": 636,
-  "lapsed": 102,
-  "rate": 0.1604,
-  "declined_not_lapsed": 104,
-  "declined_rate": 0.1635,
+  "lapsed": 94,
+  "rate": 0.1478,
+  "declined_not_lapsed": 112,
+  "declined_rate": 0.1761,
   "still_regular": 430,
   "still_regular_rate": 0.6761,
-  "lapsed_marked_inactive_in_pco": 2,
+  "lapsed_marked_inactive_in_pco": 1,
   "benchmark": [
    0.1,
    0.15
   ],
   "households": {
    "baseline": 337,
-   "lapsed": 40,
-   "rate": 0.1187
+   "lapsed": 39,
+   "rate": 0.1157
   },
   "adults_only": {
    "baseline": 389,
-   "lapsed": 63,
-   "rate": 0.162
+   "lapsed": 56,
+   "rate": 0.144
   }
  },
  "giving_available": false,
@@ -58,37 +58,37 @@
    {
     "segment": "Group + serving",
     "regulars": 203,
-    "lapsed": 32,
-    "lapse_rate": 0.1576,
-    "declined": 16,
-    "declined_rate": 0.0788,
+    "lapsed": 29,
+    "lapse_rate": 0.1429,
+    "declined": 19,
+    "declined_rate": 0.0936,
     "small_sample": false
    },
    {
     "segment": "Group only",
     "regulars": 65,
-    "lapsed": 12,
-    "lapse_rate": 0.1846,
-    "declined": 16,
-    "declined_rate": 0.2462,
+    "lapsed": 11,
+    "lapse_rate": 0.1692,
+    "declined": 17,
+    "declined_rate": 0.2615,
     "small_sample": false
    },
    {
     "segment": "Serving only",
     "regulars": 117,
-    "lapsed": 16,
-    "lapse_rate": 0.1368,
-    "declined": 16,
-    "declined_rate": 0.1368,
+    "lapsed": 15,
+    "lapse_rate": 0.1282,
+    "declined": 17,
+    "declined_rate": 0.1453,
     "small_sample": false
    },
    {
     "segment": "Neither",
     "regulars": 251,
-    "lapsed": 42,
-    "lapse_rate": 0.1673,
-    "declined": 56,
-    "declined_rate": 0.2231,
+    "lapsed": 39,
+    "lapse_rate": 0.1554,
+    "declined": 59,
+    "declined_rate": 0.2351,
     "small_sample": false
    }
   ],
@@ -97,19 +97,19 @@
    {
     "segment": "Group or serving",
     "regulars": 385,
-    "lapsed": 60,
-    "lapse_rate": 0.1558,
-    "declined": 48,
-    "declined_rate": 0.1247,
+    "lapsed": 55,
+    "lapse_rate": 0.1429,
+    "declined": 53,
+    "declined_rate": 0.1377,
     "small_sample": false
    },
    {
     "segment": "Neither",
     "regulars": 251,
-    "lapsed": 42,
-    "lapse_rate": 0.1673,
-    "declined": 56,
-    "declined_rate": 0.2231,
+    "lapsed": 39,
+    "lapse_rate": 0.1554,
+    "declined": 59,
+    "declined_rate": 0.2351,
     "small_sample": false
    }
   ],
@@ -126,37 +126,37 @@
    {
     "segment": "Students (11-17)",
     "regulars": 34,
-    "lapsed": 2,
-    "lapse_rate": 0.0588,
-    "declined": 6,
-    "declined_rate": 0.1765,
+    "lapsed": 1,
+    "lapse_rate": 0.0294,
+    "declined": 7,
+    "declined_rate": 0.2059,
     "small_sample": false
    },
    {
     "segment": "18-29",
     "regulars": 61,
-    "lapsed": 19,
-    "lapse_rate": 0.3115,
-    "declined": 10,
-    "declined_rate": 0.1639,
+    "lapsed": 17,
+    "lapse_rate": 0.2787,
+    "declined": 12,
+    "declined_rate": 0.1967,
     "small_sample": false
    },
    {
     "segment": "30-44",
     "regulars": 84,
-    "lapsed": 16,
-    "lapse_rate": 0.1905,
-    "declined": 4,
-    "declined_rate": 0.0476,
+    "lapsed": 14,
+    "lapse_rate": 0.1667,
+    "declined": 6,
+    "declined_rate": 0.0714,
     "small_sample": false
    },
    {
     "segment": "45-64",
     "regulars": 139,
-    "lapsed": 18,
-    "lapse_rate": 0.1295,
-    "declined": 24,
-    "declined_rate": 0.1727,
+    "lapsed": 15,
+    "lapse_rate": 0.1079,
+    "declined": 27,
+    "declined_rate": 0.1942,
     "small_sample": false
    },
    {
@@ -191,19 +191,19 @@
    {
     "segment": "Couple (no kids at home)",
     "regulars": 82,
-    "lapsed": 13,
-    "lapse_rate": 0.1585,
-    "declined": 13,
-    "declined_rate": 0.1585,
+    "lapsed": 12,
+    "lapse_rate": 0.1463,
+    "declined": 14,
+    "declined_rate": 0.1707,
     "small_sample": false
    },
    {
     "segment": "Family with kids",
     "regulars": 407,
-    "lapsed": 71,
-    "lapse_rate": 0.1744,
-    "declined": 63,
-    "declined_rate": 0.1548,
+    "lapsed": 64,
+    "lapse_rate": 0.1572,
+    "declined": 70,
+    "declined_rate": 0.172,
     "small_sample": false
    },
    {
@@ -238,10 +238,10 @@
    {
     "segment": "Under 1 year",
     "regulars": 86,
-    "lapsed": 24,
-    "lapse_rate": 0.2791,
-    "declined": 17,
-    "declined_rate": 0.1977,
+    "lapsed": 22,
+    "lapse_rate": 0.2558,
+    "declined": 19,
+    "declined_rate": 0.2209,
     "small_sample": false
    },
    {
@@ -256,10 +256,10 @@
    {
     "segment": "3+ years",
     "regulars": 415,
-    "lapsed": 53,
-    "lapse_rate": 0.1277,
-    "declined": 69,
-    "declined_rate": 0.1663,
+    "lapsed": 47,
+    "lapse_rate": 0.1133,
+    "declined": 75,
+    "declined_rate": 0.1807,
     "small_sample": false
    }
   ],
@@ -267,10 +267,10 @@
    {
     "segment": "Shreveport Campus",
     "regulars": 636,
-    "lapsed": 102,
-    "lapse_rate": 0.1604,
-    "declined": 104,
-    "declined_rate": 0.1635,
+    "lapsed": 94,
+    "lapse_rate": 0.1478,
+    "declined": 112,
+    "declined_rate": 0.1761,
     "small_sample": false
    }
   ],
@@ -278,10 +278,10 @@
    {
     "segment": "No service time recorded",
     "regulars": 636,
-    "lapsed": 102,
-    "lapse_rate": 0.1604,
-    "declined": 104,
-    "declined_rate": 0.1635,
+    "lapsed": 94,
+    "lapse_rate": 0.1478,
+    "declined": 112,
+    "declined_rate": 0.1761,
     "small_sample": false
    }
   ],
@@ -289,10 +289,10 @@
    {
     "segment": "kids",
     "regulars": 210,
-    "lapsed": 36,
-    "lapse_rate": 0.1714,
-    "declined": 43,
-    "declined_rate": 0.2048,
+    "lapsed": 35,
+    "lapse_rate": 0.1667,
+    "declined": 44,
+    "declined_rate": 0.2095,
     "small_sample": false
    },
    {
@@ -307,19 +307,19 @@
    {
     "segment": "cya",
     "regulars": 38,
-    "lapsed": 14,
-    "lapse_rate": 0.3684,
-    "declined": 7,
-    "declined_rate": 0.1842,
+    "lapsed": 12,
+    "lapse_rate": 0.3158,
+    "declined": 9,
+    "declined_rate": 0.2368,
     "small_sample": false
    },
    {
     "segment": "adults",
     "regulars": 373,
-    "lapsed": 52,
-    "lapse_rate": 0.1394,
-    "declined": 54,
-    "declined_rate": 0.1448,
+    "lapsed": 47,
+    "lapse_rate": 0.126,
+    "declined": 59,
+    "declined_rate": 0.1582,
     "small_sample": false
    }
   ],
@@ -376,6 +376,7 @@
   "retention_denominator": 418,
   "connected_any": 106,
   "one_time_guest_checkins": 80,
+  "earlier_contact_before_first_checkin": 158,
   "by_month": [
    {
     "month": "2025-10",
@@ -472,8 +473,8 @@
  },
  "net_growth": {
   "retained_newcomers": 88,
-  "lapsed": 102,
-  "net": -14,
+  "lapsed": 94,
+  "net": -6,
   "regulars_then": 636,
   "regulars_now": 721,
   "regulars_change": 85,
@@ -585,7 +586,7 @@
    }
   },
   "retained_newcomers_loose_rule": 137,
-  "net_loose_rule": 35
+  "net_loose_rule": 43
  },
  "seasonality": [
   {
@@ -596,7 +597,7 @@
   },
   {
    "month": "2025-11",
-   "lost": 22,
+   "lost": 21,
    "first_visits": 48,
    "became_regular": 6
   },
@@ -626,13 +627,13 @@
   },
   {
    "month": "2026-04",
-   "lost": 39,
+   "lost": 35,
    "first_visits": 68,
    "became_regular": 12
   },
   {
    "month": "2026-05",
-   "lost": 33,
+   "lost": 28,
    "first_visits": 69,
    "became_regular": 10
   },
@@ -669,98 +670,98 @@
  ],
  "seasonality_note": "'Lost' = ever-regular people whose last attendance fell in that month and who have had no activity of any kind for 90+ days. Months from Jul 2026 on are not yet knowable.",
  "early_warning": {
-  "lapsed_n": 102,
-  "stayed_n": 534,
+  "lapsed_n": 94,
+  "stayed_n": 542,
   "signals": [
    {
     "period": "6-3 months before",
     "signal": "Attendance fell by half or more",
-    "lapsed_n": 51,
-    "stayed_n": 267,
-    "lapsed_pct": 0.3137,
-    "stayed_pct": 0.1693,
-    "lapse_rate_with_signal": 0.2614,
-    "lapse_rate_without": 0.1363,
-    "relative_risk": 1.92
+    "lapsed_n": 46,
+    "stayed_n": 265,
+    "lapsed_pct": 0.2826,
+    "stayed_pct": 0.1761,
+    "lapse_rate_with_signal": 0.2177,
+    "lapse_rate_without": 0.1312,
+    "relative_risk": 1.66
    },
    {
     "period": "6-3 months before",
     "signal": "Stopped attending their group",
-    "lapsed_n": 51,
-    "stayed_n": 267,
-    "lapsed_pct": 0.2157,
-    "stayed_pct": 0.1141,
-    "lapse_rate_with_signal": 0.2653,
-    "lapse_rate_without": 0.1446,
-    "relative_risk": 1.83
+    "lapsed_n": 46,
+    "stayed_n": 265,
+    "lapsed_pct": 0.1957,
+    "stayed_pct": 0.1164,
+    "lapse_rate_with_signal": 0.2257,
+    "lapse_rate_without": 0.1363,
+    "relative_risk": 1.66
    },
    {
     "period": "6-3 months before",
     "signal": "Stopped serving",
-    "lapsed_n": 51,
-    "stayed_n": 267,
-    "lapsed_pct": 0.1176,
-    "stayed_pct": 0.0368,
-    "lapse_rate_with_signal": 0.3792,
-    "lapse_rate_without": 0.1489,
-    "relative_risk": 2.55
+    "lapsed_n": 46,
+    "stayed_n": 265,
+    "lapsed_pct": 0.1087,
+    "stayed_pct": 0.0383,
+    "lapse_rate_with_signal": 0.3296,
+    "lapse_rate_without": 0.1385,
+    "relative_risk": 2.38
    },
    {
     "period": "3-0 months before",
     "signal": "Attendance fell by half or more",
-    "lapsed_n": 68,
-    "stayed_n": 356,
-    "lapsed_pct": 0.3971,
-    "stayed_pct": 0.1325,
-    "lapse_rate_with_signal": 0.364,
-    "lapse_rate_without": 0.1172,
-    "relative_risk": 3.11
+    "lapsed_n": 61,
+    "stayed_n": 352,
+    "lapsed_pct": 0.377,
+    "stayed_pct": 0.1409,
+    "lapse_rate_with_signal": 0.317,
+    "lapse_rate_without": 0.1117,
+    "relative_risk": 2.84
    },
    {
     "period": "3-0 months before",
     "signal": "Stopped attending their group",
-    "lapsed_n": 68,
-    "stayed_n": 356,
-    "lapsed_pct": 0.2059,
-    "stayed_pct": 0.1102,
-    "lapse_rate_with_signal": 0.2629,
-    "lapse_rate_without": 0.1456,
-    "relative_risk": 1.81
+    "lapsed_n": 61,
+    "stayed_n": 352,
+    "lapsed_pct": 0.2131,
+    "stayed_pct": 0.1125,
+    "lapse_rate_with_signal": 0.2474,
+    "lapse_rate_without": 0.1333,
+    "relative_risk": 1.86
    },
    {
     "period": "3-0 months before",
     "signal": "Stopped serving",
-    "lapsed_n": 68,
-    "stayed_n": 356,
-    "lapsed_pct": 0.1618,
-    "stayed_pct": 0.0395,
-    "lapse_rate_with_signal": 0.439,
-    "lapse_rate_without": 0.1429,
-    "relative_risk": 3.07
+    "lapsed_n": 61,
+    "stayed_n": 352,
+    "lapsed_pct": 0.1803,
+    "stayed_pct": 0.0404,
+    "lapse_rate_with_signal": 0.4361,
+    "lapse_rate_without": 0.129,
+    "relative_risk": 3.38
    }
   ],
   "curve": {
    "lapsed": [
-    3.45,
-    3.34,
-    2.91,
-    2.91,
-    2.29,
-    2.32,
-    2.9,
-    2.34,
-    2.07
+    3.63,
+    3.41,
+    3.08,
+    3.08,
+    2.36,
+    2.48,
+    2.93,
+    2.43,
+    2.16
    ],
    "stayed": [
-    3.96,
-    3.72,
-    3.61,
-    3.57,
-    3.13,
+    3.95,
+    3.69,
+    3.58,
+    3.55,
+    3.1,
     3.04,
-    3.84,
-    3.65,
-    3.63
+    3.81,
+    3.61,
+    3.6
    ]
   },
   "curve_months": [
@@ -775,22 +776,25 @@
    -1
   ],
   "baseline_days_avg": {
-   "lapsed": 9.56,
-   "stayed": 10.9
+   "lapsed": 9.73,
+   "stayed": 10.85
   }
  },
  "at_risk_count": 73,
  "data_gaps": {
   "people_records_used": 4268,
   "active_people_in_pco": 9541,
-  "people_with_any_activity": 3072,
+  "people_with_any_activity": 4105,
   "missing_birthdate_pct_of_regulars": 0.0126,
   "no_household_pct_of_regulars": 0.0031,
   "no_service_time_pct_of_regulars": 1.0,
   "campuses": 1,
   "activity_rows_by_source": {
    "checkin": 40553,
+   "form": 4644,
    "group": 8658,
+   "household": 19514,
+   "register": 4293,
    "serve": 11381
   },
   "group_meetings": 1555,
@@ -922,8 +926,8 @@
   ],
   "baseline_regulars_under_18_pct": 0.3758,
   "baseline_regulars_seen_via": {
-   "check-ins only": 251,
-   "check-ins plus group/serving": 361,
+   "check-ins only": 119,
+   "check-ins plus group/serving": 493,
    "group/serving only, never checked in": 24
   }
  }

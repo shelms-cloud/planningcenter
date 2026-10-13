@@ -24,7 +24,7 @@ def main():
     went = set(a.loc[a["ename"].str.contains(DISCOVER), "person_id"])
 
     att = A.attendance(a)
-    first_any = a.groupby("person_id")["date"].min()
+    first_any = a[a["source"].isin(["checkin", "group", "serve"])].groupby("person_id")["date"].min()
     first_att = att.groupby("person_id")["date"].min()
     last_att = att.groupby("person_id")["date"].max()
     visits = att.groupby("person_id").size()

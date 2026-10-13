@@ -6,7 +6,7 @@
  "event_ids_without_name": [],
  "definitions": {
   "regular": "6+ distinct check-in days in the 91 days ending Oct 13",
-  "gone_quiet": "no check-in of any kind in the 90 days ending Oct 13 a year later",
+  "gone_quiet": "no activity in the 90 days ending Oct 13 a year later: no check-in, no check-in of a child in their household, no form submitted, no event registration",
   "first_timer": "first check-in ever, with at least 365 days of history before it",
   "kids_checkins": "people who were ever checked in to a kids event (mostly children)"
  },
@@ -15,14 +15,18 @@
    "from": "2023-10-13",
    "to": "2024-10-13",
    "everyone": {
+    "gone_quiet_checkins_only": 59,
+    "kept_in_touch_only_by_forms_registrations_or_kids": 3,
     "regulars": 492,
     "still_regular": 333,
-    "around_not_regular": 100,
-    "gone_quiet": 59,
+    "around_not_regular": 103,
+    "gone_quiet": 56,
     "still_regular_pct": 67.7,
-    "gone_quiet_pct": 12.0
+    "gone_quiet_pct": 11.4
    },
    "kids_checkins": {
+    "gone_quiet_checkins_only": 36,
+    "kept_in_touch_only_by_forms_registrations_or_kids": 0,
     "regulars": 249,
     "still_regular": 162,
     "around_not_regular": 51,
@@ -31,71 +35,90 @@
     "gone_quiet_pct": 14.5
    },
    "everyone_else": {
+    "gone_quiet_checkins_only": 23,
+    "kept_in_touch_only_by_forms_registrations_or_kids": 3,
     "regulars": 243,
     "still_regular": 171,
-    "around_not_regular": 49,
-    "gone_quiet": 23,
+    "around_not_regular": 52,
+    "gone_quiet": 20,
     "still_regular_pct": 70.4,
-    "gone_quiet_pct": 9.5
+    "gone_quiet_pct": 8.2
    }
   },
   {
    "from": "2024-10-13",
    "to": "2025-10-13",
    "everyone": {
+    "gone_quiet_checkins_only": 50,
+    "kept_in_touch_only_by_forms_registrations_or_kids": 6,
     "regulars": 504,
     "still_regular": 308,
-    "around_not_regular": 146,
-    "gone_quiet": 50,
+    "around_not_regular": 152,
+    "gone_quiet": 44,
     "still_regular_pct": 61.1,
-    "gone_quiet_pct": 9.9
+    "gone_quiet_pct": 8.7
    },
    "kids_checkins": {
+    "gone_quiet_checkins_only": 25,
+    "kept_in_touch_only_by_forms_registrations_or_kids": 3,
     "regulars": 237,
     "still_regular": 160,
-    "around_not_regular": 52,
-    "gone_quiet": 25,
+    "around_not_regular": 55,
+    "gone_quiet": 22,
     "still_regular_pct": 67.5,
-    "gone_quiet_pct": 10.5
+    "gone_quiet_pct": 9.3
    },
    "everyone_else": {
+    "gone_quiet_checkins_only": 25,
+    "kept_in_touch_only_by_forms_registrations_or_kids": 3,
     "regulars": 267,
     "still_regular": 148,
-    "around_not_regular": 94,
-    "gone_quiet": 25,
+    "around_not_regular": 97,
+    "gone_quiet": 22,
     "still_regular_pct": 55.4,
-    "gone_quiet_pct": 9.4
+    "gone_quiet_pct": 8.2
    }
   },
   {
    "from": "2025-10-13",
    "to": "2026-10-13",
    "everyone": {
+    "gone_quiet_checkins_only": 83,
+    "kept_in_touch_only_by_forms_registrations_or_kids": 8,
     "regulars": 504,
     "still_regular": 330,
-    "around_not_regular": 91,
-    "gone_quiet": 83,
+    "around_not_regular": 99,
+    "gone_quiet": 75,
     "still_regular_pct": 65.5,
-    "gone_quiet_pct": 16.5
+    "gone_quiet_pct": 14.9
    },
    "kids_checkins": {
+    "gone_quiet_checkins_only": 42,
+    "kept_in_touch_only_by_forms_registrations_or_kids": 2,
     "regulars": 264,
     "still_regular": 171,
-    "around_not_regular": 51,
-    "gone_quiet": 42,
+    "around_not_regular": 53,
+    "gone_quiet": 40,
     "still_regular_pct": 64.8,
-    "gone_quiet_pct": 15.9
+    "gone_quiet_pct": 15.2
    },
    "everyone_else": {
+    "gone_quiet_checkins_only": 41,
+    "kept_in_touch_only_by_forms_registrations_or_kids": 6,
     "regulars": 240,
     "still_regular": 159,
-    "around_not_regular": 40,
-    "gone_quiet": 41,
+    "around_not_regular": 46,
+    "gone_quiet": 35,
     "still_regular_pct": 66.2,
-    "gone_quiet_pct": 17.1
+    "gone_quiet_pct": 14.6
    }
   }
  ],
+ "other_activity_rows": {
+  "form": 10953,
+  "household": 51078,
+  "register": 9667
+ },
  "newcomers": {
   "2024": {
    "first_timers": 1230,
