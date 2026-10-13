@@ -1,0 +1,474 @@
+<title>Celebration Retention Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: a single reading column of numbered questions (they match the brief's order),
+   headline tiles first, then one panel per question, then findings, gaps, definitions. */
+:root {
+  --bg: #f6f5f2; --surface: #fcfcfb; --ink: #262524; --ink-2: #52514e; --muted: #75716b;
+  --line: #e3e0da; --axis: #c3c2b7; --brand: #283b2e; --brand-soft: #e6ece5; --accent: #3f5a9c;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --band: rgba(12,163,12,.14);
+  --good: #0ca30c; --warn: #b07a00; --crit: #d03b3b;
+  --sans: 'Hanken Grotesk', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121412; --surface: #1a1b19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #9a968f;
+  --line: #2c2c2a; --axis: #45443f; --brand: #a9c7ae; --brand-soft: #1f2a22; --accent: #9db0e6;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --band: rgba(12,163,12,.22);
+  --good: #0ca30c; --warn: #fab219; --crit: #e66767; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121412; --surface: #1a1b19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #9a968f;
+  --line: #2c2c2a; --axis: #45443f; --brand: #a9c7ae; --brand-soft: #1f2a22; --accent: #9db0e6;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --band: rgba(12,163,12,.22);
+  --good: #0ca30c; --warn: #fab219; --crit: #e66767; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.55 var(--sans); padding: 32px 16px 64px }
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 28px }
+h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.2 }
+h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; letter-spacing: -.01em; color: var(--brand) }
+h2 { font-size: 21px; font-weight: 700 }
+h3 { font-size: 15px; font-weight: 700 }
+p { margin: 0; max-width: 68ch }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+.sub { color: var(--ink-2) }
+.small { font-size: 13px; color: var(--muted) }
+.num { font-variant-numeric: tabular-nums }
+header { display: grid; gap: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line) }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--ink-2) }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 16px; display: grid; gap: 6px; align-content: start }
+.tile .big { font-size: 44px; font-weight: 800; line-height: 1; letter-spacing: -.02em }
+.tile .def { font-size: 13px; color: var(--ink-2) }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 99px; border: 1px solid currentColor; width: max-content }
+.pill.good { color: var(--good) } .pill.warn { color: var(--warn) } .pill.crit { color: var(--crit) }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor }
+
+section.q { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 22px clamp(16px, 3vw, 26px); display: grid; gap: 16px; min-width: 0 }
+.qhead { display: grid; gap: 4px }
+.qnum { color: var(--accent); font-weight: 800; font-size: 13px; letter-spacing: .06em }
+.answer { font-size: 16px; font-weight: 600; max-width: 70ch }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 22px 28px }
+.grid2 > * { min-width: 0; align-content: start; align-self: start }
+.source { font-size: 12px; color: var(--muted); border-top: 1px dashed transparent; padding-top: 2px }
+.source b { font-weight: 600; color: var(--ink-2) }
+
+/* horizontal rate bars (HTML so labels stay readable at phone width) */
+.hb { display: grid; gap: 7px }
+.hb-row { display: grid; grid-template-columns: minmax(96px, 34%) 1fr 64px; align-items: center; gap: 10px; font-size: 13px }
+.hb-label { color: var(--ink-2); line-height: 1.25 }
+.hb-label .n { color: var(--muted); font-size: 12px }
+.hb-track { position: relative; height: 16px }
+.hb-bar { position: absolute; left: 0; top: 2px; bottom: 2px; background: var(--s2); border-radius: 0 4px 4px 0; min-width: 2px }
+.hb-bar.blue { background: var(--s1) } .hb-bar.green { background: var(--s3) }
+.hb-row.thin .hb-bar { opacity: .45 }
+.hb-ref { position: absolute; top: -3px; bottom: -3px; border-left: 2px solid var(--ink); opacity: .55 }
+.hb-val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600 }
+.hb-row:hover .hb-label { color: var(--ink) }
+
+.stack { display: flex; gap: 2px; height: 30px; border-radius: 4px; overflow: hidden }
+.stack > div { min-width: 2px }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-2) }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px }
+
+.chart { overflow-x: auto }
+.chart svg { display: block; width: 100%; min-width: 520px; height: auto }
+.chart svg text { fill: var(--muted); font: 500 11px var(--sans) }
+.chart .grid line { stroke: var(--line) }
+.chart .axis { stroke: var(--axis) }
+.chart .hit { fill: transparent }
+.tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 12.5px; padding: 7px 10px; border-radius: 6px; max-width: 260px; z-index: 9; line-height: 1.4 }
+.tip b { font-weight: 700 }
+
+table { border-collapse: collapse; width: 100%; font-size: 13.5px }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 700 }
+td.r, th.r { text-align: right; font-variant-numeric: tabular-nums }
+.tablewrap { overflow-x: auto }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden }
+.seg button { font: 600 13px var(--sans); background: transparent; color: var(--ink-2); border: 0; padding: 6px 12px; cursor: pointer }
+.seg button[aria-pressed="true"] { background: var(--brand-soft); color: var(--ink) }
+.seg button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+
+ol.findings, ol.recs { margin: 0; padding-left: 22px; display: grid; gap: 12px; max-width: 74ch }
+ol.findings li::marker, ol.recs li::marker { font-weight: 800; color: var(--accent) }
+.recs li b { display: block }
+.callout { background: var(--brand-soft); border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px }
+.gaps { display: grid; gap: 10px }
+.gap { display: grid; grid-template-columns: 1fr; gap: 2px; padding: 10px 0; border-bottom: 1px solid var(--line) }
+.gap .impact { font-size: 13px; color: var(--ink-2) }
+details summary { cursor: pointer; font-weight: 600 }
+.inconclusive { color: var(--warn); font-weight: 700 }
+@media (max-width: 520px) { .hb-row { grid-template-columns: 1fr 52px; } .hb-label { grid-column: 1 / -1 } }
+</style>
+
+<div class="wrap" id="app"></div>
+<div class="tip" id="tip" hidden></div>
+
+<script id="metrics" type="application/json">/*__METRICS__*/</script>
+<script id="narrative" type="application/json">/*__NARRATIVE__*/</script>
+<script>
+const M = JSON.parse(document.getElementById('metrics').textContent);
+const N = JSON.parse(document.getElementById('narrative').textContent);
+const $ = (h) => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
+const pct = (x, d = 0) => x == null ? '—' : (x * 100).toFixed(d) + '%';
+const fmt = (x) => x == null ? '—' : Number(x).toLocaleString('en-US');
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const dfmt = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const mfmt = (ym) => new Date(ym + '-15T12:00:00').toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+const signed = (x) => x == null ? '—' : (x > 0 ? '+' : x < 0 ? '−' : '') + fmt(Math.abs(x));
+const W = M.windows, A = M.attrition, NG = M.net_growth, NC = M.newcomers;
+const app = document.getElementById('app');
+const tip = document.getElementById('tip');
+function showTip(e, html) { tip.innerHTML = html; tip.hidden = false; const x = Math.min(e.clientX + 14, innerWidth - 270); tip.style.left = x + 'px'; tip.style.top = (e.clientY + 14) + 'px'; }
+function hideTip() { tip.hidden = true; }
+function bindTips(root) { root.querySelectorAll('[data-tip]').forEach(el => { el.addEventListener('mousemove', e => showTip(e, el.dataset.tip)); el.addEventListener('mouseleave', hideTip); }); }
+
+function status(rate) {
+  const [lo, hi] = M.attrition.benchmark;
+  if (rate == null) return ['warn', 'No data'];
+  if (rate <= hi) return ['good', rate < lo ? 'Below the healthy range' : 'Within the healthy range'];
+  if (rate <= hi + 0.05) return ['warn', 'Above the healthy range'];
+  return ['crit', 'Well above the healthy range'];
+}
+
+// ---------- chart helpers ----------
+function hbars(rows, { ref = null, max = null, color = '', valueFmt = (r) => pct(r.value), tipFn = null } = {}) {
+  const vmax = max ?? Math.max(0.0001, ...rows.map(r => r.value ?? 0), ref ?? 0) * 1.1;
+  const el = $('<div class="hb"></div>');
+  rows.forEach(r => {
+    const w = Math.max(0, (r.value ?? 0) / vmax * 100);
+    const row = $(`<div class="hb-row ${r.thin ? 'thin' : ''}" data-tip="${esc(tipFn ? tipFn(r) : '')}">
+      <div class="hb-label">${esc(r.label)} ${r.n != null ? `<span class="n">n=${fmt(r.n)}${r.thin ? ' · small sample' : ''}</span>` : ''}</div>
+      <div class="hb-track"><div class="hb-bar ${color}" style="width:${w}%"></div>${ref != null ? `<div class="hb-ref" style="left:${ref / vmax * 100}%"></div>` : ''}</div>
+      <div class="hb-val">${r.value == null ? '—' : valueFmt(r)}</div></div>`);
+    el.append(row);
+  });
+  bindTips(el);
+  return el;
+}
+
+function svgLine(series, xs, { yFmt = fmt, height = 240, xLabel = (x) => x, yMin = 0 } = {}) {
+  const Wd = 720, H = height, L = 46, R = 16, T = 14, B = 30;
+  const all = series.flatMap(s => s.values).filter(v => v != null);
+  let ymax = Math.max(...all, 1); ymax = niceMax(ymax);
+  const ymin = yMin;
+  const xp = (i) => L + (xs.length === 1 ? 0 : i * (Wd - L - R) / (xs.length - 1));
+  const yp = (v) => T + (H - T - B) * (1 - (v - ymin) / (ymax - ymin));
+  let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img">`;
+  s += '<g class="grid">';
+  for (let k = 0; k <= 4; k++) { const v = ymin + (ymax - ymin) * k / 4; s += `<line x1="${L}" x2="${Wd - R}" y1="${yp(v)}" y2="${yp(v)}"/><text x="${L - 8}" y="${yp(v) + 4}" text-anchor="end">${yFmt(v)}</text>`; }
+  s += '</g>';
+  const step = Math.ceil(xs.length / 9);
+  xs.forEach((x, i) => { if (i % step === 0 || i === xs.length - 1) s += `<text x="${xp(i)}" y="${H - 8}" text-anchor="middle">${esc(xLabel(x))}</text>`; });
+  s += `<line class="axis" x1="${L}" x2="${Wd - R}" y1="${yp(ymin)}" y2="${yp(ymin)}"/>`;
+  series.forEach(se => {
+    const pts = se.values.map((v, i) => v == null ? null : [xp(i), yp(v)]);
+    let d = ''; pts.forEach((p, i) => { if (!p) return; d += (d && pts[i - 1] ? 'L' : 'M') + p[0].toFixed(1) + ',' + p[1].toFixed(1); });
+    s += `<path d="${d}" fill="none" stroke="${se.color}" stroke-width="2" stroke-linejoin="round"/>`;
+    const last = pts.map((p, i) => [p, i]).filter(x => x[0]).pop();
+    if (last) s += `<circle cx="${last[0][0]}" cy="${last[0][1]}" r="4" fill="${se.color}" stroke="var(--surface)" stroke-width="2"/>`;
+  });
+  const colW = (Wd - L - R) / Math.max(1, xs.length - 1);
+  xs.forEach((x, i) => {
+    const lines = series.map(se => `<i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${se.color};margin-right:5px"></i>${esc(se.name)}: <b>${se.values[i] == null ? '—' : yFmt(se.values[i])}</b>`).join('<br>');
+    s += `<rect class="hit" x="${xp(i) - colW / 2}" y="${T}" width="${colW}" height="${H - T - B}" data-tip="${esc('<b>' + esc(xLabel(x)) + '</b><br>' + lines)}"/>`;
+  });
+  s += '</svg>';
+  const el = $(`<div class="chart">${s}</div>`); bindTips(el); return el;
+}
+
+function svgBars(cats, series, { height = 250, xLabel = (x) => x, yFmt = fmt } = {}) {
+  const Wd = 720, H = height, L = 40, R = 10, T = 12, B = 30;
+  const ymax = niceMax(Math.max(1, ...series.flatMap(s => s.values.filter(v => v != null))));
+  const yp = (v) => T + (H - T - B) * (1 - v / ymax);
+  const gw = (Wd - L - R) / cats.length, bw = Math.max(3, Math.min(16, (gw - 6) / series.length - 2));
+  let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img"><g class="grid">`;
+  for (let k = 0; k <= 4; k++) { const v = ymax * k / 4; s += `<line x1="${L}" x2="${Wd - R}" y1="${yp(v)}" y2="${yp(v)}"/><text x="${L - 6}" y="${yp(v) + 4}" text-anchor="end">${yFmt(v)}</text>`; }
+  s += '</g>';
+  const step = Math.ceil(cats.length / 12);
+  cats.forEach((c, i) => {
+    const gx = L + i * gw + gw / 2, x0 = gx - (series.length * (bw + 2) - 2) / 2;
+    series.forEach((se, j) => {
+      const v = se.values[i]; if (v == null || v === 0) return;
+      const x = x0 + j * (bw + 2), y = yp(v), h = yp(0) - y;
+      s += `<path d="M${x},${y + h}V${y + Math.min(3, h)}q0,-3 3,-3h${bw - 6}q3,0 3,3V${y + h}Z" fill="${se.color}"/>`;
+    });
+    if (i % step === 0) s += `<text x="${gx}" y="${H - 9}" text-anchor="middle">${esc(xLabel(c))}</text>`;
+    const lines = series.map(se => `${esc(se.name)}: <b>${se.values[i] == null ? 'not yet knowable' : yFmt(se.values[i])}</b>`).join('<br>');
+    s += `<rect class="hit" x="${L + i * gw}" y="${T}" width="${gw}" height="${H - T - B}" data-tip="${esc('<b>' + esc(xLabel(c)) + '</b><br>' + lines)}"/>`;
+  });
+  s += `<line class="axis" x1="${L}" x2="${Wd - R}" y1="${yp(0)}" y2="${yp(0)}"/></svg>`;
+  const el = $(`<div class="chart">${s}</div>`); bindTips(el); return el;
+}
+function niceMax(v) { if (v <= 4) return niceMax0(v); const raw = v / 4, p = Math.pow(10, Math.floor(Math.log10(raw))); for (const m of [1, 2, 2.5, 5, 10]) if (m * p >= raw) return 4 * m * p; return 40 * p; }
+function niceMax0(v) { const p = Math.pow(10, Math.floor(Math.log10(v))); for (const m of [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) if (m * p >= v) return m * p; return 10 * p; }
+const legend = (items) => `<div class="legend">${items.map(([c, t]) => `<span><i style="background:${c}"></i>${esc(t)}</span>`).join('')}</div>`;
+const src = (html) => `<p class="source">${html}</p>`;
+
+// ---------- header + headline tiles ----------
+const [stCls, stTxt] = status(A.rate);
+app.append($(`<header>
+  <div class="eyebrow">Celebration Church · Shreveport · Planning Center data</div>
+  <h1>Attrition &amp; retention, ${dfmt(W.baseline[1]).replace(/^\w+ \d+, /, '')}–${dfmt(M.as_of).replace(/^\w+ \d+, /, '')}</h1>
+  <div class="meta"><span>Data as of <b>${dfmt(M.as_of)}</b></span><span>Baseline: regulars ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])}</span><span>Lapse check: no activity ${dfmt(W.recent_quiet[0])} – ${dfmt(W.recent_quiet[1])}</span></div>
+</header>`));
+
+app.append($(`<div class="tiles">
+  <div class="tile"><div class="eyebrow">Annual attrition</div><div class="big num">${pct(A.rate, 1)}</div>
+    <span class="pill ${stCls}">${stTxt} (10–15%)</span>
+    <div class="def">${fmt(A.lapsed)} of ${fmt(A.baseline_regulars)} people who were regular attenders a year ago have had no activity of any kind in 90 days: no check-in for themselves or their kids, no group, serving, form or event registration.</div></div>
+  <div class="tile"><div class="eyebrow">Newcomer retention</div><div class="big num">${pct(NC.retention_rate, 0)}</div>
+    <div class="def">${fmt(NC.retention_numerator)} of ${fmt(NC.retention_denominator)} first-time guests (first visit ${dfmt(W.newcomer[0])} – ${dfmt(NC.mature_cutoff)}) went on to become regular attenders.</div></div>
+  <div class="tile"><div class="eyebrow">Net growth underneath Sunday</div><div class="big num">${signed(NG.net)}${NG.net_loose_rule != null ? ` <span style="font-size:24px">to ${signed(NG.net_loose_rule)}</span>` : ''}</div>
+    ${(() => { const lo = Math.min(NG.net, NG.net_loose_rule ?? NG.net), hi = Math.max(NG.net, NG.net_loose_rule ?? NG.net); return lo > 0 ? '<span class="pill good">Growing</span>' : hi < 0 ? '<span class="pill crit">Shrinking</span>' : '<span class="pill warn">Essentially flat</span>'; })()}
+    <div class="def">${fmt(NG.retained_newcomers)}${NG.retained_newcomers_loose_rule != null ? `–${fmt(NG.retained_newcomers_loose_rule)}` : ''} newcomers became regular and are still active, against ${fmt(NG.lapsed)} lapsed regulars. The range depends on how strictly "first-time guest" is defined.</div></div>
+</div>`));
+
+if (N.summary) app.append($(`<div class="callout"><div class="eyebrow">In one paragraph</div><p>${N.summary}</p></div>`));
+
+function section(n, title, answer) {
+  const s = $(`<section class="q"><div class="qhead"><div class="qnum">${n}</div><h2>${esc(title)}</h2>${answer ? `<p class="answer">${answer}</p>` : ''}</div></section>`);
+  app.append(s); return s;
+}
+const ans = (k) => (N.answers || {})[k] || '';
+
+// ---------- 1. Attrition ----------
+{
+  const s = section('Question 1', 'Overall annual attrition', ans('attrition'));
+  const b = A.baseline_regulars || 1;
+  const stack = $(`<div style="display:grid;gap:8px">
+    <h3>What happened to last year's ${fmt(A.baseline_regulars)} regular attenders</h3>
+    <div class="stack">
+      <div style="flex:${A.still_regular};background:var(--s1)" data-tip="${esc(`<b>Still regular</b><br>${fmt(A.still_regular)} (${pct(A.still_regular_rate)})`)}"></div>
+      <div style="flex:${A.declined_not_lapsed};background:var(--s3)" data-tip="${esc(`<b>Still around, no longer regular</b><br>${fmt(A.declined_not_lapsed)} (${pct(A.declined_rate)})`)}"></div>
+      <div style="flex:${A.lapsed};background:var(--s2)" data-tip="${esc(`<b>Lapsed</b><br>${fmt(A.lapsed)} (${pct(A.rate)})`)}"></div>
+    </div>
+    ${legend([['var(--s1)', `Still regular ${pct(A.still_regular_rate)}`], ['var(--s3)', `Still around, not regular ${pct(A.declined_rate)}`], ['var(--s2)', `Lapsed ${pct(A.rate)}`]])}
+  </div>`);
+  bindTips(stack); s.append(stack);
+  const rows = [{ label: 'All regular attenders', value: A.rate, n: A.baseline_regulars }];
+  if (A.adults_only) rows.push({ label: 'Adults (18+) only', value: A.adults_only.rate, n: A.adults_only.baseline });
+  if (A.households) rows.push({ label: 'Households (all members quiet)', value: A.households.rate, n: A.households.baseline });
+  const g = $(`<div class="grid2"><div style="display:grid;gap:10px"><h3>Attrition rate against the 10–15% benchmark</h3></div><div style="display:grid;gap:8px"></div></div>`);
+  const bench = $(`<div style="position:relative"></div>`);
+  const hb = hbars(rows, { max: Math.max(0.3, ...rows.map(r => (r.value || 0) * 1.15)) });
+  // shade the healthy band on every track
+  hb.querySelectorAll('.hb-track').forEach(t => { const mx = Math.max(0.3, ...rows.map(r => (r.value || 0) * 1.15)); t.append($(`<div style="position:absolute;top:-2px;bottom:-2px;left:${10 / mx}%;width:${5 / mx}%;background:var(--band);border-inline:1px solid var(--good)" title="10–15% healthy range"></div>`)); });
+  g.children[0].append(hb, $(`<p class="small">Green band = 10–15% healthy range. Household view counts a family as lapsed only when nobody in it has any activity, which corrects for parents who don't check in.</p>`));
+  g.children[1].append($(`<table><tbody>
+    <tr><td>Regular attenders a year ago</td><td class="r">${fmt(A.baseline_regulars)}</td></tr>
+    <tr><td>Lapsed (no activity of any kind in 90 days)</td><td class="r">${fmt(A.lapsed)}</td></tr>
+    <tr><td>…of whom Planning Center already marks inactive</td><td class="r">${fmt(A.lapsed_marked_inactive_in_pco)}</td></tr>
+    <tr><td>Still around but no longer regular</td><td class="r">${fmt(A.declined_not_lapsed)}</td></tr>
+    <tr><td>Still regular today</td><td class="r">${fmt(A.still_regular)}</td></tr></tbody></table>`));
+  s.append(g);
+  s.append($(src(`<b>Source:</b> Check-Ins check-ins, Groups attendance, Services scheduled people (confirmed only). Cohort window ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])}; quiet window ${dfmt(W.recent_quiet[0])} – ${dfmt(W.recent_quiet[1])}. <code>metrics.json → attrition</code>`)));
+}
+
+// ---------- 2. Breakouts ----------
+{
+  const s = section('Question 2', 'Who we lose: attrition by segment', ans('breakouts'));
+  const B = M.breakouts;
+  const dims = [
+    ['engagement', 'Engagement (group / serving)'], ['any_engaged', M.giving_available ? 'Group, serving or giving' : 'Group or serving'], ['giving', 'Giving'],
+    ['age_band', 'Age band'], ['household_type', 'Household type'], ['tenure', 'Tenure at the start'],
+    ['ministry_area', 'Ministry area'], ['service_time', 'Service time'], ['campus', 'Campus'],
+  ];
+  const grid = $('<div class="grid2"></div>');
+  const areaName = { kids: 'Kids', students: 'Students', cya: 'CYA (college & young adults)', adults: 'Adults' };
+  dims.forEach(([k, label]) => {
+    const rows = (B[k] || []).filter(r => r.regulars > 0);
+    if (!rows.length) return;
+    if (k === 'service_time' && rows.length < 2) { grid.append($(`<div style="display:grid;gap:8px"><h3>${label}</h3><p class="small">Not measurable. Sunday check-ins are recorded against one session per day, not a specific service time.</p></div>`)); return; }
+    if (k === 'giving' && !M.giving_available) return;
+    if (k === 'campus' && rows.length < 2) { grid.append($(`<div style="display:grid;gap:8px"><h3>${label}</h3><p class="small">One campus (${esc(rows[0].segment)}), so there is nothing to compare.</p></div>`)); return; }
+    const box = $(`<div style="display:grid;gap:10px"><h3>${label}</h3></div>`);
+    box.append(hbars(rows.map(r => ({ label: k === 'ministry_area' ? (areaName[r.segment] || r.segment) : r.segment, value: r.lapse_rate, n: r.regulars, thin: r.small_sample, raw: r })), {
+      ref: A.rate, max: Math.max(0.4, ...rows.map(r => r.lapse_rate || 0)) * 1.05,
+      tipFn: (r) => `<b>${esc(r.label)}</b><br>${fmt(r.raw.lapsed)} of ${fmt(r.raw.regulars)} lapsed (${pct(r.value, 1)})<br>${fmt(r.raw.declined)} more no longer regular (${pct(r.raw.declined_rate, 1)})`,
+    }));
+    if (k === 'ministry_area' && B.ministry_area_fallback_share != null) box.append($(`<p class="small">${pct(B.ministry_area_fallback_share)} assigned by age because they had no check-in to a ministry event in the baseline window.</p>`));
+    grid.append(box);
+  });
+  s.append(grid);
+  s.append($(`<p class="small">Bars show the share of each segment's regular attenders who lapsed. The dark tick marks the church-wide rate (${pct(A.rate, 1)}). Faded bars have fewer than 20 people, so read them as directional only.</p>`));
+  s.append($(src(`<b>Definitions:</b> Group = marked present at a group meeting in the 6 months to ${dfmt(W.baseline[1])}. Serving = confirmed on a Services plan or checked in as a Dream Team volunteer in those 6 months. ${M.giving_available ? 'Regular giver = a gift in at least 2 of the 3 months of the baseline window.' : 'Giving could not be included (see data gaps).'} Age at ${dfmt(W.baseline[1])} from birthdate. Household type from the person's Planning Center household (kids = anyone under 18). Tenure = time since the earlier of their People record or first recorded activity. Ministry area = the Check-Ins event they most often attended. <code>metrics.json → breakouts</code>`)));
+}
+
+// ---------- 3. Funnel ----------
+{
+  const s = section('Question 3', 'The newcomer funnel', ans('funnel'));
+  const wrap = $(`<div style="display:grid;gap:12px">
+    <div class="seg" role="group" aria-label="Which newcomers"><button id="fn-mature" aria-pressed="true">Had 4+ months to settle in</button><button id="fn-all" aria-pressed="false">All first visits, last 12 months</button></div>
+    <div id="fn-body"></div></div>`);
+  const draw = (stages) => {
+    const top = stages[0].n || 1;
+    const rows = stages.map((st, i) => ({ label: st.stage, value: st.n / top, n: null, st, prev: i ? stages[i - 1].n : null }));
+    const body = wrap.querySelector('#fn-body'); body.innerHTML = '';
+    body.append(hbars(rows, { max: 1, color: 'blue', valueFmt: (r) => fmt(r.st.n),
+      tipFn: (r) => `<b>${esc(r.label)}</b><br>${fmt(r.st.n)} people · ${pct(r.value)} of first-timers${r.prev != null ? `<br>${pct(r.prev ? r.st.n / r.prev : null)} of the previous stage (drop-off ${fmt(r.prev - r.st.n)})` : ''}` }));
+    const t = $(`<div class="tablewrap"><table><thead><tr><th>Stage</th><th class="r">People</th><th class="r">% of first-timers</th><th class="r">Kept from previous stage</th><th class="r">Lost at this step</th></tr></thead><tbody></tbody></table></div>`);
+    stages.forEach((st, i) => t.querySelector('tbody').append($(`<tr><td>${esc(st.stage)}</td><td class="r">${fmt(st.n)}</td><td class="r">${pct(st.n / top)}</td><td class="r">${i ? pct(stages[i - 1].n ? st.n / stages[i - 1].n : null) : ''}</td><td class="r">${i ? fmt(stages[i - 1].n - st.n) : ''}</td></tr>`)));
+    body.append(t);
+  };
+  wrap.querySelector('#fn-mature').onclick = (e) => { e.target.setAttribute('aria-pressed', 'true'); wrap.querySelector('#fn-all').setAttribute('aria-pressed', 'false'); draw(NC.funnel_mature); };
+  wrap.querySelector('#fn-all').onclick = (e) => { e.target.setAttribute('aria-pressed', 'true'); wrap.querySelector('#fn-mature').setAttribute('aria-pressed', 'false'); draw(NC.funnel_all); };
+  draw(NC.funnel_mature);
+  s.append(wrap);
+  if (NC.by_month?.length) {
+    const t = $(`<details><summary>By month of first visit</summary><div class="tablewrap"><table><thead><tr><th>First visit</th><th class="r">First-timers</th><th class="r">Came back</th><th class="r">Became regular</th><th></th></tr></thead><tbody></tbody></table></div></details>`);
+    NC.by_month.forEach(r => t.querySelector('tbody').append($(`<tr><td>${mfmt(r.month)}</td><td class="r">${fmt(r.first_visits)}</td><td class="r">${pct(r.first_visits ? r.second / r.first_visits : null)}</td><td class="r">${pct(r.first_visits ? r.regular / r.first_visits : null)}</td><td class="small">${r.mature ? '' : 'still settling in'}</td></tr>`)));
+    s.append(t);
+  }
+  s.append($(src(`<b>Definitions:</b> A first-time guest is a person whose first recorded attendance (check-in or group visit) falls ${dfmt(W.newcomer[0])} – ${dfmt(W.newcomer[1])}, with no earlier check-in, group or serving since ${dfmt(M.history_start)} and a People record created no more than 60 days before that visit. Visits are distinct days attended. Regular = 6+ attendance days within any 91-day stretch. Connected = attended a group, served, or checked in as a volunteer on or after the first visit. ${fmt(NC.one_time_guest_checkins)} one-time-guest check-ins in the window have no person record and cannot be followed. <code>metrics.json → newcomers</code>`)));
+}
+
+// ---------- 4. Net growth ----------
+{
+  const s = section('Question 4', 'Net growth underneath the Sunday numbers', ans('net_growth'));
+  const comp = NG.now_composition;
+  const tot = Object.values(comp).reduce((a, b) => a + b, 0) || 1;
+  const cols = ['var(--s1)', 'var(--s3)', 'var(--s2)'];
+  const g = $('<div class="grid2"></div>');
+  const left = $(`<div style="display:grid;gap:10px"><h3>Where today's ${fmt(NG.regulars_now)} regular attenders came from</h3>
+     <div class="stack">${Object.entries(comp).map(([k, v], i) => `<div style="flex:${v};background:${cols[i]}" data-tip="${esc(`<b>${k}</b><br>${fmt(v)} (${pct(v / tot)})`)}"></div>`).join('')}</div>
+     ${legend(Object.entries(comp).map(([k, v], i) => [cols[i], `${k[0].toUpperCase() + k.slice(1)}: ${fmt(v)}`]))}
+     <table><tbody>
+       <tr><td>Newcomers who became regular and are still active</td><td class="r">+${fmt(NG.retained_newcomers)}</td></tr>
+       <tr><td>Regular attenders who lapsed</td><td class="r">−${fmt(NG.lapsed)}</td></tr>
+       <tr><td><b>Net</b> (strict newcomer rule)</td><td class="r"><b>${signed(NG.net)}</b></td></tr>
+       ${NG.net_loose_rule != null ? `<tr><td>Net if Planning Center's first-time flag also counts (${fmt(NG.retained_newcomers_loose_rule)} newcomers)</td><td class="r">${signed(NG.net_loose_rule)}</td></tr>` : ''}
+       <tr><td>Change in regular attenders, year over year</td><td class="r">${NG.regulars_change > 0 ? '+' : ''}${fmt(NG.regulars_change)} (${pct(NG.regulars_change_rate, 1)})</td></tr>
+     </tbody></table></div>`);
+  bindTips(left); g.append(left);
+  const right = $(`<div style="display:grid;gap:10px"><h3>Regular attenders, rolling 3-month count</h3></div>`);
+  if (NG.regulars_by_age) {
+    const order = ['Kids (0-10)', 'Students (11-17)', 'Adults (18+)', 'Age unknown'];
+    const rows = order.filter(k => NG.regulars_by_age[k]).map(k => { const r = NG.regulars_by_age[k]; const ch = r.then ? (r.now - r.then) / r.then : null; return `<tr><td>${k}</td><td class="r">${fmt(r.then)}</td><td class="r">${fmt(r.now)}</td><td class="r">${ch == null ? '—' : (ch > 0 ? '+' : '') + pct(ch)}</td></tr>`; }).join('');
+    left.append($(`<div style="display:grid;gap:6px"><h3>Regular attenders by age, a year ago vs now</h3><div class="tablewrap"><table><thead><tr><th>Group</th><th class="r">Then</th><th class="r">Now</th><th class="r">Change</th></tr></thead><tbody>${rows}</tbody></table></div><p class="small">Some of the kids' decline and the students' rise is children aging from one band into the next; together, under-18 regulars went from ${fmt((NG.regulars_by_age['Kids (0-10)']||{}).then + (NG.regulars_by_age['Students (11-17)']||{}).then)} to ${fmt((NG.regulars_by_age['Kids (0-10)']||{}).now + (NG.regulars_by_age['Students (11-17)']||{}).now)}. Kids' and volunteers' check-in recording was steady all year. Adult check-ins at Sunday Experience roughly doubled from February 2026, which reflects more complete recording as much as growth, so the adult change overstates real growth.</p></div>`));
+  }
+  const rr = Object.entries(NG.trend.regulars_rolling || {});
+  if (rr.length) right.append(svgLine([{ name: 'Regular attenders', color: 'var(--s1)', values: rr.map(r => r[1]) }], rr.map(r => r[0]), { xLabel: (x) => mfmt(x.slice(0, 7)) }));
+  g.append(right);
+  s.append(g);
+  const hc = Object.entries(NG.trend.sunday_headcount_avg || {});
+  const ci = Object.entries(NG.trend.sunday_checkins_avg || {});
+  if (hc.length || ci.length) {
+    const months = [...new Set([...hc.map(x => x[0]), ...ci.map(x => x[0])])].sort();
+    const g2 = $('<div class="grid2"></div>');
+    if (hc.length) { const b = $(`<div style="display:grid;gap:8px"><h3>Average Sunday headcount by month</h3></div>`); b.append(svgLine([{ name: 'Headcount', color: 'var(--s1)', values: months.map(m => (NG.trend.sunday_headcount_avg || {})[m] ?? null) }], months, { xLabel: mfmt, height: 200 })); g2.append(b); }
+    const BE = NG.trend.sunday_checkins_by_event || {};
+    if (Object.keys(BE).length) {
+      const evMonths = [...new Set(Object.values(BE).flatMap(o => Object.keys(o)))].sort().filter(m => m >= M.history_start.slice(0, 7));
+      const spec = [['Sunday Experience', 'Adults (Sunday Experience)', 'var(--s2)'], ['Sunday Kids Check-In', 'Kids', 'var(--s1)'], ['Sunday Dream Team Check-In', 'Dream Team volunteers', 'var(--s3)']].filter(x => BE[x[0]]);
+      const b = $(`<div style="display:grid;gap:8px"><h3>Average people checked in per Sunday, by event</h3></div>`);
+      b.append(svgLine(spec.map(([k, label, c]) => ({ name: label, color: c, values: evMonths.map(m => BE[k][m] ?? null) })), evMonths, { xLabel: mfmt, height: 220 }));
+      b.append($(legend(spec.map(([k, label, c]) => [c, label]))));
+      b.append($(`<p class="small">The adult line doubles from February 2026 while kids and volunteers hold steady, which points to a change in how adults are checked in. The latest month is partial, and Sunday Experience records are sometimes entered up to two weeks late.</p>`));
+      g2.append(b);
+    } else if (ci.length) { const b = $(`<div style="display:grid;gap:8px"><h3>Average Sunday check-ins by month</h3></div>`); b.append(svgLine([{ name: 'Check-ins', color: 'var(--s1)', values: months.map(m => (NG.trend.sunday_checkins_avg || {})[m] ?? null) }], months, { xLabel: mfmt, height: 200 })); g2.append(b); }
+    s.append(g2);
+  }
+  s.append($(src(`<b>Source:</b> Regular-attender counts use the same 6-in-91-days rule as everywhere else. Sunday check-ins count distinct people per event per Sunday. Returning = regular now, not a regular a year ago, and not a first-time guest this year (people coming back, or irregular attenders who stepped up). <code>metrics.json → net_growth</code>`)));
+}
+
+// ---------- 5. Seasonality ----------
+{
+  const s = section('Question 5', 'Seasonality: when we lose and gain people', ans('seasonality'));
+  const rows = M.seasonality;
+  s.append($(`<h3>Regular attenders gained and lost each month</h3>`));
+  s.append(svgBars(rows.map(r => r.month), [
+    { name: 'Newcomers who became regular', color: 'var(--s1)', values: rows.map(r => r.became_regular) },
+    { name: 'Regulars who went quiet', color: 'var(--s2)', values: rows.map(r => r.lost) },
+  ], { xLabel: mfmt }));
+  s.append($(legend([['var(--s1)', 'Newcomers who became regular that month'], ['var(--s2)', 'Regulars whose last visit was that month']])));
+  s.append($(`<h3>First-time guests each month</h3>`));
+  s.append(svgBars(rows.map(r => r.month), [{ name: 'First-time guests', color: 'var(--s1)', values: rows.map(r => r.first_visits) }], { xLabel: mfmt, height: 180 }));
+  s.append($(src(esc(M.seasonality_note) + ' <code>metrics.json → seasonality</code>')));
+}
+
+// ---------- 6. Early warning ----------
+{
+  const s = section('Question 6', 'Early warning signs', ans('early_warning'));
+  const EW = M.early_warning;
+  if (!EW.lapsed_n) { s.append($('<p>No lapsed regulars to study.</p>')); }
+  else {
+    const g = $('<div class="grid2"></div>');
+    const left = $(`<div style="display:grid;gap:10px"><h3>Average attendance days per month before the last visit</h3></div>`);
+    left.append(svgLine([{ name: `Lapsed (${fmt(EW.lapsed_n)})`, color: 'var(--s2)', values: EW.curve.lapsed }, { name: `Stayed (${fmt(EW.stayed_n)})`, color: 'var(--s1)', values: EW.curve.stayed }],
+      EW.curve_months, { xLabel: (m) => `${m} mo`, yFmt: (v) => (Math.round(v * 10) / 10).toString(), height: 220 }));
+    left.append($(legend([['var(--s2)', 'Lapsed, aligned to their last visit'], ['var(--s1)', 'Stayed, over the same calendar dates']])));
+    g.append(left);
+    const right = $(`<div style="display:grid;gap:10px"><h3>How often each signal showed up 3–6 months before the last visit</h3></div>`);
+    const sig = EW.signals.filter(x => x.period === '6-3 months before');
+    if (sig.length) right.append($(`<p class="small">Measured for ${fmt(sig[0].lapsed_n)} lapsed and ${fmt(sig[0].stayed_n)} comparison people.</p>`));
+    const t = $(`<div class="tablewrap"><table><thead><tr><th>Signal</th><th class="r">Lapsed</th><th class="r">Stayed</th><th class="r">Lapse risk if seen</th></tr></thead><tbody></tbody></table></div>`);
+    sig.forEach(x => t.querySelector('tbody').append($(`<tr><td>${esc(x.signal)}</td><td class="r">${pct(x.lapsed_pct)}</td><td class="r">${pct(x.stayed_pct)}</td><td class="r">${x.relative_risk ? x.relative_risk + '×' : '<span class="small">too rare</span>'}</td></tr>`)));
+    right.append(t);
+    const late = EW.signals.filter(x => x.period === '3-0 months before');
+    const t2 = $(`<details><summary>Same signals in the final 3 months</summary><div class="tablewrap"><table><thead><tr><th>Signal</th><th class="r">Lapsed</th><th class="r">Stayed</th><th class="r">Lapse risk if seen</th></tr></thead><tbody></tbody></table></div></details>`);
+    late.forEach(x => t2.querySelector('tbody').append($(`<tr><td>${esc(x.signal)}</td><td class="r">${pct(x.lapsed_pct)}</td><td class="r">${pct(x.stayed_pct)}</td><td class="r">${x.relative_risk ? x.relative_risk + '×' : '<span class="small">too rare</span>'}</td></tr>`)));
+    right.append(t2);
+    g.append(right);
+    s.append(g);
+    s.append($(src(`<b>Method:</b> each lapsed person is lined up on their last attendance date. People who stayed are measured at every lapsed person's last-visit date and averaged, so the comparison covers the same calendar dates and seasons. Each signal compares a 3-month window with the person's own baseline (${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])}): attendance in the window was half or less of their baseline; they attended a group or served in the 6 months to ${dfmt(W.baseline[1])} and not at all in the window. Windows that would overlap the baseline are skipped, so only people whose last visit came late enough are counted (n shown in the table). "Lapse risk if seen" = lapse rate among people showing the signal ÷ lapse rate among those who didn't. <code>metrics.json → early_warning</code>`)));
+  }
+}
+
+// ---------- 7. At risk ----------
+{
+  const s = section('Question 7', 'People at risk right now', '');
+  s.append($(`<div class="callout"><p><b>${fmt(M.at_risk_count)} people</b> were regular attenders in the 3 months before ${dfmt(W.at_risk_recent[0])} and have attended at least 50% less since. Names are kept in a separate private list for pastoral follow-up and are not part of this report.</p></div>`));
+}
+
+// ---------- Findings & recommendations ----------
+if (N.findings?.length) {
+  const s = section('Summary', 'What the data says', '');
+  s.append($(`<ol class="findings">${N.findings.map(f => `<li>${f}</li>`).join('')}</ol>`));
+}
+if (N.recommendations?.length) {
+  const s = section('Next steps', 'Recommendations for staff', '');
+  s.append($(`<ol class="recs">${N.recommendations.map(r => `<li><b>${r.title}</b>${r.body}</li>`).join('')}</ol>`));
+}
+
+// ---------- Data gaps ----------
+{
+  const s = section('Accuracy', 'Data gaps and how they affect these numbers', '');
+  const box = $('<div class="gaps"></div>');
+  (N.gaps || []).forEach(gp => box.append($(`<div class="gap"><b>${gp.title}</b><div class="impact">${gp.body}</div></div>`)));
+  s.append(box);
+  const D = M.data_gaps;
+  const rows = [
+    ['Active people in Planning Center', fmt(D.active_people_in_pco)],
+    ['People with any activity (check-in, child checked in, group, serving, form or registration) since ' + dfmt(M.history_start), fmt(D.people_with_any_activity)],
+    ['Last year\'s regulars missing a birthdate', pct(D.missing_birthdate_pct_of_regulars, 1)],
+    ['Last year\'s regulars with no household record', pct(D.no_household_pct_of_regulars, 1)],
+    ['Last year\'s regulars under 18', pct(D.baseline_regulars_under_18_pct, 1)],
+    ['Group meetings with no attendance taken', pct(D.group_meetings_without_attendance_pct, 1)],
+    ['Groups that met but never recorded attendance', D.groups_meeting ? `${fmt(D.groups_never_recording_attendance)} of ${fmt(D.groups_meeting)}` : '—'],
+    ['Possible duplicate person records (same name and birthdate)', fmt(D.possible_duplicate_people)],
+  ];
+  const seen = D.baseline_regulars_seen_via || {};
+  Object.entries(seen).forEach(([k, v]) => rows.push([`Last year's regulars seen via ${k}`, fmt(v)]));
+  s.append($(`<details><summary>Data quality figures</summary><div class="tablewrap"><table><tbody>${rows.map(r => `<tr><td>${esc(r[0])}</td><td class="r">${r[1]}</td></tr>`).join('')}</tbody></table></div></details>`));
+  if (D.event_area_map?.length) s.append($(`<details><summary>How Check-Ins events were mapped to ministry areas</summary><div class="tablewrap"><table><thead><tr><th>Event</th><th>Area</th><th class="r">Check-ins</th></tr></thead><tbody>${D.event_area_map.map(e => `<tr><td>${esc(e.name)}</td><td>${esc(e.area)}</td><td class="r">${fmt(e.checkins)}</td></tr>`).join('')}</tbody></table></div></details>`));
+}
+
+// ---------- Definitions ----------
+{
+  const s = section('Reference', 'Definitions used throughout', '');
+  const defs = [
+    ['Attendance day', 'A distinct day a person checked in (any event, including as a volunteer), was marked present at a group meeting, or was confirmed on a Services plan. Several check-ins on one day count once.'],
+    ['Regular attender', '6 or more attendance days in a 91-day window: your "2+ times a month on average over 3 months".'],
+    ['Lapsed', `Regular in ${dfmt(W.baseline[0])} – ${dfmt(W.baseline[1])} and no activity from ${dfmt(W.recent_quiet[0])} to ${dfmt(W.recent_quiet[1])}: no check-in (including conferences and events), no check-in of a child in their household, no group attendance, confirmed serving, form submission (staff paperwork forms excluded) or event registration. Staff notes are not counted as the person's activity.${M.giving_available ? ' Gifts also count as activity.' : ' Giving is not included (see data gaps).'}`],
+    ['Annual attrition rate', 'Lapsed ÷ regular attenders in the baseline window.'],
+    ['Engaged', 'In a group (marked present at a group meeting) or serving (confirmed on a Services plan or Dream Team check-in), tracked separately and combined. Giving was requested but could not be measured.'],
+    ['Newcomer retention rate', 'Share of first-time guests with at least 4 months to settle in who became regular attenders.'],
+    ['Net growth', 'Newcomers who became regular and are still active, minus lapsed regulars.'],
+  ];
+  s.append($(`<div class="tablewrap"><table><tbody>${defs.map(d => `<tr><td style="width:28%"><b>${d[0]}</b></td><td>${d[1]}</td></tr>`).join('')}</tbody></table></div>`));
+  s.append($(src(`Every figure is computed by <code>attrition/analyze.py</code> from Planning Center records pulled through the Planning Center connector into <code>attrition/data/connector</code>, each batch checked against Planning Center's own record count. Each activity row in <code>data/tidy/activity.csv</code> carries the Planning Center record ID it came from.`)));
+}
+</script>

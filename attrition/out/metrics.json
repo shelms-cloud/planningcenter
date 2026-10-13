@@ -1,0 +1,934 @@
+{
+ "as_of": "2026-10-13",
+ "history_start": "2025-07-14",
+ "windows": {
+  "baseline": [
+   "2025-07-15",
+   "2025-10-13"
+  ],
+  "recent_quiet": [
+   "2026-07-16",
+   "2026-10-13"
+  ],
+  "current": [
+   "2026-07-15",
+   "2026-10-13"
+  ],
+  "newcomer": [
+   "2025-10-14",
+   "2026-10-13"
+  ],
+  "at_risk_prior": [
+   "2026-04-16",
+   "2026-07-15"
+  ],
+  "at_risk_recent": [
+   "2026-07-16",
+   "2026-10-13"
+  ]
+ },
+ "definitions": {},
+ "attrition": {
+  "baseline_regulars": 636,
+  "lapsed": 94,
+  "rate": 0.1478,
+  "declined_not_lapsed": 112,
+  "declined_rate": 0.1761,
+  "still_regular": 430,
+  "still_regular_rate": 0.6761,
+  "lapsed_marked_inactive_in_pco": 1,
+  "benchmark": [
+   0.1,
+   0.15
+  ],
+  "households": {
+   "baseline": 337,
+   "lapsed": 39,
+   "rate": 0.1157
+  },
+  "adults_only": {
+   "baseline": 389,
+   "lapsed": 56,
+   "rate": 0.144
+  }
+ },
+ "giving_available": false,
+ "breakouts": {
+  "engagement": [
+   {
+    "segment": "Group + serving",
+    "regulars": 203,
+    "lapsed": 29,
+    "lapse_rate": 0.1429,
+    "declined": 19,
+    "declined_rate": 0.0936,
+    "small_sample": false
+   },
+   {
+    "segment": "Group only",
+    "regulars": 65,
+    "lapsed": 11,
+    "lapse_rate": 0.1692,
+    "declined": 17,
+    "declined_rate": 0.2615,
+    "small_sample": false
+   },
+   {
+    "segment": "Serving only",
+    "regulars": 117,
+    "lapsed": 15,
+    "lapse_rate": 0.1282,
+    "declined": 17,
+    "declined_rate": 0.1453,
+    "small_sample": false
+   },
+   {
+    "segment": "Neither",
+    "regulars": 251,
+    "lapsed": 39,
+    "lapse_rate": 0.1554,
+    "declined": 59,
+    "declined_rate": 0.2351,
+    "small_sample": false
+   }
+  ],
+  "giving": [],
+  "any_engaged": [
+   {
+    "segment": "Group or serving",
+    "regulars": 385,
+    "lapsed": 55,
+    "lapse_rate": 0.1429,
+    "declined": 53,
+    "declined_rate": 0.1377,
+    "small_sample": false
+   },
+   {
+    "segment": "Neither",
+    "regulars": 251,
+    "lapsed": 39,
+    "lapse_rate": 0.1554,
+    "declined": 59,
+    "declined_rate": 0.2351,
+    "small_sample": false
+   }
+  ],
+  "age_band": [
+   {
+    "segment": "Kids (0-10)",
+    "regulars": 205,
+    "lapsed": 35,
+    "lapse_rate": 0.1707,
+    "declined": 41,
+    "declined_rate": 0.2,
+    "small_sample": false
+   },
+   {
+    "segment": "Students (11-17)",
+    "regulars": 34,
+    "lapsed": 1,
+    "lapse_rate": 0.0294,
+    "declined": 7,
+    "declined_rate": 0.2059,
+    "small_sample": false
+   },
+   {
+    "segment": "18-29",
+    "regulars": 61,
+    "lapsed": 17,
+    "lapse_rate": 0.2787,
+    "declined": 12,
+    "declined_rate": 0.1967,
+    "small_sample": false
+   },
+   {
+    "segment": "30-44",
+    "regulars": 84,
+    "lapsed": 14,
+    "lapse_rate": 0.1667,
+    "declined": 6,
+    "declined_rate": 0.0714,
+    "small_sample": false
+   },
+   {
+    "segment": "45-64",
+    "regulars": 139,
+    "lapsed": 15,
+    "lapse_rate": 0.1079,
+    "declined": 27,
+    "declined_rate": 0.1942,
+    "small_sample": false
+   },
+   {
+    "segment": "65+",
+    "regulars": 105,
+    "lapsed": 10,
+    "lapse_rate": 0.0952,
+    "declined": 17,
+    "declined_rate": 0.1619,
+    "small_sample": false
+   },
+   {
+    "segment": "Unknown",
+    "regulars": 8,
+    "lapsed": 2,
+    "lapse_rate": 0.25,
+    "declined": 2,
+    "declined_rate": 0.25,
+    "small_sample": true
+   }
+  ],
+  "household_type": [
+   {
+    "segment": "Single adult",
+    "regulars": 63,
+    "lapsed": 15,
+    "lapse_rate": 0.2381,
+    "declined": 12,
+    "declined_rate": 0.1905,
+    "small_sample": false
+   },
+   {
+    "segment": "Couple (no kids at home)",
+    "regulars": 82,
+    "lapsed": 12,
+    "lapse_rate": 0.1463,
+    "declined": 14,
+    "declined_rate": 0.1707,
+    "small_sample": false
+   },
+   {
+    "segment": "Family with kids",
+    "regulars": 407,
+    "lapsed": 64,
+    "lapse_rate": 0.1572,
+    "declined": 70,
+    "declined_rate": 0.172,
+    "small_sample": false
+   },
+   {
+    "segment": "3+ adults",
+    "regulars": 62,
+    "lapsed": 3,
+    "lapse_rate": 0.0484,
+    "declined": 8,
+    "declined_rate": 0.129,
+    "small_sample": false
+   },
+   {
+    "segment": "No household record",
+    "regulars": 2,
+    "lapsed": 0,
+    "lapse_rate": 0.0,
+    "declined": 2,
+    "declined_rate": 1.0,
+    "small_sample": true
+   },
+   {
+    "segment": "Large household record (9+)",
+    "regulars": 20,
+    "lapsed": 0,
+    "lapse_rate": 0.0,
+    "declined": 6,
+    "declined_rate": 0.3,
+    "small_sample": false
+   }
+  ],
+  "tenure": [
+   {
+    "segment": "Under 1 year",
+    "regulars": 86,
+    "lapsed": 22,
+    "lapse_rate": 0.2558,
+    "declined": 19,
+    "declined_rate": 0.2209,
+    "small_sample": false
+   },
+   {
+    "segment": "1-3 years",
+    "regulars": 135,
+    "lapsed": 25,
+    "lapse_rate": 0.1852,
+    "declined": 18,
+    "declined_rate": 0.1333,
+    "small_sample": false
+   },
+   {
+    "segment": "3+ years",
+    "regulars": 415,
+    "lapsed": 47,
+    "lapse_rate": 0.1133,
+    "declined": 75,
+    "declined_rate": 0.1807,
+    "small_sample": false
+   }
+  ],
+  "campus": [
+   {
+    "segment": "Shreveport Campus",
+    "regulars": 636,
+    "lapsed": 94,
+    "lapse_rate": 0.1478,
+    "declined": 112,
+    "declined_rate": 0.1761,
+    "small_sample": false
+   }
+  ],
+  "service_time": [
+   {
+    "segment": "No service time recorded",
+    "regulars": 636,
+    "lapsed": 94,
+    "lapse_rate": 0.1478,
+    "declined": 112,
+    "declined_rate": 0.1761,
+    "small_sample": false
+   }
+  ],
+  "ministry_area": [
+   {
+    "segment": "kids",
+    "regulars": 210,
+    "lapsed": 35,
+    "lapse_rate": 0.1667,
+    "declined": 44,
+    "declined_rate": 0.2095,
+    "small_sample": false
+   },
+   {
+    "segment": "students",
+    "regulars": 15,
+    "lapsed": 0,
+    "lapse_rate": 0.0,
+    "declined": 0,
+    "declined_rate": 0.0,
+    "small_sample": true
+   },
+   {
+    "segment": "cya",
+    "regulars": 38,
+    "lapsed": 12,
+    "lapse_rate": 0.3158,
+    "declined": 9,
+    "declined_rate": 0.2368,
+    "small_sample": false
+   },
+   {
+    "segment": "adults",
+    "regulars": 373,
+    "lapsed": 47,
+    "lapse_rate": 0.126,
+    "declined": 59,
+    "declined_rate": 0.1582,
+    "small_sample": false
+   }
+  ],
+  "ministry_area_fallback_share": 0.2201
+ },
+ "newcomers": {
+  "funnel_all": [
+   {
+    "stage": "First visit",
+    "n": 742
+   },
+   {
+    "stage": "Second visit",
+    "n": 335
+   },
+   {
+    "stage": "Third visit",
+    "n": 231
+   },
+   {
+    "stage": "Regular attender",
+    "n": 103
+   },
+   {
+    "stage": "Connected to a group or team",
+    "n": 50
+   }
+  ],
+  "funnel_mature": [
+   {
+    "stage": "First visit",
+    "n": 418
+   },
+   {
+    "stage": "Second visit",
+    "n": 211
+   },
+   {
+    "stage": "Third visit",
+    "n": 163
+   },
+   {
+    "stage": "Regular attender",
+    "n": 78
+   },
+   {
+    "stage": "Connected to a group or team",
+    "n": 40
+   }
+  ],
+  "mature_cutoff": "2026-06-15",
+  "retention_rate": 0.1866,
+  "retention_numerator": 78,
+  "retention_denominator": 418,
+  "connected_any": 106,
+  "one_time_guest_checkins": 80,
+  "earlier_contact_before_first_checkin": 158,
+  "by_month": [
+   {
+    "month": "2025-10",
+    "first_visits": 25,
+    "second": 12,
+    "regular": 4,
+    "mature": true
+   },
+   {
+    "month": "2025-11",
+    "first_visits": 48,
+    "second": 24,
+    "regular": 7,
+    "mature": true
+   },
+   {
+    "month": "2025-12",
+    "first_visits": 33,
+    "second": 21,
+    "regular": 8,
+    "mature": true
+   },
+   {
+    "month": "2026-01",
+    "first_visits": 44,
+    "second": 27,
+    "regular": 12,
+    "mature": true
+   },
+   {
+    "month": "2026-02",
+    "first_visits": 55,
+    "second": 22,
+    "regular": 8,
+    "mature": true
+   },
+   {
+    "month": "2026-03",
+    "first_visits": 50,
+    "second": 30,
+    "regular": 8,
+    "mature": true
+   },
+   {
+    "month": "2026-04",
+    "first_visits": 68,
+    "second": 34,
+    "regular": 14,
+    "mature": true
+   },
+   {
+    "month": "2026-05",
+    "first_visits": 69,
+    "second": 28,
+    "regular": 11,
+    "mature": true
+   },
+   {
+    "month": "2026-06",
+    "first_visits": 42,
+    "second": 22,
+    "regular": 10,
+    "mature": false
+   },
+   {
+    "month": "2026-07",
+    "first_visits": 50,
+    "second": 26,
+    "regular": 11,
+    "mature": false
+   },
+   {
+    "month": "2026-08",
+    "first_visits": 104,
+    "second": 40,
+    "regular": 6,
+    "mature": false
+   },
+   {
+    "month": "2026-09",
+    "first_visits": 126,
+    "second": 46,
+    "regular": 4,
+    "mature": false
+   },
+   {
+    "month": "2026-10",
+    "first_visits": 28,
+    "second": 3,
+    "regular": 0,
+    "mature": false
+   }
+  ]
+ },
+ "net_growth": {
+  "retained_newcomers": 88,
+  "lapsed": 94,
+  "net": -6,
+  "regulars_then": 636,
+  "regulars_now": 721,
+  "regulars_change": 85,
+  "regulars_change_rate": 0.1336,
+  "now_composition": {
+   "still regular from a year ago": 430,
+   "newcomers who became regular": 67,
+   "returning / previously irregular": 224
+  },
+  "trend": {
+   "sunday_checkins_avg": {
+    "2025-07": 342,
+    "2025-08": 387,
+    "2025-09": 383,
+    "2025-10": 332,
+    "2025-11": 328,
+    "2025-12": 266,
+    "2026-01": 251,
+    "2026-02": 408,
+    "2026-03": 426,
+    "2026-04": 615,
+    "2026-05": 398,
+    "2026-06": 474,
+    "2026-07": 471,
+    "2026-08": 544,
+    "2026-09": 520,
+    "2026-10": 351
+   },
+   "sunday_checkins_by_event": {
+    "Sunday Experience": {
+     "2025-07": 168,
+     "2025-08": 178,
+     "2025-09": 166,
+     "2025-10": 144,
+     "2025-11": 127,
+     "2025-12": 117,
+     "2026-01": 104,
+     "2026-02": 224,
+     "2026-03": 219,
+     "2026-04": 362,
+     "2026-05": 215,
+     "2026-06": 284,
+     "2026-07": 288,
+     "2026-08": 326,
+     "2026-09": 310,
+     "2026-10": 188
+    },
+    "Sunday Kids Check-In": {
+     "2025-07": 164,
+     "2025-08": 187,
+     "2025-09": 196,
+     "2025-10": 171,
+     "2025-11": 183,
+     "2025-12": 136,
+     "2026-01": 177,
+     "2026-02": 164,
+     "2026-03": 170,
+     "2026-04": 200,
+     "2026-05": 151,
+     "2026-06": 158,
+     "2026-07": 146,
+     "2026-08": 176,
+     "2026-09": 158,
+     "2026-10": 138
+    },
+    "Sunday Dream Team Check-In": {
+     "2025-07": 128,
+     "2025-08": 148,
+     "2025-09": 138,
+     "2025-10": 128,
+     "2025-11": 136,
+     "2025-12": 123,
+     "2026-01": 99,
+     "2026-02": 122,
+     "2026-03": 133,
+     "2026-04": 166,
+     "2026-05": 133,
+     "2026-06": 132,
+     "2026-07": 130,
+     "2026-08": 143,
+     "2026-09": 140,
+     "2026-10": 134
+    }
+   },
+   "regulars_rolling": {
+    "2025-10-13": 636,
+    "2026-01-12": 558,
+    "2026-04-13": 699,
+    "2026-07-14": 662,
+    "2026-10-13": 721
+   }
+  },
+  "regulars_by_age": {
+   "Adults (18+)": {
+    "then": 389,
+    "now": 485
+   },
+   "Kids (0-10)": {
+    "then": 205,
+    "now": 169
+   },
+   "Students (11-17)": {
+    "then": 34,
+    "now": 56
+   },
+   "Age unknown": {
+    "then": 8,
+    "now": 11
+   }
+  },
+  "retained_newcomers_loose_rule": 137,
+  "net_loose_rule": 43
+ },
+ "seasonality": [
+  {
+   "month": "2025-10",
+   "lost": 10,
+   "first_visits": 36,
+   "became_regular": 2
+  },
+  {
+   "month": "2025-11",
+   "lost": 21,
+   "first_visits": 48,
+   "became_regular": 6
+  },
+  {
+   "month": "2025-12",
+   "lost": 9,
+   "first_visits": 33,
+   "became_regular": 3
+  },
+  {
+   "month": "2026-01",
+   "lost": 5,
+   "first_visits": 44,
+   "became_regular": 13
+  },
+  {
+   "month": "2026-02",
+   "lost": 4,
+   "first_visits": 55,
+   "became_regular": 10
+  },
+  {
+   "month": "2026-03",
+   "lost": 12,
+   "first_visits": 50,
+   "became_regular": 9
+  },
+  {
+   "month": "2026-04",
+   "lost": 35,
+   "first_visits": 68,
+   "became_regular": 12
+  },
+  {
+   "month": "2026-05",
+   "lost": 28,
+   "first_visits": 69,
+   "became_regular": 10
+  },
+  {
+   "month": "2026-06",
+   "lost": 25,
+   "first_visits": 42,
+   "became_regular": 12
+  },
+  {
+   "month": "2026-07",
+   "lost": null,
+   "first_visits": 50,
+   "became_regular": 12
+  },
+  {
+   "month": "2026-08",
+   "lost": null,
+   "first_visits": 104,
+   "became_regular": 10
+  },
+  {
+   "month": "2026-09",
+   "lost": null,
+   "first_visits": 126,
+   "became_regular": 5
+  },
+  {
+   "month": "2026-10",
+   "lost": null,
+   "first_visits": 28,
+   "became_regular": 0
+  }
+ ],
+ "seasonality_note": "'Lost' = ever-regular people whose last attendance fell in that month and who have had no activity of any kind for 90+ days. Months from Jul 2026 on are not yet knowable.",
+ "early_warning": {
+  "lapsed_n": 94,
+  "stayed_n": 542,
+  "signals": [
+   {
+    "period": "6-3 months before",
+    "signal": "Attendance fell by half or more",
+    "lapsed_n": 46,
+    "stayed_n": 265,
+    "lapsed_pct": 0.2826,
+    "stayed_pct": 0.1761,
+    "lapse_rate_with_signal": 0.2177,
+    "lapse_rate_without": 0.1312,
+    "relative_risk": 1.66
+   },
+   {
+    "period": "6-3 months before",
+    "signal": "Stopped attending their group",
+    "lapsed_n": 46,
+    "stayed_n": 265,
+    "lapsed_pct": 0.1957,
+    "stayed_pct": 0.1164,
+    "lapse_rate_with_signal": 0.2257,
+    "lapse_rate_without": 0.1363,
+    "relative_risk": 1.66
+   },
+   {
+    "period": "6-3 months before",
+    "signal": "Stopped serving",
+    "lapsed_n": 46,
+    "stayed_n": 265,
+    "lapsed_pct": 0.1087,
+    "stayed_pct": 0.0383,
+    "lapse_rate_with_signal": 0.3296,
+    "lapse_rate_without": 0.1385,
+    "relative_risk": 2.38
+   },
+   {
+    "period": "3-0 months before",
+    "signal": "Attendance fell by half or more",
+    "lapsed_n": 61,
+    "stayed_n": 352,
+    "lapsed_pct": 0.377,
+    "stayed_pct": 0.1409,
+    "lapse_rate_with_signal": 0.317,
+    "lapse_rate_without": 0.1117,
+    "relative_risk": 2.84
+   },
+   {
+    "period": "3-0 months before",
+    "signal": "Stopped attending their group",
+    "lapsed_n": 61,
+    "stayed_n": 352,
+    "lapsed_pct": 0.2131,
+    "stayed_pct": 0.1125,
+    "lapse_rate_with_signal": 0.2474,
+    "lapse_rate_without": 0.1333,
+    "relative_risk": 1.86
+   },
+   {
+    "period": "3-0 months before",
+    "signal": "Stopped serving",
+    "lapsed_n": 61,
+    "stayed_n": 352,
+    "lapsed_pct": 0.1803,
+    "stayed_pct": 0.0404,
+    "lapse_rate_with_signal": 0.4361,
+    "lapse_rate_without": 0.129,
+    "relative_risk": 3.38
+   }
+  ],
+  "curve": {
+   "lapsed": [
+    3.63,
+    3.41,
+    3.08,
+    3.08,
+    2.36,
+    2.48,
+    2.93,
+    2.43,
+    2.16
+   ],
+   "stayed": [
+    3.95,
+    3.69,
+    3.58,
+    3.55,
+    3.1,
+    3.04,
+    3.81,
+    3.61,
+    3.6
+   ]
+  },
+  "curve_months": [
+   -9,
+   -8,
+   -7,
+   -6,
+   -5,
+   -4,
+   -3,
+   -2,
+   -1
+  ],
+  "baseline_days_avg": {
+   "lapsed": 9.73,
+   "stayed": 10.85
+  }
+ },
+ "at_risk_count": 73,
+ "data_gaps": {
+  "people_records_used": 4268,
+  "active_people_in_pco": 9541,
+  "people_with_any_activity": 4105,
+  "missing_birthdate_pct_of_regulars": 0.0126,
+  "no_household_pct_of_regulars": 0.0031,
+  "no_service_time_pct_of_regulars": 1.0,
+  "campuses": 1,
+  "activity_rows_by_source": {
+   "checkin": 40553,
+   "form": 4644,
+   "group": 8658,
+   "household": 19514,
+   "register": 4293,
+   "serve": 11381
+  },
+  "group_meetings": 1555,
+  "group_meetings_without_attendance_pct": 0.3814,
+  "groups_meeting": 206,
+  "groups_never_recording_attendance": 39,
+  "possible_duplicate_people": 32,
+  "event_area_map": [
+   {
+    "name": "Sunday Experience",
+    "area": "adults",
+    "checkins": 15008
+   },
+   {
+    "name": "Sunday Kids Check-In",
+    "area": "kids",
+    "checkins": 11179
+   },
+   {
+    "name": "Sunday Dream Team Check-In",
+    "area": "serving",
+    "checkins": 8770
+   },
+   {
+    "name": "Wednesday Night Kids Check-In",
+    "area": "kids",
+    "checkins": 2385
+   },
+   {
+    "name": "Summer Blast 2026",
+    "area": "special",
+    "checkins": 440
+   },
+   {
+    "name": "CY Night",
+    "area": "cya",
+    "checkins": 322
+   },
+   {
+    "name": "Discover Celebration: Step 1",
+    "area": "adults",
+    "checkins": 306
+   },
+   {
+    "name": "Serve Day",
+    "area": "serving",
+    "checkins": 281
+   },
+   {
+    "name": "Discover Celebration: Step 2",
+    "area": "adults",
+    "checkins": 279
+   },
+   {
+    "name": "Radiant Women's Conference: All Assignments",
+    "area": "serving",
+    "checkins": 269
+   },
+   {
+    "name": "Radiant Women's Conference: All Assignments",
+    "area": "serving",
+    "checkins": 240
+   },
+   {
+    "name": "Marriage One Night: All Assignments",
+    "area": "serving",
+    "checkins": 215
+   },
+   {
+    "name": "Men's Conference",
+    "area": "special",
+    "checkins": 160
+   },
+   {
+    "name": "Parenting One Night",
+    "area": "special",
+    "checkins": 117
+   },
+   {
+    "name": "Freedom Conference",
+    "area": "special",
+    "checkins": 110
+   },
+   {
+    "name": "First Wednesday Dream Team",
+    "area": "serving",
+    "checkins": 100
+   },
+   {
+    "name": "Christmas Eve Dream Team",
+    "area": "serving",
+    "checkins": 99
+   },
+   {
+    "name": "Freedom Conference: All Assignments",
+    "area": "serving",
+    "checkins": 91
+   },
+   {
+    "name": "Christmas Eve Kids Classes",
+    "area": "kids",
+    "checkins": 78
+   },
+   {
+    "name": "Parenting One Night Childcare",
+    "area": "special",
+    "checkins": 60
+   },
+   {
+    "name": "Prayer Service",
+    "area": "adults",
+    "checkins": 21
+   },
+   {
+    "name": "Sunday Evening Service",
+    "area": "adults",
+    "checkins": 16
+   },
+   {
+    "name": "Mid-Week Dream Team",
+    "area": "serving",
+    "checkins": 5
+   },
+   {
+    "name": "Christmas Eve",
+    "area": "adults",
+    "checkins": 2
+   }
+  ],
+  "baseline_regulars_under_18_pct": 0.3758,
+  "baseline_regulars_seen_via": {
+   "check-ins only": 119,
+   "check-ins plus group/serving": 493,
+   "group/serving only, never checked in": 24
+  }
+ }
+}

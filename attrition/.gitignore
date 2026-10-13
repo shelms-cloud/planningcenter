@@ -1,0 +1,7 @@
+# Raw and tidy Planning Center data contain personal information: never commit.
+data/
+# Names of at-risk and lapsed people: pastoral team only.
+out/private/
+__pycache__/
+# Generated output (final dashboard is force-added after review)
+out/
