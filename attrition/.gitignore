@@ -3,3 +3,5 @@ data/
 # Names of at-risk and lapsed people: pastoral team only.
 out/private/
 __pycache__/
+# Generated output (final dashboard is force-added after review)
+out/
