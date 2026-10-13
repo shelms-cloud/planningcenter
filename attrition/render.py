@@ -54,6 +54,8 @@ def render_private():
             body.append("<tr>" + "".join(cells) + "</tr>")
         return f"<div class='tw'><table><thead><tr>{head}</tr></thead><tbody>{''.join(body)}</tbody></table></div>"
 
+    declined = pd.read_csv(C.PRIVATE_DIR / "declined.csv", dtype=str).fillna("") \
+        if (C.PRIVATE_DIR / "declined.csv").exists() else pd.DataFrame()
     W = C.windows()
     page = f"""<title>At-Risk Follow-Up List</title>
 <style>
@@ -83,6 +85,11 @@ Check the household before calling: one family member's check-ins can drop simpl
 <p>Regular attenders a year ago with no activity of any kind in the last 90 days, most recent first.</p>
 {table(lapsed, ["name", "age_band", "household_type", "ministry_area", "engagement", "last_attended", "status", "membership"],
        ["Name", "Age band", "Household", "Ministry", "Engagement a year ago", "Last attended", "PCO status", "Membership"]) if len(lapsed) else ""}
+<h2>Still around, no longer regular ({len(declined)})</h2>
+<p>Regular attenders a year ago who still came at least once in the last 90 days, but fewer than 6 times. Fewest recent visits first.
+"Still doing" shows what kept them in touch over those 90 days.</p>
+{table(declined, ["name", "age_band", "household_type", "ministry_area", "engagement", "baseline_days", "last90_days", "still_doing", "last_attended", "membership"],
+       ["Name", "Age band", "Household", "Ministry", "Engagement a year ago", "Visits then (13 wks)", "Visits last 90 days", "Still doing", "Last attended", "Membership"]) if len(declined) else ""}
 </main>"""
     (C.PRIVATE_DIR / "at_risk.html").write_text(page)
 

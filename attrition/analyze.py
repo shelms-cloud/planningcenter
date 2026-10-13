@@ -451,6 +451,22 @@ def main():
     lap[["first_name", "last_name", "age_band", "household_type", "ministry_area", "engagement",
          "giving", "last_attended", "last_any_activity", "status", "membership", "pco_link"]
         ].sort_values("last_attended", ascending=False).to_csv(C.PRIVATE_DIR / "lapsed.csv")
+    # Still around but no longer regular: what kept each person in touch recently.
+    rec = a[in_window(a["date"], W["recent_quiet"]) & a["person_id"].isin(declined)]
+    label = np.select([rec["source"] == "group",
+                       (rec["source"] == "serve") | (rec["area"] == "serving"),
+                       rec["area"] == "special"],
+                      ["group", "serving", "event/conference"], "Sunday/ministry check-in")
+    doing = pd.Series(label, index=rec.index).groupby(rec["person_id"]).agg(lambda x: "; ".join(sorted(set(x))))
+    dec = prof[prof["declined"]].join(people.set_index("person_id")[["first_name", "last_name", "membership"]])
+    dec["last90_days"] = days_in(att, W["recent_quiet"]).reindex(dec.index).fillna(0).astype(int)
+    dec["still_doing"] = doing.reindex(dec.index).fillna("")
+    dec["last_attended"] = last_att.reindex(dec.index)
+    dec["pco_link"] = [f"https://people.planningcenteronline.com/people/AC{i}" for i in dec.index]
+    dec.sort_values(["last90_days", "baseline_days"], ascending=[True, False])[
+        ["first_name", "last_name", "age_band", "household_type", "ministry_area", "engagement",
+         "baseline_days", "last90_days", "still_doing", "last_attended", "membership", "pco_link"]
+    ].to_csv(C.PRIVATE_DIR / "declined.csv")
     m["at_risk_count"] = len(at_risk)
 
     # ---- Data gaps -------------------------------------------------------
