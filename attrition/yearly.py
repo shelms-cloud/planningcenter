@@ -31,16 +31,22 @@ NEWCOMER_FOLLOW = 182  # how long a first-timer gets to become regular
 def load_checkins() -> pd.DataFrame:
     ci = pd.concat([read_all("checkins_hist/2*.csv"), read_all("checkins/2*.csv")]).drop_duplicates("checkin_id")
     periods = pd.concat([read_all("checkins_hist/periods_*.csv"),
-                         read_all("checkins/periods_*.csv")]).drop_duplicates("event_period_id")
+                         read_all("checkins/periods_*.csv")]).drop_duplicates("event_period_id").reset_index(drop=True)
     loc = to_local(periods["starts_at"])
     sat_pm = (loc.dt.weekday == 5) & (loc.dt.hour >= 15)
     periods["date"] = loc.where(~sat_pm, loc + pd.Timedelta(days=1)).dt.date
-    ci = ci.merge(periods[["event_period_id", "event_id", "date"]], on="event_period_id", how="left")
+    # "Sunday ..." events sometimes open days early (2023 Dream Team periods start on
+    # Thursday), so date them to the Sunday they serve.
+    names = pd.read_csv(SRC / "checkin_events.csv", dtype=str)
+    periods = periods.merge(names, on="event_id", how="left")
+    sunday = periods["name"].fillna("").str.lower().str.startswith("sunday")
+    loc = to_local(periods["starts_at"])
+    to_sun = loc.dt.date.map(lambda d: d + dt.timedelta(days=(6 - d.weekday()) % 7))
+    periods.loc[sunday, "date"] = to_sun[sunday]
+    ci = ci.merge(periods[["event_period_id", "event_id", "name", "date"]], on="event_period_id", how="left")
     missing = int(ci["date"].isna().sum())
     ci = ci.dropna(subset=["date"])
     ci = ci[ci["person_id"].notna() & (ci["one_time_guest"].str.lower() != "true")]
-    names = pd.read_csv(SRC / "checkin_events.csv", dtype=str)
-    ci = ci.merge(names, on="event_id", how="left")
     ci["area"] = ci["name"].fillna("").map(C.event_area)
     ci.attrs["missing_dates"] = missing
     ci.attrs["unnamed_events"] = sorted(set(ci.loc[ci["name"].isna(), "event_id"]))
