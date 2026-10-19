@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Celebration Church programming calendar for 2027 — staff copy, month-by-month calendar plus full list.">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Celebration 2027 Year Map — Staff Copy">
+<meta property="og:description" content="The 2027 programming calendar, month by month, with the rule behind every date and what still needs one.">
+<meta property="og:type" content="website">
+<style>
+:root{color-scheme:light dark}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>Celebration 2027 Year Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap">
+<style>
+:root{
+  --ink:#262524;
+  --ink-2:#4c4a47;
+  --ink-3:#7b7671;
+  --ground:#eae8e4;
+  --panel:#f8f7f2;
+  --panel-2:#e1ded8;
+  --rule:#c9c4bd;
+  --rule-soft:#d9d5cf;
+  --brass:#5b77ba;
+  --brass-ink:#3f5893;
+  --brass-soft:#dde4f2;
+  --slate:#4f6c53;
+  --slate-ink:#3f5a44;
+  --slate-soft:#dee6de;
+  --flag:#acb77a;
+  --flag-ink:#4a5220;
+  --flag-soft:#e8f985;
+  --hero-bg:#283b2e;
+  --hero-fg:#eae8e4;
+  --hero-lbl:#acb77a;
+  --sun:#f1efe8;
+  --shadow:0 1px 2px rgba(38,37,36,.07);
+  --c-service:#5b77ba;
+  --c-groups:#3857a8;
+  --c-conf:#283b2e;
+  --c-missions:#4f6c53;
+  --c-prayer:#8d995e;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#eae8e4;
+    --ink-2:#b5b1ab;
+    --ink-3:#88837d;
+    --ground:#1b1a19;
+    --panel:#232221;
+    --panel-2:#2c2a28;
+    --rule:#3a3835;
+    --rule-soft:#2f2d2b;
+    --brass:#8aa3d8;
+    --brass-ink:#a0b6e2;
+    --brass-soft:#26314a;
+    --slate:#93b398;
+    --slate-ink:#a3c2a8;
+    --slate-soft:#232f26;
+    --flag:#acb77a;
+    --flag-ink:#d8e86f;
+    --flag-soft:#363a1a;
+    --hero-bg:#1f2b21;
+    --hero-fg:#d1e2be;
+    --hero-lbl:#acb77a;
+    --sun:#282624;
+    --shadow:0 1px 2px rgba(0,0,0,.35);
+    --c-service:#8aa3d8;
+    --c-groups:#7d97d6;
+    --c-conf:#93b398;
+    --c-missions:#7fa585;
+    --c-prayer:#acb77a;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#eae8e4;
+  --ink-2:#b5b1ab;
+  --ink-3:#88837d;
+  --ground:#1b1a19;
+  --panel:#232221;
+  --panel-2:#2c2a28;
+  --rule:#3a3835;
+  --rule-soft:#2f2d2b;
+  --brass:#8aa3d8;
+  --brass-ink:#a0b6e2;
+  --brass-soft:#26314a;
+  --slate:#93b398;
+  --slate-ink:#a3c2a8;
+  --slate-soft:#232f26;
+  --flag:#acb77a;
+  --flag-ink:#d8e86f;
+  --flag-soft:#363a1a;
+  --hero-bg:#1f2b21;
+  --hero-fg:#d1e2be;
+  --hero-lbl:#acb77a;
+  --sun:#282624;
+  --shadow:0 1px 2px rgba(0,0,0,.35);
+  --c-service:#8aa3d8;
+  --c-groups:#7d97d6;
+  --c-conf:#93b398;
+  --c-missions:#7fa585;
+  --c-prayer:#acb77a;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"Hanken Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:48px 28px 96px}
+
+/* ---------- masthead ---------- */
+.mast{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end;
+  padding-bottom:22px;border-bottom:2px solid var(--hero-bg);
+}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px}
+.eyebrow b{color:var(--slate-ink);font-weight:700}
+h1{font-weight:800;font-size:clamp(32px,4.6vw,48px);line-height:1.04;letter-spacing:-.035em;margin:0;text-wrap:balance}
+h1 em{font-style:normal;color:var(--slate-ink)}
+.mast p{margin:12px 0 0;max-width:58ch;color:var(--ink-2)}
+.stamp{font-size:11px;line-height:1.7;color:var(--ink-3);text-align:right;white-space:nowrap}
+.stamp b{color:var(--ink);font-weight:600}
+
+/* ---------- hero banner ---------- */
+.shift{
+  margin-top:28px;display:grid;grid-template-columns:auto minmax(0,1fr);
+  border:1px solid var(--rule);border-left:4px solid var(--hero-lbl);
+  background:var(--panel);box-shadow:var(--shadow);
+}
+.shift-key{
+  padding:22px 26px;border-right:1px solid var(--rule-soft);background:var(--hero-bg);
+  display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:200px;
+}
+.shift-key .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--hero-lbl);font-weight:600}
+.shift-key .big{font-weight:800;font-size:29px;line-height:1.08;color:var(--hero-fg);letter-spacing:-.025em}
+.shift-key .sub{font-size:13px;color:var(--hero-lbl)}
+.shift-body{padding:20px 26px}
+.shift-body h2{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin:0 0 8px;color:var(--ink-3)}
+.shift-body p{margin:0 0 8px;max-width:72ch}
+.shift-body p:last-child{margin-bottom:0}
+
+/* ---------- section heads ---------- */
+.section-head{
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  margin:52px 0 18px;padding-bottom:8px;border-bottom:2px solid var(--slate);
+}
+.section-head h2{font-weight:800;font-size:23px;margin:0;letter-spacing:-.025em}
+.section-head span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-ink);font-weight:600}
+
+/* ---------- open dates ---------- */
+.open{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;
+  background:var(--rule-soft);border:1px solid var(--rule);border-left:4px solid var(--brass);
+  box-shadow:var(--shadow);
+}
+.open > div{background:var(--panel);padding:18px 20px}
+.open .tbd{
+  display:inline-block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  color:var(--brass-ink);background:var(--brass-soft);border:1px solid var(--brass);
+  border-radius:3px;padding:1px 7px;margin-bottom:7px;
+}
+.open h3{margin:0;font-size:17px;font-weight:700;letter-spacing:-.02em}
+.open p{margin:5px 0 0;font-size:13.5px;color:var(--ink-2)}
+.open .was{display:block;font-size:11.5px;color:var(--ink-3);margin-top:5px}
+
+/* ---------- rhythm strip ---------- */
+.rhythm{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;
+  background:var(--rule-soft);border:1px solid var(--rule);
+}
+.rhythm div{background:var(--panel);padding:16px 18px}
+.rhythm dt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-ink);margin-bottom:5px}
+.rhythm dd{margin:0;font-weight:600;font-size:15px;line-height:1.35}
+.rhythm .note{font-weight:400;font-size:13px;color:var(--ink-3);margin-top:3px;display:block}
+.rhythm .chg{color:var(--brass-ink);font-weight:600}
+
+/* ---------- filters + legend ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:20px 0 4px}
+.filters .flabel{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-right:5px}
+.chip{
+  font:inherit;font-size:13px;font-weight:500;padding:5px 13px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);
+  transition:background .12s,color .12s,border-color .12s;
+}
+.chip:hover{border-color:var(--ink-3)}
+.chip[aria-pressed="true"]{background:var(--hero-bg);color:var(--hero-fg);border-color:var(--hero-bg)}
+.chip:focus-visible{outline:2px solid var(--slate);outline-offset:2px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:center;margin:14px 0 0;font-size:11.5px;color:var(--ink-3)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend .k{white-space:nowrap}
+.legend .sw-flag{background:var(--flag-soft);border:1px solid var(--flag)}
+.legend .sw-tbd{background:var(--brass-soft);border:1px solid var(--brass)}
+
+/* ---------- calendar ---------- */
+.cal{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:26px;margin-top:22px}
+.cmonth{border:1px solid var(--rule);background:var(--panel);box-shadow:var(--shadow);min-width:0;overflow:hidden}
+.cmonth.empty{display:none}
+.cm-head{
+  background:var(--hero-bg);color:var(--hero-fg);padding:9px 14px;
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+}
+.cm-head .nm{font-weight:700;font-size:16px;letter-spacing:-.02em}
+.cm-head .ct{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--hero-lbl)}
+.dow{
+  display:grid;grid-template-columns:repeat(7,1fr);background:var(--panel-2);
+  border-bottom:1px solid var(--rule);
+}
+.dow span{
+  font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  text-align:center;padding:5px 0;font-weight:600;
+}
+.dow span:first-child{color:var(--slate-ink)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--rule-soft)}
+.day{background:var(--panel);min-height:74px;padding:4px 4px 6px;min-width:0;display:flex;flex-direction:column;gap:2px}
+.day.pad{background:var(--panel-2);opacity:.5;min-height:0}
+.day.sun{background:var(--sun)}
+.day .num{font-size:10.5px;font-weight:600;color:var(--ink-3);font-variant-numeric:tabular-nums;line-height:1.3}
+.day.sun .num{color:var(--slate-ink)}
+.day.has .num{color:var(--ink)}
+.ev{
+  display:block;font-size:10.5px;line-height:1.25;padding:2px 4px 2px 5px;border-radius:2px;
+  border-left:2.5px solid var(--rule);background:var(--panel-2);color:var(--ink-2);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.ev[data-c="service"]{border-left-color:var(--c-service)}
+.ev[data-c="groups"]{border-left-color:var(--c-groups)}
+.ev[data-c="conf"]{border-left-color:var(--c-conf)}
+.ev[data-c="missions"]{border-left-color:var(--c-missions)}
+.ev[data-c="prayer"]{border-left-color:var(--c-prayer)}
+.ev.cont{
+  font-size:0;line-height:0;height:4px;padding:0;border-left:none;border-radius:2px;opacity:.5;
+}
+.ev.cont[data-c="service"]{background:var(--c-service)}
+.ev.cont[data-c="groups"]{background:var(--c-groups)}
+.ev.cont[data-c="conf"]{background:var(--c-conf)}
+.ev.cont[data-c="missions"]{background:var(--c-missions)}
+.ev.cont[data-c="prayer"]{background:var(--c-prayer)}
+.ev.isflag{background:var(--flag-soft);color:var(--flag-ink);font-weight:600}
+.ev.isnew{font-weight:600;color:var(--brass-ink)}
+.agenda{display:none;border-top:1px solid var(--rule)}
+.ag-day{display:flex;gap:11px;padding:7px 12px;align-items:baseline}
+.ag-day:not(:last-child){border-bottom:1px solid var(--rule-soft)}
+.ag-day.sun{background:var(--sun)}
+.ag-d{
+  flex:0 0 52px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--ink-3);font-variant-numeric:tabular-nums;padding-top:2px;
+}
+.ag-day.sun .ag-d{color:var(--slate-ink)}
+.ag-evs{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.ag-ev{
+  font-size:13px;line-height:1.35;padding:1px 0 1px 8px;border-left:2.5px solid var(--rule);color:var(--ink);
+  min-width:0;overflow-wrap:anywhere;
+}
+.ag-ev[data-c="service"]{border-left-color:var(--c-service)}
+.ag-ev[data-c="groups"]{border-left-color:var(--c-groups)}
+.ag-ev[data-c="conf"]{border-left-color:var(--c-conf)}
+.ag-ev[data-c="missions"]{border-left-color:var(--c-missions)}
+.ag-ev[data-c="prayer"]{border-left-color:var(--c-prayer)}
+.ag-ev .thru{color:var(--ink-3);font-size:11.5px}
+.ag-ev.isflag{background:var(--flag-soft);color:var(--flag-ink);font-weight:600;padding-right:6px;border-radius:0 3px 3px 0}
+.ag-ev.isnew{font-weight:600;color:var(--brass-ink)}
+.cm-tbd{
+  border-top:1px solid var(--rule);background:var(--brass-soft);padding:7px 12px;
+  font-size:11.5px;color:var(--brass-ink);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;
+  min-width:0;
+}
+.cm-tbd span{min-width:0;overflow-wrap:anywhere}
+.cm-tbd b{font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:9.5px}
+
+/* ---------- list ---------- */
+.month{margin-top:34px;border-top:1px solid var(--rule)}
+.month.empty{display:none}
+.month-head{
+  background:var(--panel-2);padding:11px 16px;
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+}
+.month-name{font-weight:700;font-size:18px;letter-spacing:-.02em}
+.yr{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass-ink)}
+.rows{border:1px solid var(--rule);border-top:none;background:var(--panel)}
+.row{display:flex;gap:13px;align-items:baseline;min-width:0;background:var(--panel);padding:9px 16px}
+.row:not(:last-child){border-bottom:1px solid var(--rule-soft)}
+.row:hover{background:var(--panel-2)}
+.row.flag,.row.flag:hover{background:var(--flag-soft)}
+.row.flag .d{color:var(--flag-ink);font-weight:600}
+.row.flag .t{font-weight:600}
+.row.flag .why{color:var(--flag-ink)}
+.row.tbdrow,.row.tbdrow:hover{background:var(--brass-soft)}
+.row.tbdrow .d{color:var(--brass-ink);font-weight:700}
+.row.tbdrow .t{font-weight:600}
+.row.tbdrow .why{color:var(--brass-ink)}
+.row.newrule .d{color:var(--brass-ink);font-weight:600}
+.d{
+  font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap;
+  flex:0 0 auto;min-width:98px;color:var(--ink-3);padding-top:1px;
+}
+.n{min-width:0;flex:1}
+.t{display:block;line-height:1.4}
+.why{display:block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
+mark.watch{
+  background:var(--flag-soft);color:var(--flag-ink);padding:1px 6px;border-radius:3px;
+  font-size:12px;font-weight:600;display:inline-block;margin-top:4px;line-height:1.4;
+}
+.row.flag mark.watch,.row.tbdrow mark.watch{background:var(--panel);border:1px solid var(--flag)}
+.tag{flex:0 0 auto;align-self:center;width:3px;height:15px;border-radius:2px;background:var(--rule)}
+.tag[data-c="service"]{background:var(--c-service)}
+.tag[data-c="groups"]{background:var(--c-groups)}
+.tag[data-c="conf"]{background:var(--c-conf)}
+.tag[data-c="missions"]{background:var(--c-missions)}
+.tag[data-c="prayer"]{background:var(--c-prayer)}
+
+/* ---------- gaps ---------- */
+.gaps{
+  border:1px solid var(--rule);border-left:4px solid var(--slate);
+  background:var(--panel);box-shadow:var(--shadow);padding:24px 28px;
+}
+.gaps ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:11px}
+.gaps li{max-width:78ch}
+.gaps li b{font-weight:600}
+.gaps li span{font-size:11.5px;color:var(--ink-3);display:block;margin-top:2px}
+
+footer{
+  margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);
+  font-size:11px;color:var(--ink-3);line-height:1.8;
+}
+
+@media (max-width:760px){
+  .wrap{padding:32px 18px 72px}
+  .mast{grid-template-columns:1fr;gap:16px;align-items:start}
+  .stamp{text-align:left}
+  .shift{grid-template-columns:1fr}
+  .shift-key{border-right:none;border-bottom:1px solid var(--rule-soft)}
+  .cal{grid-template-columns:1fr;gap:18px}
+  .dow,.grid{display:none}
+  .agenda{display:block}
+  .month-head{padding:9px 14px}
+  .gaps{padding:20px 18px}
+  .gaps ol{padding-left:18px}
+  .d{min-width:84px}
+}
+@media print{
+  body{background:#fff}
+  .wrap{max-width:none;padding:0}
+  .filters{display:none}
+  .cmonth,.gaps,.open,.shift{box-shadow:none;break-inside:avoid}
+  .cal{grid-template-columns:repeat(2,1fr)}
+  .month{break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div>
+      <p class="eyebrow">Celebration Church · Shreveport · <b>Staff copy</b></p>
+      <h1>The 2027 year map</h1>
+      <p>Every programming rhythm for Jan–Dec 2027 — conferences, One Nights, Sunday series, baptisms, missions and the full Small Groups cycle. Calendar view first, then the same thing as a list with the rule behind each date.</p>
+    </div>
+    <div class="stamp">
+      <b>For</b><br>Staff<br>
+      <b>Covers</b><br>Jan&ndash;Dec 2027<br>
+      <b>Updated</b><br>Oct 19, 2026<br>
+      <b>Items</b><br><span id="count">&mdash;</span>
+    </div>
+  </header>
+
+  <div class="shift">
+    <div class="shift-key">
+      <span class="lbl">Before you plan around this</span>
+      <span class="big">Nine events<br>still need a date</span>
+      <span class="sub">Plus 11 missions trips &amp; camps</span>
+    </div>
+    <div class="shift-body">
+      <h2>What changed in this copy</h2>
+      <p><b>Baptisms are now the 2nd Sunday</b> of every month, not the last. That fixes two collisions the old rule created &mdash; baptisms no longer land on Easter Sunday in March, or on the Sunday right after Christmas in December. It does create new overlaps in May, July, September and November; each one is marked below.</p>
+      <p><b>Nothing shows a date the requests doc hasn't confirmed.</b> Men's One Night, Radiant, Marriage One Night and Dream Team Appreciation show TBD; so does the whole Kids calendar &mdash; Summer Blast, both Family Dedications, Teamsgiving and the new Vision Day. <b>Every missions trip and camp carries its month only, not dates.</b> All of them sit under the month they belong to so they hold their place in the year; the date each was projected to from 2026 is kept on the row for reference.</p>
+      <p><b>Easter is Mar 28, 2027</b> &mdash; eight days earlier than 2026. Holy Week is Mar 21&ndash;28, so the whole Easter push moves up a week — promo that went out in mid-March in 2026 needs to start in early March.</p>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>Needs a date</h2>
+    <span>Undated items</span>
+  </div>
+  <div class="open">
+    <div>
+      <span class="tbd">TBD</span>
+      <h3>Men's One Night</h3>
+      <p>Moved out of August to spring, and the month is settled: April. The date within April is still open. April is clear of Holy Week in March and of the Radiant early-bird launch in May.</p>
+      <span class="was">Was projected Aug 28, 2027 &mdash; now April, day to be set</span>
+    </div>
+    <div>
+      <span class="tbd">TBD</span>
+      <h3>Radiant Women's Conference</h3>
+      <p>Historically the 4th weekend of September, which would be Sep 24&ndash;25, 2027. The early-bird launch is still pinned to Mother's Day, May 9 &mdash; so there's a launch with no date behind it.</p>
+      <span class="was">Previously projected: Sep 24&ndash;25, 2027</span>
+    </div>
+    <div>
+      <span class="tbd">Month only</span>
+      <h3>11 missions trips &amp; camps</h3>
+      <p>Every trip and camp is placed in its month without dates &mdash; Ecuador, England, CY Texas, Belize, CY and CK camps, Honduras, the CY July trip, Indonesia, CYA Italy and Japan. Each row carries the 2026 window it was projected from.</p>
+      <span class="was">Set these before the trips open for sign-up</span>
+    </div>
+    <div>
+      <span class="tbd">5 items</span>
+      <h3>The Kids &amp; Dream Team calendar</h3>
+      <p>Summer Blast, Spring and Fall Family Dedication, CK Teamsgiving and a new Vision Day all come back from the requests doc needing dates &mdash; so they moved off the grid into their months. Four of them have a 2026 rule behind them; Vision Day is new, with nothing to project from.</p>
+      <span class="was">Summer Blast Jun 14&ndash;16 · Family Ded Feb 27 &amp; Oct 23 · Teamsgiving Nov 21</span>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>The constants</h2>
+    <span>What repeats every month</span>
+  </div>
+  <dl class="rhythm">
+    <div><dt>1st Wednesday</dt><dd>First Wednesday<span class="note">All-staff + congregation, at the church</span></dd></div>
+    <div><dt>1st Sunday</dt><dd>Discover Celebration Pt. 1<span class="note">12:30&ndash;2:00p</span></dd></div>
+    <div><dt class="chg">2nd Sunday &mdash; new</dt><dd>Baptisms<span class="note">12:30p, after second service. Moved from the last Sunday.</span></dd></div>
+    <div><dt>3rd Sunday</dt><dd>Discover Celebration Pt. 2<span class="note">12:30&ndash;2:00p</span></dd></div>
+  </dl>
+
+  <div class="section-head">
+    <h2>The year at a glance</h2>
+    <span>Month by month · 2027</span>
+  </div>
+
+  <div class="filters" id="filters">
+    <span class="flabel">Show</span>
+    <button class="chip" data-f="all" aria-pressed="true">Everything</button>
+    <button class="chip" data-f="service" aria-pressed="false">Weekend &amp; Wednesday</button>
+    <button class="chip" data-f="groups" aria-pressed="false">Small Groups</button>
+    <button class="chip" data-f="conf" aria-pressed="false">Conferences &amp; events</button>
+    <button class="chip" data-f="missions" aria-pressed="false">Missions &amp; camps</button>
+    <button class="chip" data-f="prayer" aria-pressed="false">Prayer</button>
+  </div>
+  <p class="legend">
+    <span class="k"><i style="background:var(--c-service)"></i>Weekend &amp; Wednesday</span>
+    <span class="k"><i style="background:var(--c-groups)"></i>Small Groups</span>
+    <span class="k"><i style="background:var(--c-conf)"></i>Conferences &amp; events</span>
+    <span class="k"><i style="background:var(--c-missions)"></i>Missions &amp; camps</span>
+    <span class="k"><i style="background:var(--c-prayer)"></i>Prayer</span>
+    <span class="k"><i class="sw-flag"></i>Needs a decision</span>
+    <span class="k"><i class="sw-tbd"></i>No date yet</span>
+  </p>
+
+  <div class="cal" id="cal"></div>
+
+  <div class="section-head">
+    <h2>Month by month, in detail</h2>
+    <span>With the rule behind each date</span>
+  </div>
+
+  <div id="months"></div>
+
+  <div class="section-head">
+    <h2>Decisions to make</h2>
+    <span>Flagged while building this</span>
+  </div>
+  <div class="gaps">
+    <ol>
+      <li><b>Men's One Night and Radiant both need dates.</b> Men's has moved to April; the day within it is still open. Radiant is the more urgent: its early-bird launch is already pinned to Mother's Day, May 9, so promo goes out before the conference has a date.
+        <span>Men's is now April; Radiant's old rule would give Sep 24&ndash;25</span></li>
+      <li><b>The Kids calendar has no confirmed dates for 2027.</b> Summer Blast, Spring and Fall Family Dedication, CK Teamsgiving and Vision Day are all open. Four of them have a repeating rule that would date them today; Vision Day is new and has nothing behind it. Summer Blast is the one that moves other things &mdash; CY Summer Camp was projected to the week after it.
+        <span>Point person on all five is the Kids team</span></li>
+      <li><b>Three Sundays where a displaced event wants the 2nd Sunday that Baptisms now holds.</b> Discover Celebration Pt. 2 needs to move off Palm Sunday (Mar 21) and the natural slot is Mar 14. Pt. 1 needs to move off July 4 and the natural slot is Jul 11. Pt. 1 on Sep 5 is Labor Day weekend &mdash; 2026 moved it a week for exactly that reason, which would be Sep 12. All three land on Baptisms.
+        <span>Mar 14 · Jul 11 · Sep 12 &mdash; pick which rhythm yields</span></li>
+      <li><b>May 9 is carrying four things.</b> Mother's Day, the Radiant early-bird launch, Small Group Leader Training, and now Baptisms. Worth deciding what comes off.
+        <span>Nov 14 is doubled too &mdash; Baptisms plus the final Legacy Sunday</span></li>
+      <li><b>Easter Sunday itself isn't an event on the calendar.</b> Everything around it is scheduled, but the service dates aren't blocked.
+        <span>Add: Palm Sun Mar 21 · Good Fri Mar 26 · Easter Mar 28</span></li>
+      <li><b>Mother's Day and Father's Day are never blocked as service dates.</b> Both now carry weight beyond the service.
+        <span>Mother's Day May 9 · Father's Day Jun 20</span></li>
+      <li><b>July 4 falls on a Sunday</b> and it's the 1st Sunday, so Discover Celebration Pt. 1 lands on it.
+        <span>Independence Day, Sun Jul 4, 2027</span></li>
+      <li><b>Two missions teams overlapped in July last year.</b> Honduras Medical Mission and the CY trip ran at the same time in 2026. Worth separating them when the 2027 dates get set — the CY trip has no destination yet either.
+        <span>Both are undated for now</span></li>
+      <li><b>Spring break dates need confirming</b> before the CY Texas trip can be dated — it is built on Caddo/Bossier spring break week.
+        <span>2026 equivalent was the week of Mar 7</span></li>
+    </ol>
+  </div>
+
+  <footer>
+    Dates derived from the 2026 programming calendar and projected forward &mdash; fixed-weekday events keep their ordinal, seasonal blocks keep their week-of-month, Easter-anchored items recomputed from Easter Mar 28, 2027, Mardi Gras from Fat Tuesday Feb 9, 2027.
+    Baptisms recomputed to the 2nd Sunday of each month. Olive tint means a decision is needed; cobalt means no date yet. Dotted bars in the calendar are the continuing days of a multi-day trip or season.
+    Guest weekends aren't included &mdash; those get booked, not projected. Internal items on the shared calendar &mdash; staff meetings, planning and ideation sessions, blockouts, PTO, birthdays and facilities tickets &mdash; are excluded; this is the programming calendar only.
+  </footer>
+
+</div>
+
+<script>
+/* s: ISO start · e: ISO end (span) · m: extra discrete dates · tbd: month name
+   n: name · sn: short name for the calendar · c: category · r: rule · t: time · w: watch-out
+   f: "flag" needs a decision | "new" new baptism rule | "tbd" no date      */
+const EV = [
+ /* January */
+ {s:"2027-01-03",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
+ {s:"2027-01-03",m:["2027-01-10","2027-01-17"],n:"Small Group Leader Training",sn:"Leaders",c:"groups",r:"First three Sundays"},
+ {s:"2027-01-06",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
+ {s:"2027-01-02",e:"2027-01-22",n:"21 Days of Prayer",sn:"21 Days",c:"prayer",r:"Starts 1st Saturday"},
+ {s:"2027-01-10",n:"Baptisms",c:"service",r:"2nd Sunday",w:"Falls inside 21 Days of Prayer &mdash; and shares the Sunday with leader training",f:"new"},
+ {s:"2027-01-17",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+ {s:"2027-01-17",n:"Team One Night",sn:"Team ON",c:"conf",r:"3rd Sunday",t:"4:30p"},
+ {s:"2027-01-24",n:"Small Group XPO",sn:"SG XPO",c:"groups",r:"Sunday before launch"},
+ {s:"2027-01-31",n:"Spring Small Groups Launch",sn:"Spring SG",c:"groups",r:"Last Sunday of January",w:"Moved up a week from the 1st Sunday of February"},
+ {s:"2027-01-30",n:"Mardi Gras weekend 1 of 2",sn:"Mardi Gras",c:"conf",r:"Two weekends before Fat Tuesday",w:"Fat Tuesday is Feb 9, 2027 &mdash; the first parade weekend lands in January"},
+
+ /* February */
+ {s:"2027-02-03",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
+ {s:"2027-02-06",n:"Mardi Gras weekend 2 of 2",sn:"Mardi Gras",c:"conf",r:"Weekend before Fat Tuesday"},
+ {s:"2027-02-07",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
+ {s:"2027-02-14",n:"Baptisms",c:"service",r:"2nd Sunday",w:"Valentine's Day &mdash; and the Ecuador team leaves the same day",f:"new"},
+ {tbd:"February",n:"Ecuador Missions Trip",sn:"Ecuador",c:"missions",r:"February or March, dates not set",w:"The requests doc now reads Feb&ndash;March. Projected from 2026: Feb 14&ndash;20",f:"tbd"},
+ {s:"2027-02-21",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+ {tbd:"February",n:"Spring Family Dedication",sn:"Family Ded",c:"service",r:"Date not set",w:"The requests doc lists it as February or March, date not set. Projected from 2026: Sat Feb 27, the last Saturday",f:"tbd"},
+ {tbd:"February",n:"Marriage One Night",sn:"Marriage",c:"conf",r:"Date not set",w:"Listed as TBD on the 2027 Calendar Requests doc. Projected from 2026 it would be Feb 12",f:"tbd"},
+
+ /* March */
+ {s:"2027-03-03",n:"First Wednesday",c:"service",r:"1st Wednesday"},
+ {s:"2027-03-07",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
+ {tbd:"March",n:"England Freedom Mission",sn:"England",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Mar 7&ndash;14",f:"tbd"},
+ {tbd:"March",n:"CY Texas Missions Trip",sn:"CY Texas",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Mar 7&ndash;11. Confirm Caddo/Bossier spring break dates for 2027",f:"tbd"},
+ {s:"2027-03-14",n:"Baptisms",c:"service",r:"2nd Sunday",w:"The new rule clears Easter &mdash; the old last-Sunday rule put this on Easter Sunday",f:"new"},
+ {s:"2027-03-21",n:"Palm Sunday",sn:"Palm Sun",c:"service",r:"Easter minus 7",w:"Not on the calendar"},
+ {s:"2027-03-21",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday",w:"Lands on Palm Sunday. Moving it back to Mar 14 now collides with Baptisms",f:"flag"},
+ {s:"2027-03-26",n:"Good Friday",sn:"Good Fri",c:"service",r:"Easter minus 2",w:"Not on the calendar"},
+ {s:"2027-03-28",n:"Easter Sunday",sn:"EASTER",c:"service",r:"Computed",w:"Not on the calendar &mdash; and it sits in March this year, not April",f:"flag"},
+
+ /* April */
+ {s:"2027-04-04",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday after Easter"},
+ {s:"2027-04-07",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
+ {s:"2027-04-11",n:"Baptisms",c:"service",r:"2nd Sunday",f:"new"},
+ {tbd:"April",n:"Belize Construction / Prayer Trip",sn:"Belize",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Apr 17&ndash;24",f:"tbd"},
+ {s:"2027-04-18",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+ {tbd:"April",n:"Men's One Night",sn:"Men's ON",c:"conf",r:"April — date not set",w:"Moved out of August to spring. April is settled; the date within it is not",f:"tbd"},
+ {s:"2027-04-30",e:"2027-05-01",n:"Freedom Conference (spring)",sn:"Freedom",c:"conf",r:"First weekend of May",w:"Starts on the last day of April"},
+
+ /* May */
+ {s:"2027-05-01",n:"Spring Small Group Semester Ends",sn:"Spring ends",c:"groups",r:"First Saturday"},
+ {s:"2027-05-02",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
+ {s:"2027-05-05",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
+ {s:"2027-05-09",n:"Mother's Day",sn:"Mothers Day",c:"service",r:"2nd Sunday of May",w:"Not on the calendar"},
+ {s:"2027-05-09",n:"Radiant Early Bird Launch",sn:"Radiant EB",c:"conf",r:"Launches on Mother's Day",w:"The conference it launches has no date yet"},
+ {s:"2027-05-09",n:"Baptisms",c:"service",r:"2nd Sunday",w:"Four things on one Sunday: Mother's Day, Radiant launch, leader training, baptisms",f:"flag"},
+ {s:"2027-05-09",m:["2027-05-16"],n:"Small Group Leader Training",sn:"Leaders",c:"groups",r:"2nd &amp; 3rd Sundays"},
+ {s:"2027-05-16",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+ {s:"2027-05-23",n:"Small Group XPO",sn:"SG XPO",c:"groups",r:"Sunday before launch"},
+ {s:"2027-05-30",n:"Summer Small Groups Launch",sn:"Summer SG",c:"groups",r:"Last Sunday of May"},
+
+ /* June */
+ {s:"2027-06-02",n:"First Wednesday &mdash; Summer Social",sn:"First Wed",c:"service",r:"1st Wednesday"},
+ {s:"2027-06-06",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
+ {s:"2027-06-13",n:"Baptisms",c:"service",r:"2nd Sunday",w:"The Sunday before Summer Blast week as projected &mdash; Summer Blast is now undated",f:"new"},
+ {tbd:"June",n:"Summer Blast",sn:"Sum Blast",c:"conf",r:"Dates not set",w:"Listed as needing dates on the requests doc. Projected from 2026: Jun 14&ndash;16, the 3rd week Mon&ndash;Wed",f:"tbd"},
+ {tbd:"June",n:"CY Summer Camp",sn:"CY Camp",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Jun 18&ndash;22",f:"tbd"},
+ {s:"2027-06-20",n:"Father's Day",sn:"Fathers Day",c:"service",r:"3rd Sunday of June",w:"Not on the calendar"},
+ {s:"2027-06-20",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+ {s:"2027-06-27",n:"Parenting One Night",sn:"Parenting",c:"conf",r:"Last Sunday"},
+
+ /* July */
+ {s:"2027-07-04",n:"Independence Day",sn:"July 4",c:"service",r:"Fixed date",w:"A Sunday in 2027 &mdash; plan the weekend around it",f:"flag"},
+ {s:"2027-07-04",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday",w:"Falls on July 4. The natural move is Jul 11, which now holds Baptisms",f:"flag"},
+ {s:"2027-07-07",n:"First Wednesday &mdash; Summer Social",sn:"First Wed",c:"service",r:"1st Wednesday"},
+ {s:"2027-07-10",n:"Serve Day",c:"conf",r:"2nd Saturday"},
+ {s:"2027-07-10",n:"Summer Small Groups End",sn:"SG ends",c:"groups",r:"2nd Saturday"},
+ {s:"2027-07-11",n:"Baptisms",c:"service",r:"2nd Sunday",w:"The day after Serve Day &mdash; and the slot Discover Pt. 1 needs",f:"new"},
+ {tbd:"July",n:"CK Summer Camp",sn:"CK Camp",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Jul 12&ndash;16",f:"tbd"},
+ {tbd:"July",n:"Honduras Medical Mission",sn:"Honduras",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Jul 17&ndash;24",f:"tbd"},
+ {tbd:"July",n:"CY Missions Trip",sn:"CY Trip",c:"missions",r:"Place and dates not set",w:"Destination still open. 2026 equivalent was the CY Boston Trip, Jul 18&ndash;24, which overlapped Honduras",f:"tbd"},
+ {s:"2027-07-18",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+
+ /* August */
+ {s:"2027-08-01",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
+ {s:"2027-08-01",m:["2027-08-08","2027-08-15","2027-08-22"],n:"Small Group Leader Training",sn:"Leaders",c:"groups",r:"Four consecutive Sundays"},
+ {s:"2027-08-04",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
+ {s:"2027-08-07",e:"2027-08-13",n:"7 Days of Prayer",sn:"7 Days",c:"prayer",r:"2nd full week"},
+ {s:"2027-08-08",n:"Baptisms",c:"service",r:"2nd Sunday",w:"Falls inside 7 Days of Prayer &mdash; could be the week's capstone",f:"new"},
+ {s:"2027-08-15",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+ {s:"2027-08-22",n:"Small Group Expo",sn:"SG Expo",c:"groups",r:"Sunday before launch"},
+ {s:"2027-08-25",n:"CY Fall Launch",sn:"CY Fall",c:"groups",r:"Wednesday before launch"},
+ {s:"2027-08-29",n:"Back to Church Sunday",sn:"Back to Ch",c:"service",r:"Last Sunday of August"},
+ {s:"2027-08-29",n:"Fall Small Groups Launch",sn:"Fall SG",c:"groups",r:"Back to Church Sunday"},
+ {tbd:"August",n:"Indonesia Mission Trip",sn:"Indonesia",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Aug 30&ndash;Sep 8",f:"tbd"},
+ {tbd:"August",n:"Vision Day",sn:"Vision Day",c:"conf",r:"August &mdash; date not set",w:"New on the requests doc: Kids and Dream Team leaders, August, no date yet. Nothing to project it from &mdash; it did not run in 2026",f:"tbd"},
+
+ /* September */
+ {s:"2027-09-01",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
+ {s:"2027-09-05",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday",w:"Labor Day weekend. 2026 moved it a week for this &mdash; that would be Sep 12, which now holds Baptisms",f:"flag"},
+ {s:"2027-09-12",n:"Baptisms",c:"service",r:"2nd Sunday",f:"new"},
+ {s:"2027-09-19",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+ {tbd:"September",n:"Radiant Women's Conference",sn:"Radiant",c:"conf",r:"No date set",w:"Old rule put it on the 4th weekend &mdash; Sep 24&ndash;25, 2027. Early bird launches May 9 regardless",f:"tbd"},
+
+ /* October */
+ {s:"2027-10-03",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
+ {s:"2027-10-06",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
+ {s:"2027-10-10",n:"Baptisms",c:"service",r:"2nd Sunday",f:"new"},
+ {s:"2027-10-17",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+ {tbd:"October",n:"CYA Italy Mission Trip",sn:"CYA Italy",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Oct 20&ndash;30",f:"tbd"},
+ {tbd:"October",n:"Fall Family Dedication",sn:"Family Ded",c:"service",r:"Date not set",w:"The requests doc lists it as October, date not set. Projected from 2026: Sat Oct 23, the 4th Saturday",f:"tbd"},
+ {s:"2027-10-24",n:"Legacy Sunday 1 of 4",sn:"Legacy 1",c:"service",r:"Starts 4th Sunday"},
+ {s:"2027-10-25",n:"Legacy Dinner #2",sn:"Legacy D2",c:"conf",r:"Monday of Legacy week"},
+ {s:"2027-10-29",n:"Legacy Dinner #1",sn:"Legacy D1",c:"conf",r:"Friday of Legacy week"},
+ {s:"2027-10-31",n:"Legacy Sunday 2 of 4",sn:"Legacy 2",c:"service",r:"Rolls with Legacy 1"},
+ {tbd:"October",n:"Dream Team Appreciation",sn:"Dream Team",c:"conf",r:"Month set, date not",w:"Moved from April. The old rule was the 4th Friday, which would be Oct 22 — Legacy runs Oct 24&ndash;31",f:"tbd"},
+
+ /* November */
+ {s:"2027-11-03",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
+ {s:"2027-11-07",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
+ {s:"2027-11-07",n:"Legacy Sunday 3 of 4",sn:"Legacy 3",c:"service",r:"Rolls with Legacy 1"},
+ {s:"2027-11-14",n:"Legacy Sunday 4 of 4",sn:"Legacy 4",c:"service",r:"Rolls with Legacy 1"},
+ {s:"2027-11-14",n:"Baptisms",c:"service",r:"2nd Sunday",w:"Shares the Sunday with the final Legacy Sunday",f:"flag"},
+ {s:"2027-11-21",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+ {tbd:"November",n:"CK Teamsgiving",sn:"Teamsgiv",c:"conf",r:"November &mdash; date not set",w:"Listed as needing a date on the requests doc. Projected from 2026: Sun Nov 21, the Sunday before Thanksgiving",f:"tbd"},
+ {s:"2027-11-25",n:"Thanksgiving",c:"service",r:"4th Thursday"},
+ {s:"2027-11-28",n:"At the Movies &mdash; week 1",sn:"Movies 1",c:"service",r:"Sunday after Thanksgiving"},
+ {tbd:"November",n:"Japan Mission Trip",sn:"Japan",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Nov 29&ndash;Dec 6",f:"tbd"},
+
+ /* December */
+ {s:"2027-12-01",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
+ {s:"2027-12-03",e:"2027-12-04",n:"Freedom Conference (winter)",sn:"Freedom",c:"conf",r:"1st weekend"},
+ {s:"2027-12-05",n:"At the Movies &mdash; week 2",sn:"Movies 2",c:"service",r:"1st Sunday"},
+ {s:"2027-12-05",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
+ {s:"2027-12-12",n:"Baptisms",c:"service",r:"2nd Sunday",w:"The new rule clears the Sunday right after Christmas, where the old rule put this",f:"new"},
+ {s:"2027-12-19",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
+ {s:"2027-12-24",n:"Christmas Eve service",sn:"Christmas Ev",c:"service",r:"Friday in 2027"},
+ {s:"2027-12-26",n:"Online service only",sn:"Online only",c:"service",r:"Sunday after Christmas"}
+];
+
+const YEAR = 2027;
+const MON  = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const AB   = MON.map(m => m.slice(0,3));
+const DOW  = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const CLS  = { flag:"flag", tbd:"tbdrow", new:"newrule" };
+
+const dt   = iso => { const [y,m,d] = iso.split("-").map(Number); return new Date(y, m-1, d); };
+const key  = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+
+/* the date label, derived so it can't drift from the real date */
+function label(ev){
+  if (ev.tbd) return "TBD";
+  const a = dt(ev.s);
+  if (ev.m){
+    const days = [a, ...ev.m.map(dt)].map(x => x.getDate());
+    return `${AB[a.getMonth()]} ${days.join(", ")}`;
+  }
+  if (ev.e){
+    const b = dt(ev.e);
+    return a.getMonth() === b.getMonth()
+      ? `${AB[a.getMonth()]} ${a.getDate()}&ndash;${b.getDate()}`
+      : `${AB[a.getMonth()]} ${a.getDate()}&ndash;${AB[b.getMonth()]} ${b.getDate()}`;
+  }
+  return `${AB[a.getMonth()]} ${a.getDate()}`;
+}
+
+/* which calendar days each event occupies, and whether that day starts it */
+function occupies(ev){
+  if (ev.tbd) return [];
+  const out = [[ev.s, true]];
+  if (ev.m) ev.m.forEach(d => out.push([d, true]));
+  if (ev.e){
+    const end = dt(ev.e);
+    for (let d = dt(ev.s); (d.setDate(d.getDate()+1), d <= end);) out.push([key(d), false]);
+  }
+  return out;
+}
+
+const byDay = new Map();
+EV.forEach((ev, i) => occupies(ev).forEach(([k, start]) => {
+  if (!byDay.has(k)) byDay.set(k, []);
+  byDay.get(k).push({ ev, i, start });
+}));
+
+/* ---------- calendar ---------- */
+document.getElementById("cal").innerHTML = MON.map((name, mi) => {
+  const first = new Date(YEAR, mi, 1).getDay();
+  const days  = new Date(YEAR, mi+1, 0).getDate();
+  const cells = [];
+
+  for (let p = 0; p < first; p++) cells.push(`<div class="day pad"></div>`);
+
+  for (let n = 1; n <= days; n++){
+    const d    = new Date(YEAR, mi, n);
+    const list = (byDay.get(key(d)) || []).sort((a,b) => Number(b.start) - Number(a.start));
+    cells.push(`
+      <div class="day${d.getDay() === 0 ? " sun" : ""}${list.length ? " has" : ""}">
+        <span class="num">${n}</span>
+        ${list.map(({ev, i, start}) => `
+          <span class="ev${start ? "" : " cont"}${ev.f === "flag" ? " isflag" : ""}${ev.f === "new" ? " isnew" : ""}"
+                data-c="${ev.c}" data-i="${i}" title="${(ev.sn || ev.n).replace(/&mdash;/g,"—").replace(/&ndash;/g,"–")}">${ev.sn || ev.n}</span>`).join("")}
+      </div>`);
+  }
+
+  /* mobile: only days that actually have something, with readable names */
+  const agenda = [];
+  for (let n = 1; n <= days; n++){
+    const d     = new Date(YEAR, mi, n);
+    const start = (byDay.get(key(d)) || []).filter(x => x.start);
+    if (!start.length) continue;
+    agenda.push(`
+      <div class="ag-day${d.getDay() === 0 ? " sun" : ""}">
+        <span class="ag-d">${DOW[d.getDay()]} ${n}</span>
+        <span class="ag-evs">
+          ${start.map(({ev, i}) => `
+            <span class="ag-ev${ev.f === "flag" ? " isflag" : ""}${ev.f === "new" ? " isnew" : ""}"
+                  data-c="${ev.c}" data-i="${i}">${ev.n}${
+                    ev.t ? ` <span class="thru">${ev.t}</span>` : ``}${
+                    ev.e ? ` <span class="thru">through ${AB[dt(ev.e).getMonth()]} ${dt(ev.e).getDate()}</span>` : ``}</span>`).join("")}
+        </span>
+      </div>`);
+  }
+
+  const tbd = EV.map((ev,i) => ({ev,i})).filter(({ev}) => ev.tbd === name);
+
+  return `
+    <section class="cmonth" data-month="${name}">
+      <div class="cm-head"><span class="nm">${name}</span><span class="ct">${YEAR}</span></div>
+      <div class="dow">${DOW.map(d => `<span>${d}</span>`).join("")}</div>
+      <div class="grid">${cells.join("")}</div>
+      <div class="agenda">${agenda.join("")}</div>
+      ${tbd.length ? `<div class="cm-tbd"><b>No date yet</b>${tbd.map(({ev,i}) => `<span data-i="${i}">${ev.n}</span>`).join("")}</div>` : ``}
+    </section>`;
+}).join("");
+
+/* ---------- list ---------- */
+document.getElementById("months").innerHTML = MON.map(name => {
+  const rows = EV.map((ev,i) => ({ev,i}))
+    .filter(({ev}) => ev.tbd === name || (ev.s && dt(ev.s).getMonth() === MON.indexOf(name)))
+    .sort((a,b) => {
+      if (a.ev.tbd) return 1;
+      if (b.ev.tbd) return -1;
+      return a.ev.s.localeCompare(b.ev.s);
+    });
+
+  return `
+    <section class="month" data-month="${name}">
+      <div class="month-head"><span class="month-name">${name}</span><span class="yr">${YEAR}</span></div>
+      <div class="rows">
+        ${rows.map(({ev,i}) => `
+          <div class="row${ev.f ? " " + CLS[ev.f] : ""}" data-c="${ev.c}" data-i="${i}">
+            <span class="tag" data-c="${ev.c}"></span>
+            <span class="d">${label(ev)}</span>
+            <span class="n">
+              <span class="t">${ev.n}</span>
+              <span class="why">${ev.r}${ev.t ? " &middot; " + ev.t : ""}</span>
+              ${ev.w ? `<mark class="watch">${ev.w}</mark>` : ``}
+            </span>
+          </div>`).join("")}
+      </div>
+    </section>`;
+}).join("");
+
+document.getElementById("count").textContent =
+  EV.length + " items · " + EV.filter(e => e.tbd).length + " undated";
+
+/* ---------- filter both views together ---------- */
+let cat = "all";
+
+function apply(){
+  const ok = i => cat === "all" || EV[i].c === cat;
+
+  document.querySelectorAll(".row").forEach(r => { r.hidden = !ok(+r.dataset.i); });
+  document.querySelectorAll(".cal .ev, .ag-ev, .cm-tbd span[data-i]").forEach(e => { e.hidden = !ok(+e.dataset.i); });
+  document.querySelectorAll(".ag-day").forEach(r => {
+    r.hidden = ![...r.querySelectorAll(".ag-ev")].some(e => !e.hidden);
+  });
+
+  document.querySelectorAll(".cm-tbd").forEach(t => {
+    t.hidden = ![...t.querySelectorAll("span[data-i]")].some(s => !s.hidden);
+  });
+  document.querySelectorAll(".month").forEach(m => {
+    m.classList.toggle("empty", ![...m.querySelectorAll(".row")].some(r => !r.hidden));
+  });
+  document.querySelectorAll(".cmonth").forEach(m => {
+    m.classList.toggle("empty", ![...m.querySelectorAll(".ev, .ag-ev, .cm-tbd span[data-i]")].some(e => !e.hidden));
+  });
+}
+
+const group = [...document.querySelectorAll("#filters .chip")];
+group.forEach(chip => chip.addEventListener("click", () => {
+  group.forEach(c => c.setAttribute("aria-pressed", String(c === chip)));
+  cat = chip.dataset.f;
+  apply();
+}));
+</script>
+</body>
+</html>
