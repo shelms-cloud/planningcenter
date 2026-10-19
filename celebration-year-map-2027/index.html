@@ -373,7 +373,7 @@ footer{
     <div class="stamp">
       <b>For</b><br>Staff<br>
       <b>Covers</b><br>Jan&ndash;Dec 2027<br>
-      <b>Updated</b><br>Oct 12, 2026<br>
+      <b>Updated</b><br>Oct 19, 2026<br>
       <b>Items</b><br><span id="count">&mdash;</span>
     </div>
   </header>
@@ -381,13 +381,13 @@ footer{
   <div class="shift">
     <div class="shift-key">
       <span class="lbl">Before you plan around this</span>
-      <span class="big">Two dates<br>still open</span>
-      <span class="sub">Men's One Night · Radiant</span>
+      <span class="big">Nine events<br>still need a date</span>
+      <span class="sub">Plus 11 missions trips &amp; camps</span>
     </div>
     <div class="shift-body">
       <h2>What changed in this copy</h2>
       <p><b>Baptisms are now the 2nd Sunday</b> of every month, not the last. That fixes two collisions the old rule created &mdash; baptisms no longer land on Easter Sunday in March, or on the Sunday right after Christmas in December. It does create new overlaps in May, July, September and November; each one is marked below.</p>
-      <p><b>Men's One Night and the Radiant Women's Conference show TBD</b>, and <b>every missions trip and camp now carries its month only, not dates.</b> All of them sit under the month they belong to so they hold their place in the year; the date each was projected to from 2026 is kept on the row for reference.</p>
+      <p><b>Nothing shows a date the requests doc hasn't confirmed.</b> Men's One Night, Radiant, Marriage One Night and Dream Team Appreciation show TBD; so does the whole Kids calendar &mdash; Summer Blast, both Family Dedications, Teamsgiving and the new Vision Day. <b>Every missions trip and camp carries its month only, not dates.</b> All of them sit under the month they belong to so they hold their place in the year; the date each was projected to from 2026 is kept on the row for reference.</p>
       <p><b>Easter is Mar 28, 2027</b> &mdash; eight days earlier than 2026. Holy Week is Mar 21&ndash;28, so the whole Easter push moves up a week — promo that went out in mid-March in 2026 needs to start in early March.</p>
     </div>
   </div>
@@ -414,6 +414,12 @@ footer{
       <h3>11 missions trips &amp; camps</h3>
       <p>Every trip and camp is placed in its month without dates &mdash; Ecuador, England, CY Texas, Belize, CY and CK camps, Honduras, the CY July trip, Indonesia, CYA Italy and Japan. Each row carries the 2026 window it was projected from.</p>
       <span class="was">Set these before the trips open for sign-up</span>
+    </div>
+    <div>
+      <span class="tbd">5 items</span>
+      <h3>The Kids &amp; Dream Team calendar</h3>
+      <p>Summer Blast, Spring and Fall Family Dedication, CK Teamsgiving and a new Vision Day all come back from the requests doc needing dates &mdash; so they moved off the grid into their months. Four of them have a 2026 rule behind them; Vision Day is new, with nothing to project from.</p>
+      <span class="was">Summer Blast Jun 14&ndash;16 · Family Ded Feb 27 &amp; Oct 23 · Teamsgiving Nov 21</span>
     </div>
   </div>
 
@@ -469,6 +475,8 @@ footer{
     <ol>
       <li><b>Men's One Night and Radiant both need dates.</b> Men's has moved to April; the day within it is still open. Radiant is the more urgent: its early-bird launch is already pinned to Mother's Day, May 9, so promo goes out before the conference has a date.
         <span>Men's is now April; Radiant's old rule would give Sep 24&ndash;25</span></li>
+      <li><b>The Kids calendar has no confirmed dates for 2027.</b> Summer Blast, Spring and Fall Family Dedication, CK Teamsgiving and Vision Day are all open. Four of them have a repeating rule that would date them today; Vision Day is new and has nothing behind it. Summer Blast is the one that moves other things &mdash; CY Summer Camp was projected to the week after it.
+        <span>Point person on all five is the Kids team</span></li>
       <li><b>Three Sundays where a displaced event wants the 2nd Sunday that Baptisms now holds.</b> Discover Celebration Pt. 2 needs to move off Palm Sunday (Mar 21) and the natural slot is Mar 14. Pt. 1 needs to move off July 4 and the natural slot is Jul 11. Pt. 1 on Sep 5 is Labor Day weekend &mdash; 2026 moved it a week for exactly that reason, which would be Sep 12. All three land on Baptisms.
         <span>Mar 14 · Jul 11 · Sep 12 &mdash; pick which rhythm yields</span></li>
       <li><b>May 9 is carrying four things.</b> Mother's Day, the Radiant early-bird launch, Small Group Leader Training, and now Baptisms. Worth deciding what comes off.
@@ -516,9 +524,9 @@ const EV = [
  {s:"2027-02-06",n:"Mardi Gras weekend 2 of 2",sn:"Mardi Gras",c:"conf",r:"Weekend before Fat Tuesday"},
  {s:"2027-02-07",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
  {s:"2027-02-14",n:"Baptisms",c:"service",r:"2nd Sunday",w:"Valentine's Day &mdash; and the Ecuador team leaves the same day",f:"new"},
- {tbd:"February",n:"Ecuador Missions Trip",sn:"Ecuador",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Feb 14&ndash;20",f:"tbd"},
+ {tbd:"February",n:"Ecuador Missions Trip",sn:"Ecuador",c:"missions",r:"February or March, dates not set",w:"The requests doc now reads Feb&ndash;March. Projected from 2026: Feb 14&ndash;20",f:"tbd"},
  {s:"2027-02-21",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
- {s:"2027-02-27",n:"Family Dedication",sn:"Family Ded",c:"service",r:"Last Saturday"},
+ {tbd:"February",n:"Spring Family Dedication",sn:"Family Ded",c:"service",r:"Date not set",w:"The requests doc lists it as February or March, date not set. Projected from 2026: Sat Feb 27, the last Saturday",f:"tbd"},
  {tbd:"February",n:"Marriage One Night",sn:"Marriage",c:"conf",r:"Date not set",w:"Listed as TBD on the 2027 Calendar Requests doc. Projected from 2026 it would be Feb 12",f:"tbd"},
 
  /* March */
@@ -556,8 +564,8 @@ const EV = [
  /* June */
  {s:"2027-06-02",n:"First Wednesday &mdash; Summer Social",sn:"First Wed",c:"service",r:"1st Wednesday"},
  {s:"2027-06-06",n:"Discover Celebration Pt. 1",sn:"Discover 1",c:"service",r:"1st Sunday"},
- {s:"2027-06-13",n:"Baptisms",c:"service",r:"2nd Sunday",w:"The Sunday before Summer Blast week",f:"new"},
- {s:"2027-06-14",e:"2027-06-16",n:"Summer Blast",sn:"Sum Blast",c:"conf",r:"3rd week, Mon&ndash;Wed"},
+ {s:"2027-06-13",n:"Baptisms",c:"service",r:"2nd Sunday",w:"The Sunday before Summer Blast week as projected &mdash; Summer Blast is now undated",f:"new"},
+ {tbd:"June",n:"Summer Blast",sn:"Sum Blast",c:"conf",r:"Dates not set",w:"Listed as needing dates on the requests doc. Projected from 2026: Jun 14&ndash;16, the 3rd week Mon&ndash;Wed",f:"tbd"},
  {tbd:"June",n:"CY Summer Camp",sn:"CY Camp",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Jun 18&ndash;22",f:"tbd"},
  {s:"2027-06-20",n:"Father's Day",sn:"Fathers Day",c:"service",r:"3rd Sunday of June",w:"Not on the calendar"},
  {s:"2027-06-20",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
@@ -587,6 +595,7 @@ const EV = [
  {s:"2027-08-29",n:"Back to Church Sunday",sn:"Back to Ch",c:"service",r:"Last Sunday of August"},
  {s:"2027-08-29",n:"Fall Small Groups Launch",sn:"Fall SG",c:"groups",r:"Back to Church Sunday"},
  {tbd:"August",n:"Indonesia Mission Trip",sn:"Indonesia",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Aug 30&ndash;Sep 8",f:"tbd"},
+ {tbd:"August",n:"Vision Day",sn:"Vision Day",c:"conf",r:"August &mdash; date not set",w:"New on the requests doc: Kids and Dream Team leaders, August, no date yet. Nothing to project it from &mdash; it did not run in 2026",f:"tbd"},
 
  /* September */
  {s:"2027-09-01",n:"First Wednesday",sn:"First Wed",c:"service",r:"1st Wednesday"},
@@ -601,7 +610,7 @@ const EV = [
  {s:"2027-10-10",n:"Baptisms",c:"service",r:"2nd Sunday",f:"new"},
  {s:"2027-10-17",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
  {tbd:"October",n:"CYA Italy Mission Trip",sn:"CYA Italy",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Oct 20&ndash;30",f:"tbd"},
- {s:"2027-10-23",n:"Family Dedication",sn:"Family Ded",c:"service",r:"4th Saturday"},
+ {tbd:"October",n:"Fall Family Dedication",sn:"Family Ded",c:"service",r:"Date not set",w:"The requests doc lists it as October, date not set. Projected from 2026: Sat Oct 23, the 4th Saturday",f:"tbd"},
  {s:"2027-10-24",n:"Legacy Sunday 1 of 4",sn:"Legacy 1",c:"service",r:"Starts 4th Sunday"},
  {s:"2027-10-25",n:"Legacy Dinner #2",sn:"Legacy D2",c:"conf",r:"Monday of Legacy week"},
  {s:"2027-10-29",n:"Legacy Dinner #1",sn:"Legacy D1",c:"conf",r:"Friday of Legacy week"},
@@ -615,7 +624,7 @@ const EV = [
  {s:"2027-11-14",n:"Legacy Sunday 4 of 4",sn:"Legacy 4",c:"service",r:"Rolls with Legacy 1"},
  {s:"2027-11-14",n:"Baptisms",c:"service",r:"2nd Sunday",w:"Shares the Sunday with the final Legacy Sunday",f:"flag"},
  {s:"2027-11-21",n:"Discover Celebration Pt. 2",sn:"Discover 2",c:"service",r:"3rd Sunday"},
- {s:"2027-11-21",n:"CK Teamsgiving",sn:"Teamsgiv",c:"conf",r:"Sunday before Thanksgiving"},
+ {tbd:"November",n:"CK Teamsgiving",sn:"Teamsgiv",c:"conf",r:"November &mdash; date not set",w:"Listed as needing a date on the requests doc. Projected from 2026: Sun Nov 21, the Sunday before Thanksgiving",f:"tbd"},
  {s:"2027-11-25",n:"Thanksgiving",c:"service",r:"4th Thursday"},
  {s:"2027-11-28",n:"At the Movies &mdash; week 1",sn:"Movies 1",c:"service",r:"Sunday after Thanksgiving"},
  {tbd:"November",n:"Japan Mission Trip",sn:"Japan",c:"missions",r:"Month set, dates not",w:"Projected from 2026: Nov 29&ndash;Dec 6",f:"tbd"},
